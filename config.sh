@@ -1,7 +1,6 @@
 #!/bin/bash
 
 server=$1
-cd mongodbShard
 git pull origin master
 cd mongo-r3.6.18
 if [ $server == 3 ] 
