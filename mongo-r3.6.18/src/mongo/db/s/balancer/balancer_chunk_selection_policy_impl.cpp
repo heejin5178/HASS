@@ -137,6 +137,7 @@ public:
      * boundaries of the chunk and must come in increasing order.
      */
     void addSplitPoint(shared_ptr<Chunk> chunk, const BSONObj& splitPoint) {
+	exit(1);
 	log() << "heejin) addSplitPoint called";
         auto it = _chunkSplitPoints.find(chunk->getMin());
         if (it == _chunkSplitPoints.end()) {
