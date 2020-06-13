@@ -373,6 +373,7 @@ void updateChunkWriteStatsAndSplitIfNeeded(OperationContext* opCtx,
             return collStatus.getValue().value.getAllowBalance();
         }();
 
+	log() << "heejin found";
         log() << "autosplitted " << nss << " chunk: " << redact(chunk->toString()) << " into "
               << (splitPoints.size() + 1) << " parts (desiredChunkSize " << desiredChunkSize << ")"
               << (suggestedMigrateChunk ? "" : (std::string) " (migrate suggested" +
