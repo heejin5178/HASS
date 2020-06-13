@@ -1404,7 +1404,7 @@ DBCollection.prototype.getShardDistribution = function() {
     print("\n");
 
 };
-
+//heejin) print splitkey
 DBCollection.prototype.getSplitKeysForChunks = function(chunkSize) {
 
     var stats = this.stats();
