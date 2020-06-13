@@ -240,7 +240,7 @@ void ClusterWriter::write(OperationContext* opCtx,
         splitIfNeeded(opCtx, request.getNS(), targeterStats);
     }
 }
-
+//heejin_found split
 void updateChunkWriteStatsAndSplitIfNeeded(OperationContext* opCtx,
                                            ChunkManager* manager,
                                            Chunk* chunk,
@@ -300,7 +300,7 @@ void updateChunkWriteStatsAndSplitIfNeeded(OperationContext* opCtx,
                 return desiredChunkSize;
             }
         }();
-
+//heejin) splitpoints call selectChunkSplitPoints
         auto splitPoints =
             uassertStatusOK(shardutil::selectChunkSplitPoints(opCtx,
                                                               chunk->getShardId(),
@@ -337,16 +337,20 @@ void updateChunkWriteStatsAndSplitIfNeeded(OperationContext* opCtx,
                     opCtx, nss, chunk->getShardId(), manager->getShardKeyPattern(), true);
                 if (!key.isEmpty()) {
                     splitPoints.front() = key.getOwned();
+		//heejin debug
+		log() << "heejin) minIsInf" << splitPoints.front() ;
                 }
             } else if (maxIsInf) {
                 BSONObj key = findExtremeKeyForShard(
                     opCtx, nss, chunk->getShardId(), manager->getShardKeyPattern(), false);
                 if (!key.isEmpty()) {
                     splitPoints.back() = key.getOwned();
+		//heejin debug
+		log() << "heejin) maxIsInf" << splitPoints.back() ;
                 }
             }
         }
-
+//heejin) this part call splitChunkAtMultiplePoints
         const auto suggestedMigrateChunk =
             uassertStatusOK(shardutil::splitChunkAtMultiplePoints(opCtx,
                                                                   chunk->getShardId(),

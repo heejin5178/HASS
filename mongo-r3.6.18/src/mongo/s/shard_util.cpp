@@ -122,13 +122,15 @@ StatusWith<std::vector<BSONObj>> selectChunkSplitPoints(OperationContext* opCtx,
     if (!cmdStatus.getValue().commandStatus.isOK()) {
         return std::move(cmdStatus.getValue().commandStatus);
     }
-
+	//heejin debug
+	log() << "selectChunkSplitPoints expect 1" ;
     const auto response = std::move(cmdStatus.getValue().response);
 
     std::vector<BSONObj> splitPoints;
 
     BSONObjIterator it(response.getObjectField("splitKeys"));
     while (it.more()) {
+	log() << "heejin : " << it.next().Obj().getOwned() ;
         splitPoints.push_back(it.next().Obj().getOwned());
     }
 
