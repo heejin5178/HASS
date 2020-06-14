@@ -318,6 +318,8 @@ void updateChunkWriteStatsAndSplitIfNeeded(OperationContext* opCtx,
             return;
         }
 
+	log() << "heejin__ found-front : " << splitPoints.front();
+	log() << "heejin__ found-back : " << splitPoints.back();
         if (minIsInf || maxIsInf) {
             // We don't want to reset _dataWritten since we want to check the other side right away
         } else {
