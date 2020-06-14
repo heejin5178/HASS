@@ -136,7 +136,8 @@ StatusWith<std::vector<BSONObj>> selectChunkSplitPoints(OperationContext* opCtx,
 
     return std::move(splitPoints);
 }
-
+//heejin ) call this function for split
+//splitChunk isnt entered
 StatusWith<boost::optional<ChunkRange>> splitChunkAtMultiplePoints(
     OperationContext* opCtx,
     const ShardId& shardId,
