@@ -325,6 +325,8 @@ void updateChunkWriteStatsAndSplitIfNeeded(OperationContext* opCtx,
             chunk->clearBytesWritten();
         }
 
+	log() << "heejin_ found-front : " << splitPoints.front();
+	log() << "heejin_ found-back : " << splitPoints.back();
         // We assume that if the chunk being split is the first (or last) one on the collection,
         // this chunk is likely to see more insertions. Instead of splitting mid-chunk, we use the
         // very first (or last) key as a split point.
