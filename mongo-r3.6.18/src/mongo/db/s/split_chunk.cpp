@@ -251,6 +251,11 @@ StatusWith<boost::optional<ChunkRange>> splitChunk(OperationContext* opCtx,
     if (!idx) {
         return boost::optional<ChunkRange>(boost::none);
     }
+//heejin debug
+	log() << "heejin_splitChunk : splitkeys.back" << splitKeys.back();
+	log() << "heejin_splitChunk : splitkeys.front" << splitKeys.front();
+	log() << "heejin_splitChunk : chunkRange.max" << chunkRange.getMax();
+	log() << "heejin_splitChunk : chunkRange.min" << chunkRange.getMin();
 
     auto backChunk = ChunkType();
     backChunk.setMin(splitKeys.back());
