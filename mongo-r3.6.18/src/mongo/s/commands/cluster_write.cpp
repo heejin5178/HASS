@@ -318,11 +318,17 @@ void updateChunkWriteStatsAndSplitIfNeeded(OperationContext* opCtx,
             return;
         }
 
+	log() << "heejin*** found-front : " << splitPoints.front();
+	log() << "heejin*** found-back : " << splitPoints.back();
         if (minIsInf || maxIsInf) {
             // We don't want to reset _dataWritten since we want to check the other side right away
         } else {
             // We're splitting, so should wait a bit
+	log() << "heejin** found-front : " << splitPoints.front();
+	log() << "heejin** found-back : " << splitPoints.back();
             chunk->clearBytesWritten();
+	log() << "heejin* found-front : " << splitPoints.front();
+	log() << "heejin* found-back : " << splitPoints.back();
         }
 
 	log() << "heejin_ found-front : " << splitPoints.front();
