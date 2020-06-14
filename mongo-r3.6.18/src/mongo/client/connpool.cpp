@@ -354,9 +354,9 @@ DBClientBase* DBConnectionPool::_finishCreate(const string& ident,
         throw;
     }
 
-    log() << "Successfully connected to " << ident << " (" << openConnections(ident, socketTimeout)
-          << " connections now open to " << ident << " with a " << socketTimeout
-          << " second timeout)";
+    //log() << "Successfully connected to " << ident << " (" << openConnections(ident, socketTimeout)
+    //      << " connections now open to " << ident << " with a " << socketTimeout
+    //      << " second timeout)";
 
     return conn;
 }

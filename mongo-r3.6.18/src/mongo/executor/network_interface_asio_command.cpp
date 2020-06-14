@@ -245,9 +245,9 @@ void NetworkInterfaceASIO::_beginCommunication(AsyncOp* op) {
     if (op->_inSetup) {
         auto host = op->request().target;
         auto getConnectionDuration = now() - op->start();
-        log() << "Successfully connected to " << host << ", took " << getConnectionDuration << " ("
-              << _connectionPool.getNumConnectionsPerHost(host) << " connections now open to "
-              << host << ")";
+        //log() << "Successfully connected to " << host << ", took " << getConnectionDuration << " ("
+        //      << _connectionPool.getNumConnectionsPerHost(host) << " connections now open to "
+        //      << host << ")";
         op->_inSetup = false;
         op->finish(RemoteCommandResponse());
         return;

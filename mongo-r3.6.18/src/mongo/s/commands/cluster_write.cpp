@@ -332,6 +332,7 @@ void updateChunkWriteStatsAndSplitIfNeeded(OperationContext* opCtx,
         // This heuristic is skipped for "special" shard key patterns that are not likely to produce
         // monotonically increasing or decreasing values (e.g. hashed shard keys).
         if (KeyPattern::isOrderedKeyPattern(manager->getShardKeyPattern().toBSON())) {
+	log() << "heejin ) key pattern if statement in";
             if (minIsInf) {
                 BSONObj key = findExtremeKeyForShard(
                     opCtx, nss, chunk->getShardId(), manager->getShardKeyPattern(), true);
