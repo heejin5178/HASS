@@ -183,14 +183,15 @@ void ClusterWriter::write(OperationContext* opCtx,
                           BatchWriteExecStats* stats,
                           BatchedCommandResponse* response) {
     const NamespaceString& nss = request.getNS();
-    log() << "jinnnn ClusterWriter::write";
+    log() << "jinnnn ClusterWriter::write "  << nss;
 
     LastError::Disabled disableLastError(&LastError::get(opCtx->getClient()));
 
     // Config writes and shard writes are done differently
     if (nss.db() == NamespaceString::kAdminDb) {
+    	log() << "jin conjin config write";
         Grid::get(opCtx)->catalogClient()->writeConfigServerDirect(opCtx, request, response);
-    } else {
+    } else { // jin) shard writes
         TargeterStats targeterStats;
 
         {
@@ -221,6 +222,8 @@ void ClusterWriter::write(OperationContext* opCtx,
             }
 
             const auto& endpoints = swEndpoints.getValue();
+    	log() << "jin endpoints during shard writes ";
+	
 
             // Handle sharded config server writes differently.
             if (std::any_of(endpoints.begin(), endpoints.end(), [](const auto& it) {

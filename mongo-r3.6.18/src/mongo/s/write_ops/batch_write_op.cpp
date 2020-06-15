@@ -27,6 +27,8 @@
  *    exception statement from all source files in the program, then also delete
  *    it in the license file.
  */
+#define MONGO_LOG_DEFAULT_COMPONENT ::mongo::logger::LogComponent::kSharding
+
 
 #include "mongo/platform/basic.h"
 
@@ -38,7 +40,7 @@
 #include "mongo/db/operation_context.h"
 #include "mongo/stdx/memory.h"
 #include "mongo/util/transitional_tools_do_not_use/vector_spooling.h"
-
+#include "mongo/util/log.h"
 namespace mongo {
 
 using std::unique_ptr;
@@ -256,6 +258,7 @@ Status BatchWriteOp::targetBatch(const NSTargeter& targeter,
     int numTargetErrors = 0;
 
     const size_t numWriteOps = _clientRequest.sizeWriteOps();
+log() << "heejins order : BatchWriteOp::targetBatch, numWritOps : " << numWriteOps;
 
     for (size_t i = 0; i < numWriteOps; ++i) {
         WriteOp& writeOp = _writeOps[i];
@@ -319,6 +322,12 @@ Status BatchWriteOp::targetBatch(const NSTargeter& targeter,
         // ids array, if retryable writes are used
         const int writeSizeBytes = getWriteSizeBytes(writeOp) + kBSONArrayPerElementOverheadBytes +
             (_batchTxnNum ? kBSONArrayPerElementOverheadBytes + 4 : 0);
+
+log() << "heejins order : BatchWriteOp::targetBatch, writeSizeBytes : " << writeSizeBytes;
+
+log() << "heejins order : BatchWriteOp::targetBatch, : getWriteSizeBytes(writeOp)" << getWriteSizeBytes(writeOp);
+
+
 
         if (wouldMakeBatchesTooBig(writes, writeSizeBytes, batchMap)) {
             invariant(!batchMap.empty());
