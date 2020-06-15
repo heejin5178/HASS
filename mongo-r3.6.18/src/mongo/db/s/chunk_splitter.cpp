@@ -273,6 +273,7 @@ void ChunkSplitter::_runAutosplit(const NamespaceString& nss,
                                   const BSONObj& min,
                                   const BSONObj& max,
                                   long dataWritten) {
+log() << "jin!!! ChunkSplitter::_runAutosplit";
     if (!_isPrimary) {
         return;
     }

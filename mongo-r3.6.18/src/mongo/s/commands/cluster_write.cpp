@@ -248,6 +248,8 @@ void updateChunkWriteStatsAndSplitIfNeeded(OperationContext* opCtx,
     // Disable lastError tracking so that any errors, which occur during auto-split do not get
     // bubbled up on the client connection doing a write
     LastError::Disabled disableLastError(&LastError::get(opCtx->getClient()));
+    log() << "jin!!! updateChunkWriteStatsAndSplitIfNeeded";
+
 
     const auto balancerConfig = Grid::get(opCtx)->getBalancerConfiguration();
 
@@ -339,7 +341,11 @@ void updateChunkWriteStatsAndSplitIfNeeded(OperationContext* opCtx,
         //
         // This heuristic is skipped for "special" shard key patterns that are not likely to produce
         // monotonically increasing or decreasing values (e.g. hashed shard keys).
-        if (KeyPattern::isOrderedKeyPattern(manager->getShardKeyPattern().toBSON())) {
+        
+//	auto tmp_splitPoints 
+
+
+	if (KeyPattern::isOrderedKeyPattern(manager->getShardKeyPattern().toBSON())) {
 	log() << "heejin ) key pattern if statement in";
             if (minIsInf) {
                 BSONObj key = findExtremeKeyForShard(

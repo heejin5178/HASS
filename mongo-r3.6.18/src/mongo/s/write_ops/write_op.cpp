@@ -51,7 +51,7 @@ const WriteErrorDetail& WriteOp::getOpError() const {
     dassert(_state == WriteOpState_Error);
     return *_error;
 }
-
+//jin
 Status WriteOp::targetWrites(OperationContext* opCtx,
                              const NSTargeter& targeter,
                              std::vector<TargetedWrite*>* targetedWrites) {
