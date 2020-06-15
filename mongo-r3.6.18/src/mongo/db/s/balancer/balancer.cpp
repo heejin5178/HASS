@@ -556,7 +556,6 @@ Status Balancer::_enforceTagRanges(OperationContext* opCtx) {
         }
 
         auto cm = routingInfoStatus.getValue().cm();
-	exit(1);
 	log() << "heejin) please split here!!!";
         auto splitStatus =
             shardutil::splitChunkAtMultiplePoints(opCtx,

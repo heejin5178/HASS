@@ -80,6 +80,8 @@ ChunkManager::ChunkManager(NamespaceString nss,
 
 std::shared_ptr<Chunk> ChunkManager::findIntersectingChunk(const BSONObj& shardKey,
                                                            const BSONObj& collation) const {
+//heejin debug
+log() << "heejin) findIntersectingChunk";
     const bool hasSimpleCollation = (collation.isEmpty() && !_defaultCollator) ||
         SimpleBSONObjComparator::kInstance.evaluate(collation == CollationSpec::kSimpleSpec);
     if (!hasSimpleCollation) {
