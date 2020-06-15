@@ -3,7 +3,7 @@
 server=$1
 git pull origin master
 cd mongo-r3.6.18
-config_rep="/home/heejin/mongodb_ycsb"
+config_rep="/home/heejin/mongodb_ycsb/config"
 if [ $server == "3" ] 
 then
 #mongos, mongod - apple
