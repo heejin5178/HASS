@@ -214,7 +214,7 @@ BatchWriteOp::BatchWriteOp(OperationContext* opCtx, const BatchedCommandRequest&
         _writeOps.emplace_back(BatchItemRef(&_clientRequest, i));
     }
 }
-
+//heejin&jin: success!
 Status BatchWriteOp::targetBatch(const NSTargeter& targeter,
                                  bool recordTargetErrors,
                                  std::map<ShardId, TargetedWriteBatch*>* targetedBatches) {
@@ -277,6 +277,8 @@ log() << "heejins order : BatchWriteOp::targetBatch, numWritOps : " << numWriteO
 
         OwnedPointerVector<TargetedWrite> writesOwned;
         vector<TargetedWrite*>& writes = writesOwned.mutableVector();
+log() << "heejins order : BatchWriteOp::targetBatch, writes count : " << writes.count();
+log() << "heejins order : BatchWriteOp::targetBatch, writes back : " << writes.back();
 
         Status targetStatus = writeOp.targetWrites(_opCtx, targeter, &writes);
 
