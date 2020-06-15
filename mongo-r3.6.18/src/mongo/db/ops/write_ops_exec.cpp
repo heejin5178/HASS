@@ -462,6 +462,7 @@ SingleWriteResult makeWriteResultForInsertOrDeleteRetry() {
 WriteResult performInserts(OperationContext* opCtx,
                            const write_ops::Insert& wholeOp,
                            bool fromMigrate) {
+	log() << "heejjin) performInsert" ;
     invariant(!opCtx->lockState()->inAWriteUnitOfWork());  // Does own retries.
     auto& curOp = *CurOp::get(opCtx);
     ON_BLOCK_EXIT([&] {

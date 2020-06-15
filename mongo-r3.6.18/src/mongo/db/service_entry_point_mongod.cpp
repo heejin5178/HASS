@@ -974,6 +974,8 @@ void receivedKillCursors(OperationContext* opCtx, const Message& m) {
 }
 
 void receivedInsert(OperationContext* opCtx, const NamespaceString& nsString, const Message& m) {
+
+	log() << "heejjin) receivedInsert" ;
     auto insertOp = InsertOp::parseLegacy(m);
     invariant(insertOp.getNamespace() == nsString);
 
