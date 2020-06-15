@@ -278,7 +278,7 @@ log() << "heejins order : BatchWriteOp::targetBatch, numWritOps : " << numWriteO
         OwnedPointerVector<TargetedWrite> writesOwned;
         vector<TargetedWrite*>& writes = writesOwned.mutableVector();
 log() << "heejins order : BatchWriteOp::targetBatch, writes count : " << writes.size();
-log() << "heejins order : BatchWriteOp::targetBatch, writes back : " << writes.back();
+//log() << "heejins order : BatchWriteOp::targetBatch, writes back : " << writes.back();
 
         Status targetStatus = writeOp.targetWrites(_opCtx, targeter, &writes);
 

@@ -56,6 +56,7 @@ namespace mongo {
 namespace {
 
 const uint64_t kTooManySplitPoints = 4;
+int global_update=0;
 
 void toBatchError(const Status& status, BatchedCommandResponse* response) {
     response->clear();
@@ -249,10 +250,12 @@ void updateChunkWriteStatsAndSplitIfNeeded(OperationContext* opCtx,
                                            ChunkManager* manager,
                                            Chunk* chunk,
                                            long dataWritten) {
+
+	global_update++;
     // Disable lastError tracking so that any errors, which occur during auto-split do not get
     // bubbled up on the client connection doing a write
     LastError::Disabled disableLastError(&LastError::get(opCtx->getClient()));
-    log() << "jin!!! updateChunkWriteStatsAndSplitIfNeeded";
+    log() << "jin!!! updateChunkWriteStatsAndSplitIfNeeded: " << global_update;
 
 
     const auto balancerConfig = Grid::get(opCtx)->getBalancerConfiguration();
