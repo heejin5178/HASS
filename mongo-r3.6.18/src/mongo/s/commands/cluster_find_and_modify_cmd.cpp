@@ -155,7 +155,8 @@ public:
              const BSONObj& cmdObj,
              BSONObjBuilder& result) override {
         const NamespaceString nss(parseNsCollectionRequired(dbName, cmdObj));
-
+	log() << "heejin) here/CMDOBJ " << cmdObj;
+	log() << "heejin) here/DBNAME: " << dbName;
         // findAndModify should only be creating database if upsert is true, but this would require
         // that the parsing be pulled into this function.
         uassertStatusOK(createShardDatabase(opCtx, nss.db()));
@@ -175,6 +176,8 @@ public:
         const BSONObj shardKey = getShardKey(opCtx, *chunkMgr, query);
         auto chunk = chunkMgr->findIntersectingChunk(shardKey, collation);
 
+	log() << "heejin) here/QUERY: " << query;
+	log() << "heejin) here/shardKEY: " << shardKey;
         _runCommand(opCtx,
                     chunk->getShardId(),
                     chunkMgr->getVersion(chunk->getShardId()),
