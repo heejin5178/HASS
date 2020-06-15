@@ -2,7 +2,7 @@
 
 server=$1
 git pull origin master
-cd mongo-r3.6.18
+cd /home/heejin/mongodb_ycsb/mongodbShard/mongo-r3.6.18 
 config_rep="/home/heejin/mongodb_ycsb/config"
 if [ $server == "3" ] 
 then
@@ -39,6 +39,7 @@ elif [ $server == "6" ]
 then
 #mongod - banana,mango
 buildscripts/scons.py MONGO_VERSION=3.6.18 mongod
+echo ${config_rep}/mognodb_mango.conf
 sudo ./mongod  --shardsvr -f ${config_rep}/mongodb_mango.conf & 
 sudo ./mongod  --shardsvr -f ${config_rep}/mongodb_banana.conf &
 echo "server 6 mongod on"
