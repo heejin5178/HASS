@@ -36,6 +36,7 @@
 
 #include <algorithm>
 
+#include "mongo/bson/mutable/element-inl.h"
 #include "mongo/base/status.h"
 #include "mongo/client/connpool.h"
 #include "mongo/db/lasterror.h"
@@ -233,7 +234,10 @@ void ClusterWriter::write(OperationContext* opCtx,
 	}		
 
 	log() << "jin endpoints during shard response getOwned: " << request.toBSON().getObjectField("documents").getOwned();
-	log() << "jin endpoints during shard response getObject(key): " << request.toBSON().getObjectField("documents")(key);
+
+	mongo::mutablebson::Document doc(request.toBSON().getObjectField("documents").getOwned());
+	mongo::mutablebson::Element key =doc.root()["key"];
+	log() << "jin endpoints during shard response getObject(key): " << key;
             // Handle sharded config server writes differently.
             if (std::any_of(endpoints.begin(), endpoints.end(), [](const auto& it) {
                     return it.shardName == ShardRegistry::kConfigServerShardId;

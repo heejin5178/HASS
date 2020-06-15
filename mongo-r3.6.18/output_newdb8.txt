@@ -4722,4 +4722,8 @@ mongos> [9G[Jdb.adminCommand( {getLog: "global"} )[46G[9G[Jfor (var i=20000
                         	}
                         }
 
-mongos> 
+mongos> 2020-06-15T18:32:13.266+0000 I NETWORK  [ReplicaSetMonitor-TaskExecutor-0] Socket closed remotely, no longer connected (idle 30 secs, remote host 10.20.16.165:30001)
+2020-06-15T18:32:13.267+0000 W NETWORK  [ReplicaSetMonitor-TaskExecutor-0] Failed to connect to 10.20.16.165:30001, in(checking socket for error after poll), reason: Connection refused
+2020-06-15T18:32:13.267+0000 I NETWORK  [ReplicaSetMonitor-TaskExecutor-0] Marking host 10.20.16.165:30001 as failed :: caused by :: Location40356: dbconnectionpool: connect failed 10.20.16.165:30001 : couldn't connect to server 10.20.16.165:30001, connection attempt failed
+2020-06-15T18:32:43.268+0000 W NETWORK  [ReplicaSetMonitor-TaskExecutor-0] Failed to connect to 10.20.16.165:30001, in(checking socket for error after poll), reason: Connection refused
+2020-06-15T18:33:13.270+0000 W NETWORK  [ReplicaSetMonitor-TaskExecutor-0] Failed to connect to 10.20.16.165:30001, in(checking socket for error after poll), reason: Connection refused
