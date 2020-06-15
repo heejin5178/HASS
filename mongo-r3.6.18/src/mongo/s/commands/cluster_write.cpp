@@ -36,7 +36,6 @@
 
 #include <algorithm>
 
-#include "mongo/bson/mutable/element-inl.h"
 #include "mongo/base/status.h"
 #include "mongo/client/connpool.h"
 #include "mongo/db/lasterror.h"

@@ -41,6 +41,14 @@
 
 #include "mongo/util/log.h"
 
+#include "mongo/bson/mutable/element-inl.h"
+#include "mongo/bson/mutable/damage_vector.h"
+#include "mongo/bson/mutable/document-inl.h"
+#include "mongo/bson/mutable/const_element-inl.h"
+#include "mongo/bson/mutable/mutable_bson_test_utils.h"
+#include "mongo/bson/mutable/const_element.h"
+#include "mongo/bson/mutable/algorithm.h"
+#include "mongo/bson/mutable/document.h"
 namespace mongo {
 
 using std::string;
