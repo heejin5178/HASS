@@ -27,6 +27,7 @@
  *    exception statement from all source files in the program, then also delete
  *    it in the license file.
  */
+#define MONGO_LOG_DEFAULT_COMPONENT ::mongo::logger::LogComponent::kSharding
 
 #include "mongo/platform/basic.h"
 
@@ -49,6 +50,7 @@
 #include "mongo/s/grid.h"
 #include "mongo/s/stale_exception.h"
 #include "mongo/util/timer.h"
+#include "mongo/util/log.h"
 
 namespace mongo {
 namespace {

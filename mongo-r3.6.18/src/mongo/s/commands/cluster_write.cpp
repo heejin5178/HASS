@@ -183,6 +183,7 @@ void ClusterWriter::write(OperationContext* opCtx,
                           BatchWriteExecStats* stats,
                           BatchedCommandResponse* response) {
     const NamespaceString& nss = request.getNS();
+    log() << "jinnnn ClusterWriter::write";
 
     LastError::Disabled disableLastError(&LastError::get(opCtx->getClient()));
 
