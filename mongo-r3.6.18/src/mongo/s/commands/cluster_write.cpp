@@ -260,6 +260,8 @@ void updateChunkWriteStatsAndSplitIfNeeded(OperationContext* opCtx,
         (0 == manager->getShardKeyPattern().getKeyPattern().globalMax().woCompare(chunk->getMax()));
 
     const uint64_t chunkBytesWritten = chunk->addBytesWritten(dataWritten);
+    log() << "jin!!! addBytesWritten(dataWritten) " << dataWritten;
+    log() << "jin!!! addBytesWritten(chunkBytesWritten) " << chunkBytesWritten;
 
     const uint64_t desiredChunkSize = balancerConfig->getMaxChunkSizeBytes();
 
