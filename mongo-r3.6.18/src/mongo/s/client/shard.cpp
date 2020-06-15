@@ -81,7 +81,7 @@ Status Shard::CommandResponse::processBatchWriteResponse(
                             str::stream() << "Failed to parse write response: " << errmsg);
         } else {
             status = batchResponse->toStatus();
-	    log << "WRITE DONE??? ";
+	    log() << "WRITE DONE??? ";
         }
     }
 
