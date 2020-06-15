@@ -50,7 +50,7 @@ StatusWith<std::vector<KeysCollectionDocument>> KeysCollectionClientSharded::get
 
 Status KeysCollectionClientSharded::insertNewKey(OperationContext* opCtx, const BSONObj& doc) {
 	//heejin debug
-	log() << "heejin) inserrrrrrrt " << doc;
+//	log() << "heejin) inserrrrrrrt " << doc;
     return _catalogClient->insertConfigDocument(
         opCtx, KeysCollectionDocument::ConfigNS, doc, ShardingCatalogClient::kMajorityWriteConcern);
 }

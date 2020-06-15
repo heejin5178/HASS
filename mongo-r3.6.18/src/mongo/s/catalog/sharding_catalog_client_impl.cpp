@@ -1037,12 +1037,14 @@ Status ShardingCatalogClientImpl::insertConfigDocument(OperationContext* opCtx,
     const BSONElement idField = doc.getField("_id");
     invariant(!idField.eoo());
 
+log() << "ShardingCatalogClientImpl::insertConfigDocument " << idField;
     BatchedCommandRequest request([&] {
         write_ops::Insert insertOp(nss);
         insertOp.setDocuments({doc});
         return insertOp;
     }());
     request.setWriteConcern(writeConcern.toBSON());
+log() << "ShardingCatalogClientImpl::insertConfigDocument return?? " << idField;
 
     auto configShard = Grid::get(opCtx)->shardRegistry()->getConfigShard();
     for (int retry = 1; retry <= kMaxWriteRetry; retry++) {

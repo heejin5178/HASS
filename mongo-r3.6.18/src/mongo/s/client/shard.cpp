@@ -81,6 +81,7 @@ Status Shard::CommandResponse::processBatchWriteResponse(
                             str::stream() << "Failed to parse write response: " << errmsg);
         } else {
             status = batchResponse->toStatus();
+	    log << "WRITE DONE??? ";
         }
     }
 
@@ -185,6 +186,7 @@ BatchedCommandResponse Shard::runBatchWriteCommand(OperationContext* opCtx,
                                                    const BatchedCommandRequest& batchRequest,
                                                    RetryPolicy retryPolicy) {
     const std::string dbname = batchRequest.getNS().db().toString();
+log() << " Shard::runBatchWriteCommand " << dbname;
 
     const BSONObj cmdObj = batchRequest.toBSON();
 
