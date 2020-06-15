@@ -649,6 +649,7 @@ public:
                     warning() << "Mongod reported " << size << " bytes inserted for key " << key
                               << " but can't find chunk";
                 } else {
+			log() << "jjin: head.." ;
                     updateChunkWriteStatsAndSplitIfNeeded(
                         opCtx, outputCM.get(), chunkWritten.get(), size);
                 }

@@ -265,6 +265,7 @@ private:
                                   const BSONObj& command,
                                   BatchItemRef targetingBatchItem,
                                   std::vector<Strategy::CommandResult>* results) {
+	log() << "heejjin) commandOpWrite" ;
         // Note that this implementation will not handle targeting retries and does not completely
         // emulate write behavior
         TargeterStats stats;
