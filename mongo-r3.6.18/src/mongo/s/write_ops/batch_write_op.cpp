@@ -50,6 +50,7 @@ using std::vector;
 
 namespace {
 
+int test_global_int=0;
 // Conservative overhead per element contained in the write batch. This value was calculated as 1
 // byte (element type) + 5 bytes (max string encoding of the array index encoded as string and the
 // maximum key is 99999) + 1 byte (zero terminator) = 7 bytes
@@ -217,6 +218,7 @@ BatchWriteOp::BatchWriteOp(OperationContext* opCtx, const BatchedCommandRequest&
 Status BatchWriteOp::targetBatch(const NSTargeter& targeter,
                                  bool recordTargetErrors,
                                  std::map<ShardId, TargetedWriteBatch*>* targetedBatches) {
+	test_global_int++;
     //
     // Targeting of unordered batches is fairly simple - each remaining write op is targeted,
     // and each of those targeted writes are grouped into a batch for a particular shard
@@ -258,6 +260,7 @@ Status BatchWriteOp::targetBatch(const NSTargeter& targeter,
     int numTargetErrors = 0;
 
     const size_t numWriteOps = _clientRequest.sizeWriteOps();
+log() << "heejins order : BatchWriteOp::targetBatch, globalINT : " << test_global_int;
 log() << "heejins order : BatchWriteOp::targetBatch, numWritOps : " << numWriteOps;
 
     for (size_t i = 0; i < numWriteOps; ++i) {
