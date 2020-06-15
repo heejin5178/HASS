@@ -223,7 +223,8 @@ void ClusterWriter::write(OperationContext* opCtx,
             }
 
             const auto& endpoints = swEndpoints.getValue();
-    	log() << "jin endpoints during shard writes: " << request.toString();
+    	log() << "jin endpoints during shard request: " << request.toString();
+	log() << "jin endpoints during shard response: " << request.toBSON();
 	
 
             // Handle sharded config server writes differently.
