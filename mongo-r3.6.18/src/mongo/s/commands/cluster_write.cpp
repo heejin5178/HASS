@@ -52,6 +52,19 @@
 #include "mongo/util/log.h"
 #include "mongo/util/mongoutils/str.h"
 
+#include "mongo/bson/mutable/document.h"
+
+#include "mongo/bson/bsonobj.h"
+#include "mongo/bson/mutable/algorithm.h"
+#include "mongo/bson/mutable/damage_vector.h"
+#include "mongo/bson/mutable/mutable_bson_test_utils.h"
+#include "mongo/db/json.h"
+#include "mongo/db/query/collation/collator_interface_mock.h"
+#include "mongo/platform/decimal128.h"
+#include "mongo/unittest/death_test.h"
+#include "mongo/unittest/unittest.h"
+
+
 namespace mongo {
 namespace {
 
@@ -235,8 +248,10 @@ void ClusterWriter::write(OperationContext* opCtx,
 	log() << "jin endpoints during shard response getOwned: " << request.toBSON().getObjectField("documents").getOwned();
 
 	mongo::mutablebson::Document doc(request.toBSON().getObjectField("documents").getOwned());
-	mongo::mutablebson::Element key =doc.root()["key"];
-	log() << "jin endpoints during shard response getObject(key): " << key;
+	mongo::mutablebson::Element zero =doc.root()["0"];
+	log() << "jin endpoints during shard response getObject(zero): " << zero;
+	mongo::mutablebson::Element key =zero[1];
+	log() << "jin endpoints during shard response getObject(key): " << key.getValueDouble();
             // Handle sharded config server writes differently.
             if (std::any_of(endpoints.begin(), endpoints.end(), [](const auto& it) {
                     return it.shardName == ShardRegistry::kConfigServerShardId;
