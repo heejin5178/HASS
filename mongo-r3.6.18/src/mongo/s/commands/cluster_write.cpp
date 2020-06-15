@@ -232,7 +232,7 @@ void ClusterWriter::write(OperationContext* opCtx,
 	
 	}		
 
-	log() << "jin endpoints during shard response key: " << request.toBSON().getObjectField("documents").Obj().getOwned();
+	log() << "jin endpoints during shard response key: " << request.toBSON().getObjectField("documents").getOwned();
             // Handle sharded config server writes differently.
             if (std::any_of(endpoints.begin(), endpoints.end(), [](const auto& it) {
                     return it.shardName == ShardRegistry::kConfigServerShardId;
