@@ -225,8 +225,8 @@ void ClusterWriter::write(OperationContext* opCtx,
             const auto& endpoints = swEndpoints.getValue();
     	log() << "jin endpoints during shard request: " << request.toString();
 	log() << "jin endpoints during shard response: " << request.toBSON();
-	log() << "jin endpoints during shard response key: " << request.nFields();
-	if(request.hasElement("key"))
+	log() << "jin endpoints during shard response key: " << request.toBSON().nFields();
+	if(request.toBSON().hasElement("key"))
 	{
 		log() << "jin element in!!!!!";
 	
