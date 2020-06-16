@@ -324,7 +324,7 @@ void updateChunkWriteStatsAndSplitIfNeeded(OperationContext* opCtx,
 	}*/
     if (!chunk->shouldSplit(desiredChunkSize, minIsInf, maxIsInf) ||
         !balancerConfig->getShouldAutoSplit()) {
-//	log() << "heejin_ return: " << global_update;
+	log() << "heejin_ return: " << global_update;
         return;
     }
 
