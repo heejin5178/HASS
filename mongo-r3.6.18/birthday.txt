@@ -1,17 +1,18 @@
 MongoDB shell version v3.6.18
 connecting to: mongodb://10.20.16.165:50001/test?gssapiServiceName=mongodb
-Implicit session: session { "id" : UUID("a0153d5f-f9ff-4aae-b71e-d3ee09f8bb2b") }
+Implicit session: session { "id" : UUID("a9582755-4062-4fe4-9f08-8202ae63da33") }
 MongoDB server version: 3.6.18
 Server has startup warnings: 
-2020-06-16T19:05:43.874+0000 I CONTROL  [main] 
-2020-06-16T19:05:43.875+0000 I CONTROL  [main] ** WARNING: Access control is not enabled for the database.
-2020-06-16T19:05:43.875+0000 I CONTROL  [main] **          Read and write access to data and configuration is unrestricted.
-2020-06-16T19:05:43.875+0000 I CONTROL  [main] ** WARNING: You are running this process as the root user, which is not recommended.
-2020-06-16T19:05:43.875+0000 I CONTROL  [main] 
-mongos> [9G[Jsh.addShard("apple/10.20.16.165:30001,10.20.16.110:30001,10.20.16.111:30001")[6G[1A[9G[Juse admin[18G[9G[Jsh.status()[20G[9G[Jsh.addShard("apple/10.20.16.165:30001,10.20.16.110:30001,10.20.16.111:30001")[6G[1A[9G[Jdb.runCommand( { addShard : "apple/10.20.16.165:30001,10.20.16.110:30001,10.20.16.111:30001" } )[25G[1A[9G[Jsh.addShard("apple/10.20.16.165:30001,10.20.16.110:30001,10.20.16.111:30001")[6G[1A[9G[Jsh.status()[20G[9G[Juse admin[18G[9G[Jsh.addShard("apple/10.20.16.165:30001,10.20.16.110:30001,10.20.16.111:30001")[6G[1A[9G[J[9G[9G[J[9Gmongos> [9G[J[9Gmongos> rh[9G[Jr[10G[9G[J[9Gs[9G[J[9Grh[9G[Jr[10G[9G[J[9Gsh.status()[9G[Jsh.status()[20G
-
-
---- Sharding Status --- 
+2020-06-16T19:45:23.602+0000 I CONTROL  [main] 
+2020-06-16T19:45:23.602+0000 I CONTROL  [main] ** WARNING: Access control is not enabled for the database.
+2020-06-16T19:45:23.602+0000 I CONTROL  [main] **          Read and write access to data and configuration is unrestricted.
+2020-06-16T19:45:23.602+0000 I CONTROL  [main] ** WARNING: You are running this process as the root user, which is not recommended.
+2020-06-16T19:45:23.602+0000 I CONTROL  [main] 
+mongos> [9G[J[9G[1G[J(reverse-i-search)`': [23G[1G[J(reverse-i-search)`p': sh.addShard("apple/10.20.16.165:30001,10.20.16.110:30001,10.20.16.111:30001")[1A[39G[1G[J(reverse-i-search)`pr': printShardingSizes()[25G[1G[J(reverse-i-search)`pri': printShardingSizes()[26G[1G[J(reverse-i-search)`prin': printShardingSizes()[27G[1G[J(reverse-i-search)`print': printShardingSizes()[28G[1G[Jmongos> printShardingSizes()[9G[9G[JprintShardingSizes()[10G[9G[JprintShardingSizes()[29G
+2020-06-16T19:49:35.226+0000 I NETWORK  [thread1] Starting new replica set monitor for apple/10.20.16.110:30001,10.20.16.111:30001,10.20.16.165:30001
+2020-06-16T19:49:35.230+0000 I NETWORK  [thread1] Starting new replica set monitor for banana/10.20.16.110:30002,10.20.16.111:30002,10.20.16.112:30002
+2020-06-16T19:49:35.236+0000 I NETWORK  [thread1] Starting new replica set monitor for mango/10.20.16.111:30003,10.20.16.112:30003,10.20.16.115:30003
+--- Sharding Sizes --- 
   sharding version: {
   	"_id" : 1,
   	"minCompatibleVersion" : 5,
@@ -19,28 +20,114 @@ mongos> [9G[Jsh.addShard("apple/10.20.16.165:30001,10.20.16.110:30001,10.20.16
   	"clusterId" : ObjectId("5ee9184a163e6e07a04ed19f")
   }
   shards:
-        {  "_id" : "apple",  "host" : "apple/10.20.16.110:30001,10.20.16.111:30001,10.20.16.165:30001",  "state" : 1 }
-        {  "_id" : "banana",  "host" : "banana/10.20.16.110:30002,10.20.16.111:30002,10.20.16.112:30002",  "state" : 1 }
-        {  "_id" : "mango",  "host" : "mango/10.20.16.111:30003,10.20.16.112:30003,10.20.16.115:30003",  "state" : 1 }
-  active mongoses:
-        "3.6.18" : 1
-  autosplit:
-        Currently enabled: yes
-  balancer:
-        Currently enabled:  yes
-        Currently running:  no
-        Failed balancer rounds in last 5 attempts:  0
-        Migration Results for the last 24 hours: 
-                No recent migrations
+        {
+        	"_id" : "apple",
+        	"host" : "apple/10.20.16.110:30001,10.20.16.111:30001,10.20.16.165:30001",
+        	"state" : 1
+        }
+        {
+        	"_id" : "banana",
+        	"host" : "banana/10.20.16.110:30002,10.20.16.111:30002,10.20.16.112:30002",
+        	"state" : 1
+        }
+        {
+        	"_id" : "mango",
+        	"host" : "mango/10.20.16.111:30003,10.20.16.112:30003,10.20.16.115:30003",
+        	"state" : 1
+        }
   databases:
-        {  "_id" : "config",  "primary" : "config",  "partitioned" : true }
-                config.system.sessions
-                        shard key: { "_id" : 1 }
-                        unique: false
-                        balancing: true
-                        chunks:
-                                apple	1
-                        { "_id" : { "$minKey" : 1 } } -->> { "_id" : { "$maxKey" : 1 } } on : apple Timestamp(1, 0) 
+        { "_id" : "newDB", "primary" : "mango", "partitioned" : true }
+                newDB.newCol chunks:
+                        { "key" : { "$minKey" : 1 } } -->> { "key" : { "$maxKey" : 1 } } on : mango {
+                        	"estimate" : false,
+                        	"size" : 2520105,
+                        	"numObjects" : 72003,
+                        	"operationTime" : Timestamp(1592336975, 1),
+                        	"$gleStats" : {
+                        		"lastOpTime" : Timestamp(0, 0),
+                        		"electionId" : ObjectId("7fffffff0000000000000003")
+                        	},
+                        	"$configServerState" : {
+                        		"opTime" : {
+                        			"ts" : Timestamp(1592336966, 1),
+                        			"t" : NumberLong(6)
+                        		}
+                        	},
+                        	"$clusterTime" : {
+                        		"clusterTime" : Timestamp(1592336975, 1),
+                        		"signature" : {
+                        			"hash" : BinData(0,"AAAAAAAAAAAAAAAAAAAAAAAAAAA="),
+                        			"keyId" : NumberLong(0)
+                        		}
+                        	}
+                        }
 
-mongos> [9G[J[9G^C
+mongos> [9G[JprintShardingSizes()[29G[9G[J[9G[9G[JprintShardingSizes()[29G[9G[JprintShardingSizes[1;34m([0m)[28G[9G[J[9Guse ci[9G[Juse c[14Gonfig[9G[Juse config[19G
+switched to db config
+mongos> db.settings.find()[9G[Jdb.settings.find()[27Gmongos> [9G[J[9Gmongos> db.settings.find()[9G[Jdb.settings.find()[27Gmongos> [9G[J[9Gmongos> db.settings.find()[9G[Jdb.settings.find()[27Gmongos> [9G[J[9Gmongos> [9G[J[9Gmongos> [9G[J[9Gmongos> [9G[J[9Gmongos> [9G[J[9Gmongos> [9G[J[9Gmongos> [9G[J[9Gmongos> [9G[J[9Gmongos> [9G[Jdb.settings.find()[27G[9G[Juse config[19G[9G[JprintShardingSizes()[29G[9G[JprintShardingSizes()[29G
+
+
+
+
+
+
+
+
+
+
+
+
+
+--- Sharding Sizes --- 
+  sharding version: {
+  	"_id" : 1,
+  	"minCompatibleVersion" : 5,
+  	"currentVersion" : 6,
+  	"clusterId" : ObjectId("5ee9184a163e6e07a04ed19f")
+  }
+  shards:
+        {
+        	"_id" : "apple",
+        	"host" : "apple/10.20.16.110:30001,10.20.16.111:30001,10.20.16.165:30001",
+        	"state" : 1
+        }
+        {
+        	"_id" : "banana",
+        	"host" : "banana/10.20.16.110:30002,10.20.16.111:30002,10.20.16.112:30002",
+        	"state" : 1
+        }
+        {
+        	"_id" : "mango",
+        	"host" : "mango/10.20.16.111:30003,10.20.16.112:30003,10.20.16.115:30003",
+        	"state" : 1
+        }
+  databases:
+        { "_id" : "newDB", "primary" : "mango", "partitioned" : true }
+                newDB.newCol chunks:
+                        { "key" : { "$minKey" : 1 } } -->> { "key" : { "$maxKey" : 1 } } on : mango {
+                        	"estimate" : false,
+                        	"size" : 2520105,
+                        	"numObjects" : 72003,
+                        	"operationTime" : Timestamp(1592337095, 1),
+                        	"$gleStats" : {
+                        		"lastOpTime" : Timestamp(0, 0),
+                        		"electionId" : ObjectId("7fffffff0000000000000003")
+                        	},
+                        	"$configServerState" : {
+                        		"opTime" : {
+                        			"ts" : Timestamp(1592337095, 2),
+                        			"t" : NumberLong(6)
+                        		}
+                        	},
+                        	"$clusterTime" : {
+                        		"clusterTime" : Timestamp(1592337095, 2),
+                        		"signature" : {
+                        			"hash" : BinData(0,"AAAAAAAAAAAAAAAAAAAAAAAAAAA="),
+                        			"keyId" : NumberLong(0)
+                        		}
+                        	}
+                        }
+
+mongos> [9G[J[9Gmongos> :q[9G[J:[10G[9G[J[9G[9G[J[9G^C
+
 bye
