@@ -110,7 +110,6 @@ StatusWith<std::vector<BSONObj>> selectChunkSplitPoints(OperationContext* opCtx,
     }
 
     //heejin debug
-    log() << "heejjin selectChunkSplitPoints : " << cmd.obj();
     auto cmdStatus = shardStatus.getValue()->runCommandWithFixedRetryAttempts(
         opCtx,
         ReadPreferenceSetting{ReadPreference::PrimaryPreferred},
