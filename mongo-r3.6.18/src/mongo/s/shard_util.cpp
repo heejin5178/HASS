@@ -110,7 +110,7 @@ StatusWith<std::vector<BSONObj>> selectChunkSplitPoints(OperationContext* opCtx,
     }
 
     //heejin debug
-//    log() << "heejjin selectChunkSplitPoints : " << cmd.obj();
+    log() << "heejjin selectChunkSplitPoints : " << cmd.obj();
     auto cmdStatus = shardStatus.getValue()->runCommandWithFixedRetryAttempts(
         opCtx,
         ReadPreferenceSetting{ReadPreference::PrimaryPreferred},
@@ -126,7 +126,7 @@ StatusWith<std::vector<BSONObj>> selectChunkSplitPoints(OperationContext* opCtx,
     const auto response = std::move(cmdStatus.getValue().response);
 
     //heejin debug
-//    log() << "heejjin selectChunkSplitPoints cmdStatus.getValue: " << cmdStatus.getValue().toString();
+    log() << "heejjin selectChunkSplitPoints cmdStatus.getValue: " << cmdStatus.getValue().toString();
     std::vector<BSONObj> splitPoints;
 	log() << "heejin) response print: " << response;
     BSONObjIterator it(response.getObjectField("splitKeys"));

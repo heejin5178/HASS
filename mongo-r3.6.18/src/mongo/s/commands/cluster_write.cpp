@@ -324,7 +324,7 @@ void updateChunkWriteStatsAndSplitIfNeeded(OperationContext* opCtx,
 	}*/
     if (!chunk->shouldSplit(desiredChunkSize, minIsInf, maxIsInf) ||
         !balancerConfig->getShouldAutoSplit()) {
-	log() << "heejin_ return: " << global_update;
+	//log() << "heejin_ return: " << global_update;
         return;
     }
 
@@ -368,7 +368,7 @@ void updateChunkWriteStatsAndSplitIfNeeded(OperationContext* opCtx,
 	log() << "heejjin update split_average: " << split_average;
 	log() << "jin!! yamae global split " << global_split;
 	log() << "jin!! yanae key is " << global_update;
-/*
+
         auto splitPoints =
             uassertStatusOK(shardutil::selectChunkSplitPoints(opCtx,
                                                               chunk->getShardId(),
@@ -377,7 +377,7 @@ void updateChunkWriteStatsAndSplitIfNeeded(OperationContext* opCtx,
                                                               chunkRange,
                                                               chunkSizeToUse,
                                                               boost::none));
-*/
+/*
         auto splitPoints =
             uassertStatusOK(shardutil::selectChunkSplitPoints(opCtx,
                                                               chunk->getShardId(),
@@ -387,7 +387,7 @@ void updateChunkWriteStatsAndSplitIfNeeded(OperationContext* opCtx,
                                                               chunkSizeToUse,
                                                               boost::none,
 								split_average));
-
+*/
 	//BSONObjBuilder current_key;
 	//current_key.append("splitKeys", global_update+49800);
 	//splitPoints.push_back(current_key.obj());
