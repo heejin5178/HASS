@@ -70,7 +70,6 @@ StatusWith<std::vector<BSONObj>> splitVector(OperationContext* opCtx,
                                              boost::optional<long long> maxChunkSizeBytes) {
     std::vector<BSONObj> splitKeys;
 log() <<"jinnn splitVector... " << splitVec++;
-exit(1);
     // Always have a default value for maxChunkObjects
     if (!maxChunkObjects) {
         maxChunkObjects = kMaxObjectPerChunk;
