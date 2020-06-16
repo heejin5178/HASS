@@ -24,4 +24,9 @@ DBCollection.prototype.insert@src/mongo/shell/collection.js:317:22
 2020-06-16T20:04:36.641+0000 I NETWORK  [thread1] trying reconnect to 10.20.16.165:50001 (10.20.16.165) failed
 2020-06-16T20:04:36.641+0000 W NETWORK  [thread1] Failed to connect to 10.20.16.165:50001, in(checking socket for error after poll), reason: Connection refused
 2020-06-16T20:04:36.641+0000 I NETWORK  [thread1] reconnect 10.20.16.165:50001 (10.20.16.165) failed failed 
-> 
+> [3G[J[3G^C
+bye
+2020-06-16T20:09:58.996+0000 I NETWORK  [thread1] trying reconnect to 10.20.16.165:50001 (10.20.16.165) failed
+2020-06-16T20:09:58.997+0000 W NETWORK  [thread1] Failed to connect to 10.20.16.165:50001, in(checking socket for error after poll), reason: Connection refused
+2020-06-16T20:09:58.997+0000 I NETWORK  [thread1] reconnect 10.20.16.165:50001 (10.20.16.165) failed failed 
+2020-06-16T20:09:58.997+0000 I QUERY    [thread1] Failed to end session { id: UUID("0b846f6a-3a81-4078-9737-82e72bd0cbc7") } due to SocketException: socket exception [CONNECT_ERROR] for couldn't connect to server 10.20.16.165:50001, connection attempt failed
