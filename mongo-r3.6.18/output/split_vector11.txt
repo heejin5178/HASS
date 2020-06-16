@@ -4779,4 +4779,5 @@ mongos> [9G[Jdb.adminCommand( {getLog: "global"} )[46G[9G[Jfor (var i=10000
                         	}
                         }
 
-mongos> 
+mongos> [9G[J[9G^C
+bye

@@ -70,6 +70,7 @@ namespace {
 
 const uint64_t kTooManySplitPoints = 4;
 int global_update=0;
+int global_split=0;
 
 void toBatchError(const Status& status, BatchedCommandResponse* response) {
     response->clear();
@@ -186,12 +187,12 @@ void splitIfNeeded(OperationContext* opCtx,
             return;
         }
 
-    log() << "heejjin splitIFNEED: " << double_key;
+    //log() << "heejjin split IFNEED: " << double_key;
     // heejin added)
     // sum of chunk element 
    	chunk.get()->add_element(double_key); 
 	chunk.get()->add_cnt();
-	log() << "heejjin get split sum : " << chunk.get()->get_split_sum();
+//	log() << "heejjin get split sum : " << chunk.get()->get_split_sum();
         updateChunkWriteStatsAndSplitIfNeeded(
             opCtx, routingInfo.cm().get(), chunk.get(), it->second);
     }
@@ -204,7 +205,7 @@ void ClusterWriter::write(OperationContext* opCtx,
                           BatchWriteExecStats* stats,
                           BatchedCommandResponse* response) {
     const NamespaceString& nss = request.getNS();
-    log() << "jinnnn ClusterWriter::write "  << nss;
+   // log() << "jinnnn ClusterWriter::write "  << nss;
 	double double_key=0.0;
     LastError::Disabled disableLastError(&LastError::get(opCtx->getClient()));
 
@@ -243,21 +244,21 @@ void ClusterWriter::write(OperationContext* opCtx,
             }
 
             const auto& endpoints = swEndpoints.getValue();
-    	log() << "jin endpoints during shard request: " << request.toString();
-	log() << "jin endpoints during shard response: " << request.toBSON();
-	log() << "jin endpoints during shard response nField: " << request.toBSON().nFields();
+  //  	log() << "jin endpoints during shard request: " << request.toString();
+//	log() << "jin endpoints during shard response: " << request.toBSON();
+//	log() << "jin endpoints during shard response nField: " << request.toBSON().nFields();
 
 	if(request.toBSON().hasElement("documents"))
 	{
-		log() << "jin element in!!!!!";
-		log() << "jin endpoints during shard response getOwned: " << request.toBSON().getObjectField("documents").getOwned();
+//		log() << "jin element in!!!!!";
+//		log() << "jin endpoints during shard response getOwned: " << request.toBSON().getObjectField("documents").getOwned();
 
 		mongo::mutablebson::Document doc(request.toBSON().getObjectField("documents").getOwned());
 		mongo::mutablebson::Element zero =doc.root()["0"];
-		log() << "jin endpoints during shard response getObject(zero): " << zero;
+//		log() << "jin endpoints during shard response getObject(zero): " << zero;
 		mongo::mutablebson::Element key =zero[1];
 		if(zero.toString() != "INVALID-MUTABLE-ELEMENT"){
-			log() << "jin endpoints during shard response getObject(key): " << key.getValueDouble();
+//			log() << "jin endpoints during shard response getObject(key): " << key.getValueDouble();
 			double_key = key.getValueDouble();
 		}
 		else
@@ -294,7 +295,7 @@ void updateChunkWriteStatsAndSplitIfNeeded(OperationContext* opCtx,
     // Disable lastError tracking so that any errors, which occur during auto-split do not get
     // bubbled up on the client connection doing a write
     LastError::Disabled disableLastError(&LastError::get(opCtx->getClient()));
-    log() << "jin!!! updateChunkWriteStatsAndSplitIfNeeded: " << global_update;
+    //log() << "jin!!! updateChunkWriteStatsAndSplitIfNeeded: " << global_update;
 
     const auto balancerConfig = Grid::get(opCtx)->getBalancerConfiguration();
 
@@ -304,11 +305,10 @@ void updateChunkWriteStatsAndSplitIfNeeded(OperationContext* opCtx,
         (0 == manager->getShardKeyPattern().getKeyPattern().globalMax().woCompare(chunk->getMax()));
 
     const uint64_t chunkBytesWritten = chunk->addBytesWritten(dataWritten);
-    log() << "jin!!! addBytesWritten(dataWritten) " << dataWritten;
-    log() << "jin!!! addBytesWritten(chunkBytesWritten) " << chunkBytesWritten;
-
+  //  log() << "jin!!! addBytesWritten(dataWritten) " << dataWritten;
+    //log() << "jin!!! addBytesWritten(chunkBytesWritten) " << chunkBytesWritten;
     const uint64_t desiredChunkSize = balancerConfig->getMaxChunkSizeBytes();
-	if(!chunk->shouldSplit(desiredChunkSize, minIsInf, maxIsInf))
+/*	if(!chunk->shouldSplit(desiredChunkSize, minIsInf, maxIsInf))
 	{
 		log() << "heejjin error 1: " << desiredChunkSize;
 		if(minIsInf)
@@ -321,10 +321,10 @@ void updateChunkWriteStatsAndSplitIfNeeded(OperationContext* opCtx,
 	if(!balancerConfig->getShouldAutoSplit())
 	{
 		log() << "heejjin error 2";	
-	}
+	}*/
     if (!chunk->shouldSplit(desiredChunkSize, minIsInf, maxIsInf) ||
         !balancerConfig->getShouldAutoSplit()) {
-	log() << "heejin_ return: " << global_update;
+//	log() << "heejin_ return: " << global_update;
         return;
     }
 
@@ -364,8 +364,11 @@ void updateChunkWriteStatsAndSplitIfNeeded(OperationContext* opCtx,
             }
         }();
 //heejin) splitpoints call selectChunkSplitPoints
-	double split_average = chunk->get_split_sum() / chunk->get_cnt();
+	int split_average = chunk->get_split_sum() / chunk->get_cnt();
 	log() << "heejjin update split_average: " << split_average;
+	log() << "jin!! yamae global split " << global_split;
+	log() << "jin!! yanae key is " << global_update;
+/*
         auto splitPoints =
             uassertStatusOK(shardutil::selectChunkSplitPoints(opCtx,
                                                               chunk->getShardId(),
@@ -373,8 +376,8 @@ void updateChunkWriteStatsAndSplitIfNeeded(OperationContext* opCtx,
                                                               manager->getShardKeyPattern(),
                                                               chunkRange,
                                                               chunkSizeToUse,
-                                                              boost::none, split_average));
-/*
+                                                              boost::none));
+*/
         auto splitPoints =
             uassertStatusOK(shardutil::selectChunkSplitPoints(opCtx,
                                                               chunk->getShardId(),
@@ -384,31 +387,60 @@ void updateChunkWriteStatsAndSplitIfNeeded(OperationContext* opCtx,
                                                               chunkSizeToUse,
                                                               boost::none,
 								split_average));
-*/
+
+	//BSONObjBuilder current_key;
+	//current_key.append("splitKeys", global_update+49800);
+	//splitPoints.push_back(current_key.obj());
         if (splitPoints.size() <= 1) {
-		log() << "splitpoints.size() <=1 " << global_update;
+		log() << "splitpoints.size() <= 1 " << global_update;
             // No split points means there isn't enough data to split on; 1 split point means we
             // have
             // between half the chunk size to full chunk size so there is no need to split yet
             chunk->clearBytesWritten();
             return;
         }
+	else {
+		int target = split_average;
+		BSONObjBuilder current_key;
+		current_key.append("splitKeys", split_average);
+		//BSONObjIterator it(splitPoints);
+		std::vector<BSONObj>::iterator it = splitPoints.begin();
+		int n=-1;
+		while(it != splitPoints.end()) {
+		//for(int i=0; i<splitPoints.size(); i++) { 
+			BSONElement e = it->getField("key");
+			//int k = e.getValue().numberInt();
+			int k = (int)e.Number();
+			if(k < split_average) {
+				target = k;
+				n++;
+			}
+			it++;
 
-	log() << "heejin*** found-front : " << splitPoints.front();
-	log() << "heejin*** found-back : " << splitPoints.back();
+		}
+		if(target==split_average) { // every split point is bigger than split average
+                    splitPoints.front() = current_key.obj().getOwned();
+		}
+		else {
+			splitPoints[n] = current_key.obj().getOwned();
+		}
+	}
+
+//	log() << "heejin*** found-front : " << splitPoints.front();
+//	log() << "heejin*** found-back : " << splitPoints.back();
         if (minIsInf || maxIsInf) {
             // We don't want to reset _dataWritten since we want to check the other side right away
         } else {
             // We're splitting, so should wait a bit
-	log() << "heejin** found-front : " << splitPoints.front();
-	log() << "heejin** found-back : " << splitPoints.back();
+//	log() << "heejin** found-front : " << splitPoints.front();
+//	log() << "heejin** found-back : " << splitPoints.back();
             chunk->clearBytesWritten();
-	log() << "heejin* found-front : " << splitPoints.front();
-	log() << "heejin* found-back : " << splitPoints.back();
+//	log() << "heejin* found-front : " << splitPoints.front();
+//	log() << "heejin* found-back : " << splitPoints.back();
         }
 
-	log() << "heejin_ found-front : " << splitPoints.front();
-	log() << "heejin_ found-back : " << splitPoints.back();
+//	log() << "heejin_ found-front : " << splitPoints.front();
+//	log() << "heejin_ found-back : " << splitPoints.back();
         // We assume that if the chunk being split is the first (or last) one on the collection,
         // this chunk is likely to see more insertions. Instead of splitting mid-chunk, we use the
         // very first (or last) key as a split point.
@@ -420,27 +452,30 @@ void updateChunkWriteStatsAndSplitIfNeeded(OperationContext* opCtx,
 
 
 	if (KeyPattern::isOrderedKeyPattern(manager->getShardKeyPattern().toBSON())) {
-	log() << "heejin ) key pattern if statement in";
+//	log() << "heejin ) key pattern if statement in";
             if (minIsInf) {
                 BSONObj key = findExtremeKeyForShard(
                     opCtx, nss, chunk->getShardId(), manager->getShardKeyPattern(), true);
                 if (!key.isEmpty()) {
                     splitPoints.front() = key.getOwned();
 		//heejin debug
-		log() << "heejin) minIsInf" << splitPoints.front() ;
+//		log() << "heejin) minIsInf" << splitPoints.front() ;
                 }
             } else if (maxIsInf) {
                 BSONObj key = findExtremeKeyForShard(
                     opCtx, nss, chunk->getShardId(), manager->getShardKeyPattern(), false);
                 if (!key.isEmpty()) {
+			//toBSON().getObjectField("documents").getOwned();
+		//	splitPoints.push_back(current_key.obj());
+
                     splitPoints.back() = key.getOwned();
 		//heejin debug
-		log() << "heejin) maxIsInf" << splitPoints.back() ;
+//		log() << "heejin) maxIsInf" << splitPoints.back() ;
                 }
             }
         }
-	log() << "heejin__ found-front : " << splitPoints.front();
-	log() << "heejin__ found-back : " << splitPoints.back();
+//	log() << "heejin__ found-front : " << splitPoints.front();
+//	log() << "heejin__ found-back : " << splitPoints.back();
 //heejin) this part call splitChunkAtMultiplePoints
         const auto suggestedMigrateChunk =
             uassertStatusOK(shardutil::splitChunkAtMultiplePoints(opCtx,
@@ -451,6 +486,8 @@ void updateChunkWriteStatsAndSplitIfNeeded(OperationContext* opCtx,
                                                                   chunkRange,
                                                                   splitPoints));
 
+	global_split++;
+	log() << "jin!! real global split " << global_split;
         // Balance the resulting chunks if the option is enabled and if the shard suggested a chunk
         // to balance
         const bool shouldBalance = [&]() {
@@ -468,8 +505,8 @@ void updateChunkWriteStatsAndSplitIfNeeded(OperationContext* opCtx,
             return collStatus.getValue().value.getAllowBalance();
         }();
 
-	log() << "heejin found-front : " << splitPoints.front();
-	log() << "heejin found-back : " << splitPoints.back();
+//	log() << "heejin found-front : " << splitPoints.front();
+//	log() << "heejin found-back : " << splitPoints.back();
         log() << "autosplitted " << nss << " chunk: " << redact(chunk->toString()) << " into "
               << (splitPoints.size() + 1) << " parts (desiredChunkSize " << desiredChunkSize << ")"
               << (suggestedMigrateChunk ? "" : (std::string) " (migrate suggested" +

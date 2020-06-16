@@ -51,7 +51,7 @@ namespace mongo {
 namespace {
 
 const int kMaxObjectPerChunk{250000};
-
+int splitVec=0;
 BSONObj prettyKey(const BSONObj& keyPattern, const BSONObj& key) {
     return key.replaceFieldNames(keyPattern).clientReadable();
 }
@@ -69,7 +69,8 @@ StatusWith<std::vector<BSONObj>> splitVector(OperationContext* opCtx,
                                              boost::optional<long long> maxChunkSize,
                                              boost::optional<long long> maxChunkSizeBytes) {
     std::vector<BSONObj> splitKeys;
-log() <<"jinnn splitVector...";
+log() <<"jinnn splitVector... " << splitVec++;
+exit(1);
     // Always have a default value for maxChunkObjects
     if (!maxChunkObjects) {
         maxChunkObjects = kMaxObjectPerChunk;

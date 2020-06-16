@@ -128,7 +128,7 @@ StatusWith<std::vector<BSONObj>> selectChunkSplitPoints(OperationContext* opCtx,
     //heejin debug
 //    log() << "heejjin selectChunkSplitPoints cmdStatus.getValue: " << cmdStatus.getValue().toString();
     std::vector<BSONObj> splitPoints;
-//	log() << "heejin) response print: " << response;
+	log() << "heejin) response print: " << response;
     BSONObjIterator it(response.getObjectField("splitKeys"));
 
         
@@ -150,7 +150,7 @@ StatusWith<std::vector<BSONObj>> selectChunkSplitPoints(OperationContext* opCtx,
                                                         const ChunkRange& chunkRange,
                                                         long long chunkSizeBytes,
                                                         boost::optional<int> maxObjs,
-							double split_average) {
+							int split_average) {
     BSONObjBuilder cmd;
     cmd.append("splitVector", nss.ns());
     cmd.append("keyPattern", shardKeyPattern.toBSON());

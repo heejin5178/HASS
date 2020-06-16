@@ -1,0 +1,46 @@
+MongoDB shell version v3.6.18
+connecting to: mongodb://10.20.16.165:50001/test?gssapiServiceName=mongodb
+Implicit session: session { "id" : UUID("a0153d5f-f9ff-4aae-b71e-d3ee09f8bb2b") }
+MongoDB server version: 3.6.18
+Server has startup warnings: 
+2020-06-16T19:05:43.874+0000 I CONTROL  [main] 
+2020-06-16T19:05:43.875+0000 I CONTROL  [main] ** WARNING: Access control is not enabled for the database.
+2020-06-16T19:05:43.875+0000 I CONTROL  [main] **          Read and write access to data and configuration is unrestricted.
+2020-06-16T19:05:43.875+0000 I CONTROL  [main] ** WARNING: You are running this process as the root user, which is not recommended.
+2020-06-16T19:05:43.875+0000 I CONTROL  [main] 
+mongos> [9G[Jsh.addShard("apple/10.20.16.165:30001,10.20.16.110:30001,10.20.16.111:30001")[6G[1A[9G[Juse admin[18G[9G[Jsh.status()[20G[9G[Jsh.addShard("apple/10.20.16.165:30001,10.20.16.110:30001,10.20.16.111:30001")[6G[1A[9G[Jdb.runCommand( { addShard : "apple/10.20.16.165:30001,10.20.16.110:30001,10.20.16.111:30001" } )[25G[1A[9G[Jsh.addShard("apple/10.20.16.165:30001,10.20.16.110:30001,10.20.16.111:30001")[6G[1A[9G[Jsh.status()[20G[9G[Juse admin[18G[9G[Jsh.addShard("apple/10.20.16.165:30001,10.20.16.110:30001,10.20.16.111:30001")[6G[1A[9G[J[9G[9G[J[9Gmongos> [9G[J[9Gmongos> rh[9G[Jr[10G[9G[J[9Gs[9G[J[9Grh[9G[Jr[10G[9G[J[9Gsh.status()[9G[Jsh.status()[20G
+
+
+--- Sharding Status --- 
+  sharding version: {
+  	"_id" : 1,
+  	"minCompatibleVersion" : 5,
+  	"currentVersion" : 6,
+  	"clusterId" : ObjectId("5ee9184a163e6e07a04ed19f")
+  }
+  shards:
+        {  "_id" : "apple",  "host" : "apple/10.20.16.110:30001,10.20.16.111:30001,10.20.16.165:30001",  "state" : 1 }
+        {  "_id" : "banana",  "host" : "banana/10.20.16.110:30002,10.20.16.111:30002,10.20.16.112:30002",  "state" : 1 }
+        {  "_id" : "mango",  "host" : "mango/10.20.16.111:30003,10.20.16.112:30003,10.20.16.115:30003",  "state" : 1 }
+  active mongoses:
+        "3.6.18" : 1
+  autosplit:
+        Currently enabled: yes
+  balancer:
+        Currently enabled:  yes
+        Currently running:  no
+        Failed balancer rounds in last 5 attempts:  0
+        Migration Results for the last 24 hours: 
+                No recent migrations
+  databases:
+        {  "_id" : "config",  "primary" : "config",  "partitioned" : true }
+                config.system.sessions
+                        shard key: { "_id" : 1 }
+                        unique: false
+                        balancing: true
+                        chunks:
+                                apple	1
+                        { "_id" : { "$minKey" : 1 } } -->> { "_id" : { "$maxKey" : 1 } } on : apple Timestamp(1, 0) 
+
+mongos> [9G[J[9G^C
+bye

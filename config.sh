@@ -1,7 +1,7 @@
 #!/bin/bash
 
 server=$1
-git pull origin master
+#git pull origin master
 cd mongo-r3.6.18
 if [ $server == "3" ] 
 then
@@ -22,7 +22,7 @@ buildscripts/scons.py MONGO_VERSION=3.6.18 mongod
 sudo ./mongod  --shardsvr -f /home/heejin/config/mongodb_apple.conf & 
 sudo ./mongod  --shardsvr -f /home/heejin/config/mongodb_banana.conf &
 sudo ./mongod --configsvr -f /home/heejin/config/mongodb_config.conf &
-echo "server 4 mongod on"
+echo "server 4 mongod on";
 exit 1
 elif [ $server == "5" ]
 then
@@ -32,7 +32,7 @@ sudo ./mongod  --shardsvr -f /home/heejin/config/mongodb_apple.conf &
 sudo ./mongod  --shardsvr -f /home/heejin/config/mongodb_banana.conf &
 sudo ./mongod  --shardsvr -f /home/heejin/config/mongodb_mango.conf &
 sudo ./mongod --configsvr -f /home/heejin/config/mongodb_config.conf &
-echo "server 4 mongod on"
+echo "server 4 mongod on";
 exit 1
 elif [ $server == "6" ]
 then
@@ -40,13 +40,13 @@ then
 buildscripts/scons.py MONGO_VERSION=3.6.18 mongod
 sudo ./mongod  --shardsvr -f /home/heejin/config/mongodb_mango.conf & 
 sudo ./mongod  --shardsvr -f /home/heejin/config/mongodb_banana.conf &
-echo "server 6 mongod on"
+echo "server 6 mongod on";
 exit 1
 else
 #mongod - mango
 buildscripts/scons.py MONGO_VERSION=3.6.18 mongod
 sudo ./mongod  --shardsvr -f /home/heejin/config/mongodb_mango.conf & 
-echo "server 8 mongod on"
+echo "server 8 mongod on";
 exit 1
 fi
 

@@ -260,8 +260,8 @@ Status BatchWriteOp::targetBatch(const NSTargeter& targeter,
     int numTargetErrors = 0;
 
     const size_t numWriteOps = _clientRequest.sizeWriteOps();
-log() << "heejins order : BatchWriteOp::targetBatch, globalINT : " << test_global_int;
-log() << "heejins order : BatchWriteOp::targetBatch, numWritOps : " << numWriteOps;
+//log() << "heejins order : BatchWriteOp::targetBatch, globalINT : " << test_global_int;
+//log() << "heejins order : BatchWriteOp::targetBatch, numWritOps : " << numWriteOps;
 
     for (size_t i = 0; i < numWriteOps; ++i) {
         WriteOp& writeOp = _writeOps[i];
@@ -277,7 +277,7 @@ log() << "heejins order : BatchWriteOp::targetBatch, numWritOps : " << numWriteO
 
         OwnedPointerVector<TargetedWrite> writesOwned;
         vector<TargetedWrite*>& writes = writesOwned.mutableVector();
-log() << "heejins order : BatchWriteOp::targetBatch, writes count : " << writes.size();
+//log() << "heejins order : BatchWriteOp::targetBatch, writes count : " << writes.size();
 //log() << "heejins order : BatchWriteOp::targetBatch, writes back : " << writes.back();
 
         Status targetStatus = writeOp.targetWrites(_opCtx, targeter, &writes);
@@ -328,9 +328,9 @@ log() << "heejins order : BatchWriteOp::targetBatch, writes count : " << writes.
         const int writeSizeBytes = getWriteSizeBytes(writeOp) + kBSONArrayPerElementOverheadBytes +
             (_batchTxnNum ? kBSONArrayPerElementOverheadBytes + 4 : 0);
 
-log() << "heejins order : BatchWriteOp::targetBatch, writeSizeBytes : " << writeSizeBytes;
+//log() << "heejins order : BatchWriteOp::targetBatch, writeSizeBytes : " << writeSizeBytes;
 
-log() << "heejins order : BatchWriteOp::targetBatch, : getWriteSizeBytes(writeOp)" << getWriteSizeBytes(writeOp);
+//log() << "heejins order : BatchWriteOp::targetBatch, : getWriteSizeBytes(writeOp)" << getWriteSizeBytes(writeOp);
 
 
 

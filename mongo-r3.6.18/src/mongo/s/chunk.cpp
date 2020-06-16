@@ -93,8 +93,8 @@ bool Chunk::shouldSplit(uint64_t desiredChunkSize, bool minIsInf, bool maxIsInf)
     const uint64_t splitThreshold = (minIsInf || maxIsInf)
         ? static_cast<uint64_t>((double)desiredChunkSize * 0.9)
         : desiredChunkSize;
-	log() << "heejjin shouldSplit datawrittenbytes: " << _dataWrittenBytes;
-	log() << "heejjin shouldSplit jumbo: " << _jumbo;
+	//log() << "heejjin shouldSplit datawrittenbytes: " << _dataWrittenBytes;
+	//log() << "heejjin shouldSplit jumbo: " << _jumbo;
     // Check if there are enough estimated bytes written to warrant a split
     return _dataWrittenBytes >= splitThreshold / kSplitTestFactor;
 }
