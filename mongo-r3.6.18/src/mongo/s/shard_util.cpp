@@ -88,7 +88,6 @@ StatusWith<long long> retrieveTotalShardSize(OperationContext* opCtx, const Shar
 
     return totalSizeElem.numberLong();
 }
-
 StatusWith<std::vector<BSONObj>> selectChunkSplitPoints(OperationContext* opCtx,
                                                         const ShardId& shardId,
                                                         const NamespaceString& nss,
@@ -110,6 +109,8 @@ StatusWith<std::vector<BSONObj>> selectChunkSplitPoints(OperationContext* opCtx,
         return shardStatus.getStatus();
     }
 
+    //heejin debug
+//    log() << "heejjin selectChunkSplitPoints : " << cmd.obj();
     auto cmdStatus = shardStatus.getValue()->runCommandWithFixedRetryAttempts(
         opCtx,
         ReadPreferenceSetting{ReadPreference::PrimaryPreferred},
@@ -124,15 +125,83 @@ StatusWith<std::vector<BSONObj>> selectChunkSplitPoints(OperationContext* opCtx,
     }
     const auto response = std::move(cmdStatus.getValue().response);
 
+    //heejin debug
+//    log() << "heejjin selectChunkSplitPoints cmdStatus.getValue: " << cmdStatus.getValue().toString();
     std::vector<BSONObj> splitPoints;
-	log() << "heejin) response print: " << response;
+//	log() << "heejin) response print: " << response;
     BSONObjIterator it(response.getObjectField("splitKeys"));
+
+        
+
     while (it.more()) {
 	log() << "heejin) split key added : " << it.next().Obj().getOwned() ;
 //heejin) "2020-06-13T15:59:04.546+0000 I SHARDING [conn1] heejin : { key: 137329.0 }",
 
         splitPoints.push_back(it.next().Obj().getOwned());
     }
+
+
+    return std::move(splitPoints);
+}
+StatusWith<std::vector<BSONObj>> selectChunkSplitPoints(OperationContext* opCtx,
+                                                        const ShardId& shardId,
+                                                        const NamespaceString& nss,
+                                                        const ShardKeyPattern& shardKeyPattern,
+                                                        const ChunkRange& chunkRange,
+                                                        long long chunkSizeBytes,
+                                                        boost::optional<int> maxObjs,
+							double split_average) {
+    BSONObjBuilder cmd;
+    cmd.append("splitVector", nss.ns());
+    cmd.append("keyPattern", shardKeyPattern.toBSON());
+    chunkRange.append(&cmd);
+    cmd.append("maxChunkSizeBytes", chunkSizeBytes);
+    if (maxObjs) {
+        cmd.append("maxChunkObjects", *maxObjs);
+    }
+
+    auto shardStatus = Grid::get(opCtx)->shardRegistry()->getShard(opCtx, shardId);
+    if (!shardStatus.isOK()) {
+        return shardStatus.getStatus();
+    }
+
+    //heejin debug
+//    log() << "heejjin selectChunkSplitPoints : " << cmd.obj();
+    auto cmdStatus = shardStatus.getValue()->runCommandWithFixedRetryAttempts(
+        opCtx,
+        ReadPreferenceSetting{ReadPreference::PrimaryPreferred},
+        "admin",
+        cmd.obj(),
+        Shard::RetryPolicy::kIdempotent);
+    if (!cmdStatus.isOK()) {
+        return std::move(cmdStatus.getStatus());
+    }
+    if (!cmdStatus.getValue().commandStatus.isOK()) {
+        return std::move(cmdStatus.getValue().commandStatus);
+    }
+    const auto response = std::move(cmdStatus.getValue().response);
+
+    //heejin debug
+//    log() << "heejjin selectChunkSplitPoints cmdStatus.getValue: " << cmdStatus.getValue().toString();
+    std::vector<BSONObj> splitPoints;
+//	log() << "heejin) response print: " << response;
+    BSONObjIterator it(response.getObjectField("splitKeys"));
+
+    BSONObjBuilder split_avg;
+    split_avg.append("splitKeys", split_average);
+        
+
+    splitPoints.push_back(split_avg.obj());
+
+log() << "jin)) split key added : " << split_average;
+/*
+    while (it.more()) {
+	log() << "heejin) split key added : " << it.next().Obj().getOwned() ;
+//heejin) "2020-06-13T15:59:04.546+0000 I SHARDING [conn1] heejin : { key: 137329.0 }",
+
+        //splitpoints.push_back(it.next().obj().getowned());
+    }
+*/
 
     return std::move(splitPoints);
 }

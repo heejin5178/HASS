@@ -37,6 +37,7 @@
 #include "mongo/platform/random.h"
 #include "mongo/s/grid.h"
 #include "mongo/util/mongoutils/str.h"
+#include "mongo/util/log.h"
 
 namespace mongo {
 
@@ -64,7 +65,8 @@ Chunk::Chunk(const ChunkType& from)
       _shardId(from.getShard()),
       _lastmod(from.getVersion()),
       _jumbo(from.getJumbo()),
-      _dataWrittenBytes(mkDataWrittenBytes()) {
+      _dataWrittenBytes(mkDataWrittenBytes()),
+	split_sum(0),cnt(0) {
     invariantOK(from.validate());
 }
 
@@ -91,7 +93,8 @@ bool Chunk::shouldSplit(uint64_t desiredChunkSize, bool minIsInf, bool maxIsInf)
     const uint64_t splitThreshold = (minIsInf || maxIsInf)
         ? static_cast<uint64_t>((double)desiredChunkSize * 0.9)
         : desiredChunkSize;
-
+	log() << "heejjin shouldSplit datawrittenbytes: " << _dataWrittenBytes;
+	log() << "heejjin shouldSplit jumbo: " << _jumbo;
     // Check if there are enough estimated bytes written to warrant a split
     return _dataWrittenBytes >= splitThreshold / kSplitTestFactor;
 }
@@ -105,4 +108,22 @@ void Chunk::markAsJumbo() {
     _jumbo = true;
 }
 
+void Chunk::add_element(double double_key)
+{
+	split_sum += double_key;
+}
+
+double Chunk::get_split_sum(void)
+{
+	return this->split_sum;
+}
+
+void Chunk::add_cnt(void)
+{
+	this->cnt++;
+}
+int Chunk::get_cnt(void)
+{
+	return this->cnt;
+}
 }  // namespace mongo

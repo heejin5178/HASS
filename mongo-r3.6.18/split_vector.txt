@@ -1,0 +1,92 @@
+MongoDB shell version v3.6.18
+connecting to: mongodb://10.20.16.165:50001/test?gssapiServiceName=mongodb
+Implicit session: session { "id" : UUID("4f84f32b-e346-4d14-945a-46649054c65a") }
+MongoDB server version: 3.6.18
+Server has startup warnings: 
+2020-06-16T05:11:15.602+0000 I CONTROL  [main] 
+2020-06-16T05:11:15.602+0000 I CONTROL  [main] ** WARNING: Access control is not enabled for the database.
+2020-06-16T05:11:15.602+0000 I CONTROL  [main] **          Read and write access to data and configuration is unrestricted.
+2020-06-16T05:11:15.602+0000 I CONTROL  [main] ** WARNING: You are running this process as the root user, which is not recommended.
+2020-06-16T05:11:15.602+0000 I CONTROL  [main] 
+mongos> rh.dst[9G[Jrh.ds[14G[9G[Jrh.d[13G[9G[Jrh.[12Gstatus()[9G[Jrh.status()[20G
+2020-06-16T05:13:52.786+0000 E QUERY    [thread1] ReferenceError: rh is not defined :
+@(shell):1:1
+mongos> [9G[Jrh.status()[20G[9G[Jrh.status[1;34m([0m)[19G[9G[Jrh.status([1;34m)[0m[18G[9G[Jrh.status()[17G[9G[Jrh.status()[16G[9G[Jrh.status()[15G[9G[Jrh.status()[14G[9G[Jrh.status()[13G[9G[Jrh.status()[12G[9G[Jrh.status()[11G[9G[Jr.status()[10G[9G[J.status()[9G[9G[Js.status()[10G[9G[Jsh.status()[11G[9G[Jsh.status()[20G
+--- Sharding Status --- 
+  sharding version: {
+  	"_id" : 1,
+  	"minCompatibleVersion" : 5,
+  	"currentVersion" : 6,
+  	"clusterId" : ObjectId("5ed775806cd1a72e8d0f9c42")
+  }
+  shards:
+        {  "_id" : "apple",  "host" : "apple/10.20.16.110:30001,10.20.16.111:30001,10.20.16.165:30001",  "state" : 1 }
+        {  "_id" : "banana",  "host" : "banana/10.20.16.110:30002,10.20.16.111:30002,10.20.16.112:30002",  "state" : 1 }
+        {  "_id" : "mango",  "host" : "mango/10.20.16.111:30003,10.20.16.112:30003,10.20.16.115:30003",  "state" : 1 }
+  active mongoses:
+        "3.6.18" : 1
+  autosplit:
+        Currently enabled: yes
+  balancer:
+        Currently enabled:  yes
+        Currently running:  no
+        Failed balancer rounds in last 5 attempts:  0
+        Migration Results for the last 24 hours: 
+                16 : Success
+                1 : Failed with error 'aborted', from mango to apple
+  databases:
+        {  "_id" : "config",  "primary" : "config",  "partitioned" : true }
+                config.system.sessions
+                        shard key: { "_id" : 1 }
+                        unique: false
+                        balancing: true
+                        chunks:
+                                apple	1
+                        { "_id" : { "$minKey" : 1 } } -->> { "_id" : { "$maxKey" : 1 } } on : apple Timestamp(1, 0) 
+        {  "_id" : "heeijn_test",  "primary" : "apple",  "partitioned" : false }
+        {  "_id" : "heejin_test",  "primary" : "banana",  "partitioned" : true }
+                heejin_test.heejin_col
+                        shard key: { "key" : 1 }
+                        unique: false
+                        balancing: true
+                        chunks:
+                                apple	16
+                                banana	16
+                                mango	16
+                        too many chunks to print, use verbose if you want to force print
+        {  "_id" : "mall",  "primary" : "banana",  "partitioned" : true }
+                mall.product
+                        shard key: { "p_id" : 1, "p_name" : 1 }
+                        unique: false
+                        balancing: true
+                        chunks:
+                                apple	35
+                                banana	34
+                                mango	34
+                        too many chunks to print, use verbose if you want to force print
+        {  "_id" : "newDB",  "primary" : "apple",  "partitioned" : true }
+                newDB.newCol
+                        shard key: { "key" : 1 }
+                        unique: false
+                        balancing: true
+                        chunks:
+                                apple	4
+                                banana	4
+                                mango	4
+                        { "key" : { "$minKey" : 1 } } -->> { "key" : 0 } on : banana Timestamp(4, 0) 
+                        { "key" : 0 } -->> { "key" : 39959 } on : apple Timestamp(9, 0) 
+                        { "key" : 39959 } -->> { "key" : 73966 } on : banana Timestamp(10, 0) 
+                        { "key" : 73966 } -->> { "key" : 173925 } on : banana Timestamp(12, 0) 
+                        { "key" : 173925 } -->> { "key" : 207809 } on : apple Timestamp(13, 0) 
+                        { "key" : 207809 } -->> { "key" : 3491776 } on : mango Timestamp(13, 1) 
+                        { "key" : 3491776 } -->> { "key" : 3493884 } on : mango Timestamp(11, 3) 
+                        { "key" : 3493884 } -->> { "key" : 3493926 } on : mango Timestamp(7, 3) 
+                        { "key" : 3493926 } -->> { "key" : 3499473 } on : mango Timestamp(6, 4) 
+                        { "key" : 3499473 } -->> { "key" : 3529433 } on : banana Timestamp(6, 0) 
+                        { "key" : 3529433 } -->> { "key" : 3529918 } on : apple Timestamp(6, 1) 
+                        { "key" : 3529918 } -->> { "key" : { "$maxKey" : 1 } } on : apple Timestamp(2, 3) 
+        {  "_id" : "test",  "primary" : "banana",  "partitioned" : false }
+
+mongos> [9G[Jsh.status()[20G[9G[Jrh.status()[20G[9G[Jdb.adminCommand( {getLog: "global"} )[46G[9G[Jfor (var i=400000; i<410000; i++) { db.newCol.insert({key: i})  }[74G[9G[Jdb.adminCommand( {getLog: "global"} )[46G[9G[Jrh.status()[20G[9G[Jrh.status()[20G^C
+bye
+2020-06-16T05:15:34.295+0000 I QUERY    [thread1] Failed to end session { id: UUID("4f84f32b-e346-4d14-945a-46649054c65a") } due to HostUnreachable: network error while attempting to run command 'endSessions' on host '10.20.16.165:50001' 

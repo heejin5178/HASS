@@ -161,7 +161,8 @@ BSONObj findExtremeKeyForShard(OperationContext* opCtx,
  */
 void splitIfNeeded(OperationContext* opCtx,
                    const NamespaceString& nss,
-                   const TargeterStats& stats) {
+                   const TargeterStats& stats,
+		   double double_key) {
     auto routingInfoStatus = Grid::get(opCtx)->catalogCache()->getCollectionRoutingInfo(opCtx, nss);
     if (!routingInfoStatus.isOK()) {
         log() << "failed to get collection information for " << nss
@@ -185,6 +186,12 @@ void splitIfNeeded(OperationContext* opCtx,
             return;
         }
 
+    log() << "heejjin splitIFNEED: " << double_key;
+    // heejin added)
+    // sum of chunk element 
+   	chunk.get()->add_element(double_key); 
+	chunk.get()->add_cnt();
+	log() << "heejjin get split sum : " << chunk.get()->get_split_sum();
         updateChunkWriteStatsAndSplitIfNeeded(
             opCtx, routingInfo.cm().get(), chunk.get(), it->second);
     }
@@ -198,7 +205,7 @@ void ClusterWriter::write(OperationContext* opCtx,
                           BatchedCommandResponse* response) {
     const NamespaceString& nss = request.getNS();
     log() << "jinnnn ClusterWriter::write "  << nss;
-
+	double double_key=0.0;
     LastError::Disabled disableLastError(&LastError::get(opCtx->getClient()));
 
     // Config writes and shard writes are done differently
@@ -239,19 +246,25 @@ void ClusterWriter::write(OperationContext* opCtx,
     	log() << "jin endpoints during shard request: " << request.toString();
 	log() << "jin endpoints during shard response: " << request.toBSON();
 	log() << "jin endpoints during shard response nField: " << request.toBSON().nFields();
+
 	if(request.toBSON().hasElement("documents"))
 	{
 		log() << "jin element in!!!!!";
+		log() << "jin endpoints during shard response getOwned: " << request.toBSON().getObjectField("documents").getOwned();
+
+		mongo::mutablebson::Document doc(request.toBSON().getObjectField("documents").getOwned());
+		mongo::mutablebson::Element zero =doc.root()["0"];
+		log() << "jin endpoints during shard response getObject(zero): " << zero;
+		mongo::mutablebson::Element key =zero[1];
+		if(zero.toString() != "INVALID-MUTABLE-ELEMENT"){
+			log() << "jin endpoints during shard response getObject(key): " << key.getValueDouble();
+			double_key = key.getValueDouble();
+		}
+		else
+			log() << "jin endpoints INVALID" ;
 	
 	}		
 
-	log() << "jin endpoints during shard response getOwned: " << request.toBSON().getObjectField("documents").getOwned();
-
-	mongo::mutablebson::Document doc(request.toBSON().getObjectField("documents").getOwned());
-	mongo::mutablebson::Element zero =doc.root()["0"];
-	log() << "jin endpoints during shard response getObject(zero): " << zero;
-	mongo::mutablebson::Element key =zero[1];
-	log() << "jin endpoints during shard response getObject(key): " << key.getValueDouble();
             // Handle sharded config server writes differently.
             if (std::any_of(endpoints.begin(), endpoints.end(), [](const auto& it) {
                     return it.shardName == ShardRegistry::kConfigServerShardId;
@@ -268,7 +281,7 @@ void ClusterWriter::write(OperationContext* opCtx,
             BatchWriteExec::executeBatch(opCtx, targeter, request, response, stats);
         }
 
-        splitIfNeeded(opCtx, request.getNS(), targeterStats);
+        splitIfNeeded(opCtx, request.getNS(), targeterStats, double_key);
     }
 }
 //heejin_found split
@@ -283,7 +296,6 @@ void updateChunkWriteStatsAndSplitIfNeeded(OperationContext* opCtx,
     LastError::Disabled disableLastError(&LastError::get(opCtx->getClient()));
     log() << "jin!!! updateChunkWriteStatsAndSplitIfNeeded: " << global_update;
 
-
     const auto balancerConfig = Grid::get(opCtx)->getBalancerConfiguration();
 
     const bool minIsInf =
@@ -296,9 +308,23 @@ void updateChunkWriteStatsAndSplitIfNeeded(OperationContext* opCtx,
     log() << "jin!!! addBytesWritten(chunkBytesWritten) " << chunkBytesWritten;
 
     const uint64_t desiredChunkSize = balancerConfig->getMaxChunkSizeBytes();
+	if(!chunk->shouldSplit(desiredChunkSize, minIsInf, maxIsInf))
+	{
+		log() << "heejjin error 1: " << desiredChunkSize;
+		if(minIsInf)
+			log() << "heejjin error 1: minIsInf";;
+		if(maxIsInf)
+			log() << "heejjin error 1 : maxIsInf";
 
+		
+	}
+	if(!balancerConfig->getShouldAutoSplit())
+	{
+		log() << "heejjin error 2";	
+	}
     if (!chunk->shouldSplit(desiredChunkSize, minIsInf, maxIsInf) ||
         !balancerConfig->getShouldAutoSplit()) {
+	log() << "heejin_ return: " << global_update;
         return;
     }
 
@@ -338,6 +364,8 @@ void updateChunkWriteStatsAndSplitIfNeeded(OperationContext* opCtx,
             }
         }();
 //heejin) splitpoints call selectChunkSplitPoints
+	double split_average = chunk->get_split_sum() / chunk->get_cnt();
+	log() << "heejjin update split_average: " << split_average;
         auto splitPoints =
             uassertStatusOK(shardutil::selectChunkSplitPoints(opCtx,
                                                               chunk->getShardId(),
@@ -345,9 +373,20 @@ void updateChunkWriteStatsAndSplitIfNeeded(OperationContext* opCtx,
                                                               manager->getShardKeyPattern(),
                                                               chunkRange,
                                                               chunkSizeToUse,
-                                                              boost::none));
-
+                                                              boost::none, split_average));
+/*
+        auto splitPoints =
+            uassertStatusOK(shardutil::selectChunkSplitPoints(opCtx,
+                                                              chunk->getShardId(),
+                                                              nss,
+                                                              manager->getShardKeyPattern(),
+                                                              chunkRange,
+                                                              chunkSizeToUse,
+                                                              boost::none,
+								split_average));
+*/
         if (splitPoints.size() <= 1) {
+		log() << "splitpoints.size() <=1 " << global_update;
             // No split points means there isn't enough data to split on; 1 split point means we
             // have
             // between half the chunk size to full chunk size so there is no need to split yet

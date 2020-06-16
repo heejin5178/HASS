@@ -636,6 +636,7 @@ void Balancer::_splitOrMarkJumbo(OperationContext* opCtx,
     const auto chunk = cm->findIntersectingChunkWithSimpleCollation(minKey);
 
     try {
+	log() << "jjinn.......... I can't see you";
         const auto splitPoints = uassertStatusOK(shardutil::selectChunkSplitPoints(
             opCtx,
             chunk->getShardId(),

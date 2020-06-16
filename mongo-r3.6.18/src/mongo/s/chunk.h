@@ -41,6 +41,8 @@ class BSONObj;
 /**
  * Represents a cache entry for a single Chunk. Owned by a ChunkManager.
  */
+
+//heejin_ chunk class
 class Chunk {
 public:
     // Test whether we should split once data * kSplitTestFactor > chunkSize (approximately)
@@ -93,6 +95,11 @@ public:
      */
     void markAsJumbo();
 
+	//heejin added
+	void add_element(double double_key);
+	double get_split_sum(void);
+	void add_cnt(void);
+	int get_cnt(void);
 private:
     const ChunkRange _range;
 
@@ -106,6 +113,10 @@ private:
 
     // Statistics for the approximate data written to this chunk
     mutable uint64_t _dataWrittenBytes;
+
+	//heejin added
+	double split_sum;
+	int cnt;
 };
 
 }  // namespace mongo
