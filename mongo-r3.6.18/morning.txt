@@ -1,0 +1,312 @@
+MongoDB shell version v3.6.18
+connecting to: mongodb://10.20.16.165:50001/test?gssapiServiceName=mongodb
+Implicit session: session { "id" : UUID("a571506a-91ca-49c2-a57b-bf15271b3657") }
+MongoDB server version: 3.6.18
+Server has startup warnings: 
+2020-06-17T06:20:09.139+0000 I CONTROL  [main] 
+2020-06-17T06:20:09.139+0000 I CONTROL  [main] ** WARNING: Access control is not enabled for the database.
+2020-06-17T06:20:09.139+0000 I CONTROL  [main] **          Read and write access to data and configuration is unrestricted.
+2020-06-17T06:20:09.139+0000 I CONTROL  [main] ** WARNING: You are running this process as the root user, which is not recommended.
+2020-06-17T06:20:09.139+0000 I CONTROL  [main] 
+mongos> [9G[JprintShardingSizes()[29G[9G[Jdb.adminCommand( {getLog: "global"} )[46G[9G[Jdb.adminCommand( {getLog: "global"} )[46G[9G[JprintShardingSizes()[29G[9G[JprintShardingSizes()[29G
+2020-06-17T06:22:55.722+0000 I NETWORK  [thread1] Starting new replica set monitor for mango/10.20.16.111:30003,10.20.16.112:30003,10.20.16.115:30003
+2020-06-17T06:22:55.725+0000 I NETWORK  [thread1] Starting new replica set monitor for apple/10.20.16.110:30001,10.20.16.111:30001,10.20.16.165:30001
+2020-06-17T06:22:55.730+0000 I NETWORK  [thread1] Starting new replica set monitor for banana/10.20.16.110:30002,10.20.16.111:30002,10.20.16.112:30002
+--- Sharding Sizes --- 
+  sharding version: {
+  	"_id" : 1,
+  	"minCompatibleVersion" : 5,
+  	"currentVersion" : 6,
+  	"clusterId" : ObjectId("5ee99ca0ac08ef250ac85b92")
+  }
+  shards:
+        {
+        	"_id" : "mango",
+        	"host" : "mango/10.20.16.111:30003,10.20.16.112:30003,10.20.16.115:30003",
+        	"state" : 1
+        }
+        {
+        	"_id" : "apple",
+        	"host" : "apple/10.20.16.110:30001,10.20.16.111:30001,10.20.16.165:30001",
+        	"state" : 1
+        }
+        {
+        	"_id" : "banana",
+        	"host" : "banana/10.20.16.110:30002,10.20.16.111:30002,10.20.16.112:30002",
+        	"state" : 1
+        }
+  databases:
+        { "_id" : "newDB", "primary" : "banana", "partitioned" : true }
+                newDB.newCol chunks:
+                        { "key" : { "$minKey" : 1 } } -->> { "key" : 1 } on : mango {
+                        	"estimate" : false,
+                        	"size" : 35,
+                        	"numObjects" : 1,
+                        	"operationTime" : Timestamp(1592374980, 1),
+                        	"$gleStats" : {
+                        		"lastOpTime" : Timestamp(0, 0),
+                        		"electionId" : ObjectId("7fffffff0000000000000003")
+                        	},
+                        	"$configServerState" : {
+                        		"opTime" : {
+                        			"ts" : Timestamp(1592374980, 3),
+                        			"t" : NumberLong(7)
+                        		}
+                        	},
+                        	"$clusterTime" : {
+                        		"clusterTime" : Timestamp(1592374980, 3),
+                        		"signature" : {
+                        			"hash" : BinData(0,"AAAAAAAAAAAAAAAAAAAAAAAAAAA="),
+                        			"keyId" : NumberLong(0)
+                        		}
+                        	}
+                        }
+                        { "key" : 1 } -->> { "key" : 59919 } on : banana {
+                        	"estimate" : false,
+                        	"size" : 2097130,
+                        	"numObjects" : 59918,
+                        	"operationTime" : Timestamp(1592374969, 1),
+                        	"$gleStats" : {
+                        		"lastOpTime" : Timestamp(0, 0),
+                        		"electionId" : ObjectId("7fffffff0000000000000002")
+                        	},
+                        	"$configServerState" : {
+                        		"opTime" : {
+                        			"ts" : Timestamp(1592374980, 3),
+                        			"t" : NumberLong(7)
+                        		}
+                        	},
+                        	"$clusterTime" : {
+                        		"clusterTime" : Timestamp(1592374980, 3),
+                        		"signature" : {
+                        			"hash" : BinData(0,"AAAAAAAAAAAAAAAAAAAAAAAAAAA="),
+                        			"keyId" : NumberLong(0)
+                        		}
+                        	}
+                        }
+                        { "key" : 59919 } -->> { "key" : { "$maxKey" : 1 } } on : apple {
+                        	"estimate" : false,
+                        	"size" : 1402835,
+                        	"numObjects" : 40081,
+                        	"operationTime" : Timestamp(1592374970, 1),
+                        	"$gleStats" : {
+                        		"lastOpTime" : Timestamp(0, 0),
+                        		"electionId" : ObjectId("7fffffff0000000000000002")
+                        	},
+                        	"$configServerState" : {
+                        		"opTime" : {
+                        			"ts" : Timestamp(1592374980, 3),
+                        			"t" : NumberLong(7)
+                        		}
+                        	},
+                        	"$clusterTime" : {
+                        		"clusterTime" : Timestamp(1592374980, 3),
+                        		"signature" : {
+                        			"hash" : BinData(0,"AAAAAAAAAAAAAAAAAAAAAAAAAAA="),
+                        			"keyId" : NumberLong(0)
+                        		}
+                        	}
+                        }
+
+mongos> [9G[JprintShardingSizes()[29G[9G[JprintShardingSizes()[29G[9G[Jdb.adminCommand( {getLog: "global"} )[46G[9G[Jdb.adminCommand( {getLog: "global"} )[46G[9G[JprintShardingSizes()[29G[9G[Jfor (var i=0; i<100000; i++) { db.newCol.insert({key: i})  }[69G[9G[Jfor (var i=0; i<100000; i++) [1;34m{[0m db.newCol.insert({key: i})  }[68G[9G[Jfor (var i=0; i<100000; i++) { db.newCol.insert({key: i})  }[67G[9G[Jfor (var i=0; i<100000; i++) { db.newCol.insert({key: i})  }[66G[9G[Jfor (var i=0; i<100000; i++) { db.newCol.insert[1;34m([0m{key: i})  }[65G[9G[Jfor (var i=0; i<100000; i++) { db.newCol.insert([1;34m{[0mkey: i})  }[64G[9G[Jfor (var i=0; i<100000; i++) { db.newCol.insert({key: i})  }[63G[9G[Jfor (var i=0; i<100000; i++) { db.newCol.insert({key: i})  }[62G[9G[Jfor (var i=0; i<100000; i++) { db.newCol.insert({key: i})  }[61G[9G[Jfor (var i=0; i<100000; i++) { db.newCol.insert({key: i})  }[60G[9G[Jfor (var i=0; i<100000; i++) { db.newCol.insert({key: i})  }[59G[9G[Jfor (var i=0; i<100000; i++) { db.newCol.insert({key: i})  }[58G[9G[Jfor (var i=0; i<100000; i++) { db.newCol.insert({key: i[1;34m}[0m)  }[57G[9G[Jfor (var i=0; i<100000; i++) { db.newCol.insert({key: i}[1;34m)[0m  }[56G[9G[JprintShardingSizes()[29G[9G[Jfor (var i=0; i<100000; i++) { db.newCol.insert({key: i})  }[69G[9G[JprintShardingSizes()[29G[9G[Juse newDB[18G[9G[Jdb.settings.find()[27G[9G[Juse newDB[18G[9G[Juse newDB[18G
+switched to db newDB
+mongos> [9G[Juse newDB[18G[9G[JprintShardingSizes()[29G[9G[JprintShardingSizes()[29G[9G[Jdb.adminCommand( {getLog: "global"} )[46G[9G[Jdb.adminCommand( {getLog: "global"} )[46G[9G[JprintShardingSizes()[29G[9G[Jdb.adminCommand( {getLog: "global"} )[46G[9G[Jdb.adminCommand( {getLog: "global"} )[46G[9G[JprintShardingSizes()[29G[9G[JprintShardingSizes()[29G[9G[Juse newDB[18G[9G[JprintShardingSizes()[29G[9G[Juse newDB[18G[9G[J[9G[9G[Juse newDB[18G[9G[JprintShardingSizes()[29G[9G[JprintShardingSizes()[29G[9G[Jdb.adminCommand( {getLog: "global"} )[46G[9G[Jdb.adminCommand( {getLog: "global"} )[46G[9G[JprintShardingSizes()[29G[9G[JprintShardingSizes()[29G
+--- Sharding Sizes --- 
+  sharding version: {
+  	"_id" : 1,
+  	"minCompatibleVersion" : 5,
+  	"currentVersion" : 6,
+  	"clusterId" : ObjectId("5ee99ca0ac08ef250ac85b92")
+  }
+  shards:
+        {
+        	"_id" : "mango",
+        	"host" : "mango/10.20.16.111:30003,10.20.16.112:30003,10.20.16.115:30003",
+        	"state" : 1
+        }
+        {
+        	"_id" : "apple",
+        	"host" : "apple/10.20.16.110:30001,10.20.16.111:30001,10.20.16.165:30001",
+        	"state" : 1
+        }
+        {
+        	"_id" : "banana",
+        	"host" : "banana/10.20.16.110:30002,10.20.16.111:30002,10.20.16.112:30002",
+        	"state" : 1
+        }
+  databases:
+        { "_id" : "newDB", "primary" : "banana", "partitioned" : true }
+                newDB.newCol chunks:
+                        { "key" : { "$minKey" : 1 } } -->> { "key" : 1 } on : mango {
+                        	"estimate" : false,
+                        	"size" : 35,
+                        	"numObjects" : 1,
+                        	"operationTime" : Timestamp(1592375000, 1),
+                        	"$gleStats" : {
+                        		"lastOpTime" : Timestamp(0, 0),
+                        		"electionId" : ObjectId("7fffffff0000000000000003")
+                        	},
+                        	"$configServerState" : {
+                        		"opTime" : {
+                        			"ts" : Timestamp(1592374992, 1),
+                        			"t" : NumberLong(7)
+                        		}
+                        	},
+                        	"$clusterTime" : {
+                        		"clusterTime" : Timestamp(1592375000, 1),
+                        		"signature" : {
+                        			"hash" : BinData(0,"AAAAAAAAAAAAAAAAAAAAAAAAAAA="),
+                        			"keyId" : NumberLong(0)
+                        		}
+                        	}
+                        }
+                        { "key" : 1 } -->> { "key" : 59919 } on : banana {
+                        	"estimate" : false,
+                        	"size" : 2097130,
+                        	"numObjects" : 59918,
+                        	"operationTime" : Timestamp(1592374989, 1),
+                        	"$gleStats" : {
+                        		"lastOpTime" : Timestamp(0, 0),
+                        		"electionId" : ObjectId("7fffffff0000000000000002")
+                        	},
+                        	"$configServerState" : {
+                        		"opTime" : {
+                        			"ts" : Timestamp(1592374992, 1),
+                        			"t" : NumberLong(7)
+                        		}
+                        	},
+                        	"$clusterTime" : {
+                        		"clusterTime" : Timestamp(1592374992, 1),
+                        		"signature" : {
+                        			"hash" : BinData(0,"AAAAAAAAAAAAAAAAAAAAAAAAAAA="),
+                        			"keyId" : NumberLong(0)
+                        		}
+                        	}
+                        }
+                        { "key" : 59919 } -->> { "key" : { "$maxKey" : 1 } } on : apple {
+                        	"estimate" : false,
+                        	"size" : 1402835,
+                        	"numObjects" : 40081,
+                        	"operationTime" : Timestamp(1592374990, 1),
+                        	"$gleStats" : {
+                        		"lastOpTime" : Timestamp(0, 0),
+                        		"electionId" : ObjectId("7fffffff0000000000000002")
+                        	},
+                        	"$configServerState" : {
+                        		"opTime" : {
+                        			"ts" : Timestamp(1592374992, 1),
+                        			"t" : NumberLong(7)
+                        		}
+                        	},
+                        	"$clusterTime" : {
+                        		"clusterTime" : Timestamp(1592374992, 1),
+                        		"signature" : {
+                        			"hash" : BinData(0,"AAAAAAAAAAAAAAAAAAAAAAAAAAA="),
+                        			"keyId" : NumberLong(0)
+                        		}
+                        	}
+                        }
+
+mongos> [9G[JprintShardingSizes()[29G[9G[Juse newDB[18G[9G[JprintShardingSizes()[29G[9G[JprintShardingSizes()[29G[9G[Jdb.adminCommand( {getLog: "global"} )[46G[9G[Jdb.adminCommand( {getLog: "global"} )[46G[9G[JprintShardingSizes()[29G[9G[Jfor (var i=0; i<100000; i++) { db.newCol.insert({key: i})  }[69G[9G[Jfor (var i=0; i<100000; i++) [1;34m{[0m db.newCol.insert({key: i})  }[68G[9G[Jfor (var i=0; i<100000; i++) { db.newCol.insert({key: i})  }[67G[9G[Jfor (var i=0; i<100000; i++) { db.newCol.insert({key: i})  }[66G[9G[Jfor (var i=0; i<100000; i++) { db.newCol.insert[1;34m([0m{key: i})  }[65G[9G[Jfor (var i=0; i<100000; i++) { db.newCol.insert([1;34m{[0mkey: i})  }[64G[9G[Jfor (var i=0; i<100000; i++) { db.newCol.insert({key: i})  }[63G[9G[Jfor (var i=0; i<100000; i++) { db.newCol.insert({key: i})  }[62G[9G[Jfor (var i=0; i<100000; i++) { db.newCol.insert({key: i})  }[61G[9G[Jfor (var i=0; i<100000; i++) { db.newCol.insert({key: i})  }[60G[9G[Jfor (var i=0; i<100000; i++) { db.newCol.insert({key: i})  }[59G[9G[Jfor (var i=0; i<100000; i++) { db.newCol.insert({key: i})  }[58G[9G[Jfor (var i=0; i<100000; i++) { db.newCol.insert({key: i[1;34m}[0m)  }[57G[9G[Jfor (var i=0; i<100000; i++) { db.newCol.insert({key: i}[1;34m)[0m  }[56G[9G[Jfor (var i=0; i<100000; i++) { db.newCol.insert({key: i})  }[55G[9G[Jfor (var i=0; i<100000; i++) { db.newCol.insert({key: i})  }[54G[9G[Jfor (var i=0; i<100000; i++) { db.newCol.insert({key: i})  }[53G[9G[Jfor (var i=0; i<100000; i++) { db.newCol.insert({key: i})  }[52G[9G[Jfor (var i=0; i<100000; i++) { db.newCol.insert({key: i})  }[51G[9G[Jfor (var i=0; i<100000; i++) { db.newCol.insert({key: i})  }[50G[9G[Jfor (var i=0; i<100000; i++) { db.newCol.insert({key: i})  }[49G[9G[Jfor (var i=0; i<100000; i++) { db.newCol.insert({key: i})  }[48G[9G[Jfor (var i=0; i<100000; i++) { db.newCol.insert({key: i})  }[47G[9G[Jfor (var i=0; i<100000; i++) { db.newCol.insert({key: i})  }[46G[9G[Jfor (var i=0; i<100000; i++) { db.newCol.insert({key: i})  }[45G[9G[Jfor (var i=0; i<100000; i++) { db.newCol.insert({key: i})  }[44G[9G[Jfor (var i=0; i<100000; i++) { db.newCol.insert({key: i})  }[43G[9G[Jfor (var i=0; i<100000; i++) { db.newCol.insert({key: i})  }[42G[9G[Jfor (var i=0; i<100000; i++) { db.newCol.insert({key: i})  }[41G[9G[Jfor (var i=0; i<100000; i++) { db.newCol.insert({key: i})  }[40G[9G[Jfor (var i=0; i<100000; i++) { db.newCol.insert({key: i})  }[39G[9G[Jfor (var i=0; i<100000; i++) { db.newCol.insert({key: i})  [1;34m}[0m[38G[9G[Jfor (var i=0; i<100000; i++) { db.newCol.insert({key: i})  }[37G[9G[Jfor [1;34m([0mvar i=0; i<100000; i++) { db.newCol.insert({key: i})  }[36G[9G[Jfor (var i=0; i<100000; i++) { db.newCol.insert({key: i})  }[35G[9G[Jfor (var i=0; i<100000; i++) { db.newCol.insert({key: i})  }[34G[9G[Jfor (var i=0; i<100000; i++) { db.newCol.insert({key: i})  }[33G[9G[Jfor (var i=0; i<100000; i++) { db.newCol.insert({key: i})  }[32G[9G[Jfor (var i=0; i<100000; i++) { db.newCol.insert({key: i})  }[31G[9G[Jfor (var i=0; i<100000; i++) { db.newCol.insert({key: i})  }[30G[9G[Jfor (var i=0; i<100000; i++) { db.newCol.insert({key: i})  }[29G[9G[Jfor (var i=0; i<100000; i++) { db.newCol.insert({key: i})  }[28G[9G[Jfor (var i=0; i<100000; i++) { db.newCol.insert({key: i})  }[27G[9G[Jfor (var i=0; i<100000; i++) { db.newCol.insert({key: i})  }[26G[9G[Jfor (var i=0; i<100000; i++) { db.newCol.insert({key: i})  }[25G[9G[Jfor (var i=0; i<100000; i++) { db.newCol.insert({key: i})  }[24G[9G[Jfor (var i=0; i<100000; i++) { db.newCol.insert({key: i})  }[23G[9G[Jfor (var i=0; i<100000; i++) { db.newCol.insert({key: i})  }[22G[9G[Jfor (var i=0; i<100000; i++) { db.newCol.insert({key: i})  }[21G[9G[Jfor (var i=0; i<100000; i++) { db.newCol.insert({key: i})  }[20G[9G[Jfor (var i=10; i<100000; i++) { db.newCol.insert({key: i})  }[21G[9G[Jfor (var i=100; i<100000; i++) { db.newCol.insert({key: i})  }[22G[9G[Jfor (var i=1000; i<100000; i++) { db.newCol.insert({key: i})  }[23G[9G[Jfor (var i=10000; i<100000; i++) { db.newCol.insert({key: i})  }[24G[9G[Jfor (var i=100000; i<100000; i++) { db.newCol.insert({key: i})  }[25G[9G[Jfor (var i=100000; i<100000; i++) { db.newCol.insert({key: i})  }[26G[9G[Jfor (var i=100000; i<100000; i++) { db.newCol.insert({key: i})  }[27G[9G[Jfor (var i=100000; i<100000; i++) { db.newCol.insert({key: i})  }[28G[9G[Jfor (var i=100000; i<100000; i++) { db.newCol.insert({key: i})  }[29G[9G[Jfor (var i=100000; i<100000; i++) { db.newCol.insert({key: i})  }[30G[9G[Jfor (var i=100000; i<100000; i++) { db.newCol.insert({key: i})  }[31G[9G[Jfor (var i=100000; i<00000; i++) { db.newCol.insert({key: i})  }[30G[9G[Jfor (var i=100000; i<200000; i++) { db.newCol.insert({key: i})  }[31G[9G[Jfor (var i=100000; i<200000; i++) { db.newCol.insert({key: i})  }[74G
+WriteResult({ "nInserted" : 1 })
+mongos> [9G[Jfor (var i=100000; i<200000; i++) { db.newCol.insert({key: i})  }[74G[9G[JprintShardingSizes()[29G[9G[JprintShardingSizes()[29G
+2020-06-17T06:27:28.852+0000 I NETWORK  [thread1] Starting new replica set monitor for mango/10.20.16.111:30003,10.20.16.112:30003,10.20.16.115:30003
+2020-06-17T06:27:28.855+0000 I NETWORK  [thread1] Starting new replica set monitor for apple/10.20.16.110:30001,10.20.16.111:30001,10.20.16.165:30001
+2020-06-17T06:27:28.858+0000 I NETWORK  [thread1] Starting new replica set monitor for banana/10.20.16.110:30002,10.20.16.111:30002,10.20.16.112:30002
+--- Sharding Sizes --- 
+  sharding version: {
+  	"_id" : 1,
+  	"minCompatibleVersion" : 5,
+  	"currentVersion" : 6,
+  	"clusterId" : ObjectId("5ee99ca0ac08ef250ac85b92")
+  }
+  shards:
+        {
+        	"_id" : "mango",
+        	"host" : "mango/10.20.16.111:30003,10.20.16.112:30003,10.20.16.115:30003",
+        	"state" : 1
+        }
+        {
+        	"_id" : "apple",
+        	"host" : "apple/10.20.16.110:30001,10.20.16.111:30001,10.20.16.165:30001",
+        	"state" : 1
+        }
+        {
+        	"_id" : "banana",
+        	"host" : "banana/10.20.16.110:30002,10.20.16.111:30002,10.20.16.112:30002",
+        	"state" : 1
+        }
+  databases:
+        { "_id" : "newDB", "primary" : "banana", "partitioned" : true }
+                newDB.newCol chunks:
+                        { "key" : { "$minKey" : 1 } } -->> { "key" : 1 } on : mango {
+                        	"estimate" : false,
+                        	"size" : 35,
+                        	"numObjects" : 1,
+                        	"operationTime" : Timestamp(1592375250, 1),
+                        	"$gleStats" : {
+                        		"lastOpTime" : Timestamp(0, 0),
+                        		"electionId" : ObjectId("7fffffff0000000000000003")
+                        	},
+                        	"$configServerState" : {
+                        		"opTime" : {
+                        			"ts" : Timestamp(1592375250, 4),
+                        			"t" : NumberLong(7)
+                        		}
+                        	},
+                        	"$clusterTime" : {
+                        		"clusterTime" : Timestamp(1592375250, 4),
+                        		"signature" : {
+                        			"hash" : BinData(0,"AAAAAAAAAAAAAAAAAAAAAAAAAAA="),
+                        			"keyId" : NumberLong(0)
+                        		}
+                        	}
+                        }
+                        { "key" : 1 } -->> { "key" : 59919 } on : banana {
+                        	"estimate" : false,
+                        	"size" : 2097130,
+                        	"numObjects" : 59918,
+                        	"operationTime" : Timestamp(1592375239, 1),
+                        	"$gleStats" : {
+                        		"lastOpTime" : Timestamp(0, 0),
+                        		"electionId" : ObjectId("7fffffff0000000000000002")
+                        	},
+                        	"$configServerState" : {
+                        		"opTime" : {
+                        			"ts" : Timestamp(1592375250, 3),
+                        			"t" : NumberLong(7)
+                        		}
+                        	},
+                        	"$clusterTime" : {
+                        		"clusterTime" : Timestamp(1592375250, 3),
+                        		"signature" : {
+                        			"hash" : BinData(0,"AAAAAAAAAAAAAAAAAAAAAAAAAAA="),
+                        			"keyId" : NumberLong(0)
+                        		}
+                        	}
+                        }
+                        { "key" : 59919 } -->> { "key" : { "$maxKey" : 1 } } on : apple {
+                        	"estimate" : false,
+                        	"size" : 4902835,
+                        	"numObjects" : 140081,
+                        	"operationTime" : Timestamp(1592375240, 1),
+                        	"$gleStats" : {
+                        		"lastOpTime" : Timestamp(0, 0),
+                        		"electionId" : ObjectId("7fffffff0000000000000002")
+                        	},
+                        	"$configServerState" : {
+                        		"opTime" : {
+                        			"ts" : Timestamp(1592375250, 7),
+                        			"t" : NumberLong(7)
+                        		}
+                        	},
+                        	"$clusterTime" : {
+                        		"clusterTime" : Timestamp(1592375250, 7),
+                        		"signature" : {
+                        			"hash" : BinData(0,"AAAAAAAAAAAAAAAAAAAAAAAAAAA="),
+                        			"keyId" : NumberLong(0)
+                        		}
+                        	}
+                        }
+
+mongos> [9G[JprintShardingSizes()[29G

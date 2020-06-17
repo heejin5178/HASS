@@ -398,11 +398,11 @@ void updateChunkWriteStatsAndSplitIfNeeded(OperationContext* opCtx,
             // between half the chunk size to full chunk size so there is no need to split yet
             chunk->clearBytesWritten();
             return;
-        }
+        }/*
 	else {
 		int target = split_average;
 		BSONObjBuilder current_key;
-		current_key.append("splitKeys", split_average);
+		current_key.append("key", split_average);
 		//BSONObjIterator it(splitPoints);
 		std::vector<BSONObj>::iterator it = splitPoints.begin();
 		int n=-1;
@@ -412,7 +412,6 @@ void updateChunkWriteStatsAndSplitIfNeeded(OperationContext* opCtx,
 			//int k = e.getValue().numberInt();
 			int k = (int)e.Number();
 			log() << "k value : " << k;
-			log() << "e.value : " << e.value();
 			if(k < split_average) {
 				target = k;
 				n++;
@@ -421,16 +420,18 @@ void updateChunkWriteStatsAndSplitIfNeeded(OperationContext* opCtx,
 
 		}
 		if(target==split_average) { // every split point is bigger than split average
-                    splitPoints.front() = current_key.obj().getOwned();
 			log() << "before splitPoints.front() : " << splitPoints.front();
+                    splitPoints.front() = current_key.obj().getOwned();
+			log() << "after splitPoints.front() : " << splitPoints.front();
 			//log() << "before splitPoints.front() : " << current_key.obj().getOwned();
 		}
 		else {
-			splitPoints[n] = current_key.obj().getOwned();
 			log() << "before splitPoints[" << n <<"] : " << splitPoints[n];
+			splitPoints[n] = current_key.obj().getOwned();
+			log() << "after splitPoints[" << n <<"] : " << splitPoints[n];
 			//log() << "after splitPoints[" << n <<"] : " << current_key.obj().getOwned();
 		}
-	}
+	}*/
 
 //	log() << "heejin*** found-front : " << splitPoints.front();
 //	log() << "heejin*** found-back : " << splitPoints.back();
@@ -465,7 +466,7 @@ void updateChunkWriteStatsAndSplitIfNeeded(OperationContext* opCtx,
                 if (!key.isEmpty()) {
                     splitPoints.front() = key.getOwned();
 		//heejin debug
-//		log() << "heejin) minIsInf" << splitPoints.front() ;
+		log() << "heejin) minIsInf" << splitPoints.front() ;
                 }
             } else if (maxIsInf) {
                 BSONObj key = findExtremeKeyForShard(
@@ -476,10 +477,16 @@ void updateChunkWriteStatsAndSplitIfNeeded(OperationContext* opCtx,
 
                     splitPoints.back() = key.getOwned();
 		//heejin debug
-//		log() << "heejin) maxIsInf" << splitPoints.back() ;
+		log() << "heejin) maxIsInf" << splitPoints.back() ;
                 }
             }
         }
+	    // Make sure splitKeys is in ascending order
+/*	    std::sort(
+		splitPoints.begin(), splitPoints.end(), SimpleBSONObjComparator::kInstance.makeLessThan());
+
+*/
+
 //	log() << "heejin__ found-front : " << splitPoints.front();
 //	log() << "heejin__ found-back : " << splitPoints.back();
 //heejin) this part call splitChunkAtMultiplePoints
