@@ -6,14 +6,14 @@ cd mongo-r3.6.18
 if [ $server == "3" ] 
 then
 #mongos, mongod - apple
-buildscripts/scons.py MONGO_VERSION=3.6.18 mongo
-buildscripts/scons.py MONGO_VERSION=3.6.18 mongos
-buildscripts/scons.py MONGO_VERSION=3.6.18 mongod
+#buildscripts/scons.py MONGO_VERSION=3.6.18 mongo
+#buildscripts/scons.py MONGO_VERSION=3.6.18 mongos
+#buildscripts/scons.py MONGO_VERSION=3.6.18 mongod
 sudo ./mongod --shardsvr -f /home/heejin/config/mongodb_apple.conf & 
 echo "apple shard on"
 sudo ./mongod --configsvr -f /home/heejin/config/mongodb_config.conf & 
 echo "config on"
-sudo ./mongos -f /home/heejin/config/mongos.conf --bind_ip 10.20.16.165 --port 50001;
+sudo ./mongos -f /home/heejin/config/mongos.conf --bind_ip 10.20.16.165 --port 50001 | tee mongos.txt;
 echo "mongos on"
 elif [ $server == "4" ]
 then

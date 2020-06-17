@@ -261,6 +261,7 @@ void ClusterWriter::write(OperationContext* opCtx,
 //			log() << "jin endpoints during shard response getObject(key): " << key.getValueDouble();
 			double_key = key.getValueDouble();
 			log() << "double key inserted: " << double_key;
+			log() << "string key inserted: " << key.getValueString();
 		}
 		else
 			log() << "jin endpoints INVALID" ;
