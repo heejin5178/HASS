@@ -6,9 +6,9 @@ cd mongo-r3.6.18
 if [ $server == "3" ] 
 then
 #mongos, mongod - apple
-#buildscripts/scons.py MONGO_VERSION=3.6.18 mongo
-#buildscripts/scons.py MONGO_VERSION=3.6.18 mongos
-#buildscripts/scons.py MONGO_VERSION=3.6.18 mongod
+buildscripts/scons.py MONGO_VERSION=3.6.18 mongo
+buildscripts/scons.py MONGO_VERSION=3.6.18 mongos
+buildscripts/scons.py MONGO_VERSION=3.6.18 mongod
 sudo ./mongod --shardsvr -f /home/heejin/config/mongodb_apple.conf & 
 echo "apple shard on"
 sudo ./mongod --configsvr -f /home/heejin/config/mongodb_config.conf & 

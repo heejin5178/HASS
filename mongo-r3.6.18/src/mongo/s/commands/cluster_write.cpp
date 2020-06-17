@@ -64,6 +64,9 @@
 #include "mongo/unittest/death_test.h"
 #include "mongo/unittest/unittest.h"
 
+//heejin added
+#include <string>
+
 
 namespace mongo {
 namespace {
@@ -163,7 +166,7 @@ BSONObj findExtremeKeyForShard(OperationContext* opCtx,
 void splitIfNeeded(OperationContext* opCtx,
                    const NamespaceString& nss,
                    const TargeterStats& stats,
-		   double double_key) {
+		   std::string string_key) {
     auto routingInfoStatus = Grid::get(opCtx)->catalogCache()->getCollectionRoutingInfo(opCtx, nss);
     if (!routingInfoStatus.isOK()) {
         log() << "failed to get collection information for " << nss
@@ -190,9 +193,9 @@ void splitIfNeeded(OperationContext* opCtx,
     //log() << "heejjin split IFNEED: " << double_key;
     // heejin added)
     // sum of chunk element 
-   	chunk.get()->add_element(double_key); 
 	chunk.get()->add_cnt();
-//	log() << "heejjin get split sum : " << chunk.get()->get_split_sum();
+   	chunk.get()->update_split_average(string_key); 
+	//log() << "heejjin update split average : " << chunk.get()->get_split_average() << " when cnt : " << chunk.get()->get_cnt();
         updateChunkWriteStatsAndSplitIfNeeded(
             opCtx, routingInfo.cm().get(), chunk.get(), it->second);
     }
@@ -206,7 +209,7 @@ void ClusterWriter::write(OperationContext* opCtx,
                           BatchedCommandResponse* response) {
     const NamespaceString& nss = request.getNS();
    // log() << "jinnnn ClusterWriter::write "  << nss;
-	double double_key=0.0;
+std::string string_key;
     LastError::Disabled disableLastError(&LastError::get(opCtx->getClient()));
 
     // Config writes and shard writes are done differently
@@ -255,13 +258,19 @@ void ClusterWriter::write(OperationContext* opCtx,
 
 		mongo::mutablebson::Document doc(request.toBSON().getObjectField("documents").getOwned());
 		mongo::mutablebson::Element zero =doc.root()["0"];
-//		log() << "jin endpoints during shard response getObject(zero): " << zero;
-		mongo::mutablebson::Element key =zero[1];
+		mongo::mutablebson::Element key =zero[0];
+
 		if(zero.toString() != "INVALID-MUTABLE-ELEMENT"){
-//			log() << "jin endpoints during shard response getObject(key): " << key.getValueDouble();
-			double_key = key.getValueDouble();
-			log() << "double key inserted: " << double_key;
-			log() << "string key inserted: " << key.getValueString();
+			string_key = key.getValue().toString();
+			//string_key = string_key.replaceAll("user","");
+			string_key.replace(string_key.find("_"), 10, "");
+			string_key.erase(string_key.end()-1);
+//			log() << "string key inserted: " << string_key;
+			//double_key =atoi(string_key.c_str());
+			//std::istringstream iss(string_key);
+			//iss >> double_key; 
+//			log() << "double key inserted: " << double_key;
+//stoi(string_key);
 		}
 		else
 			log() << "jin endpoints INVALID" ;
@@ -284,7 +293,7 @@ void ClusterWriter::write(OperationContext* opCtx,
             BatchWriteExec::executeBatch(opCtx, targeter, request, response, stats);
         }
 
-        splitIfNeeded(opCtx, request.getNS(), targeterStats, double_key);
+        splitIfNeeded(opCtx, request.getNS(), targeterStats, string_key);
     }
 }
 //heejin_found split
@@ -366,7 +375,7 @@ void updateChunkWriteStatsAndSplitIfNeeded(OperationContext* opCtx,
             }
         }();
 //heejin) splitpoints call selectChunkSplitPoints
-	int split_average = chunk->get_split_sum() / chunk->get_cnt();
+	uint64_t split_average = chunk->get_split_average();
 	log() << "heejjin update split_average: " << split_average;
 	log() << "jin!! yamae global split " << global_split;
 	log() << "jin!! yanae key is " << global_update;
@@ -402,18 +411,31 @@ void updateChunkWriteStatsAndSplitIfNeeded(OperationContext* opCtx,
             return;
         }
 	else {
+	
 		log() << "splitpoints.size() > 1 so split average insert start";
-		int target = split_average;
+		uint64_t target = split_average;
+		std::ostringstream o;
+		o << split_average;
+		std::string str;
+		str += ("user"+o.str());
 		BSONObjBuilder current_key;
-		current_key.append("key", split_average);
+		current_key.append("_id", str);
 		//BSONObjIterator it(splitPoints);
 		std::vector<BSONObj>::iterator it = splitPoints.begin();
 		int n=-1;
 		while(it != splitPoints.end()) {
 		//for(int i=0; i<splitPoints.size(); i++) { 
-			BSONElement e = it->getField("key");
+			uint64_t k=0;
+			BSONElement e = it->getField("_id");
 			//int k = e.getValue().numberInt();
-			int k = (int)e.Number();
+			std::string string_key = e.String();
+			log() << "heejin debugging" << string_key;
+			string_key.replace(string_key.find("user"), 4, "");
+			string_key.erase(string_key.end()-1);
+			
+			std::string prefix_key = string_key.substr(0,10);
+			std::istringstream iss(prefix_key);
+			iss >> k; 
 			log() << "k value : " << k;
 			if(k < split_average) {
 				target = k;
@@ -449,8 +471,8 @@ void updateChunkWriteStatsAndSplitIfNeeded(OperationContext* opCtx,
 //	log() << "heejin* found-back : " << splitPoints.back();
         }
 
-//	log() << "heejin_ found-front : " << splitPoints.front();
-//	log() << "heejin_ found-back : " << splitPoints.back();
+	log() << "heejin_ found-front : " << splitPoints.front();
+	log() << "heejin_ found-back : " << splitPoints.back();
         // We assume that if the chunk being split is the first (or last) one on the collection,
         // this chunk is likely to see more insertions. Instead of splitting mid-chunk, we use the
         // very first (or last) key as a split point.
@@ -485,10 +507,10 @@ void updateChunkWriteStatsAndSplitIfNeeded(OperationContext* opCtx,
             }
         }
 	    // Make sure splitKeys is in ascending order
-	    std::sort(
+/*	    std::sort(
 		splitPoints.begin(), splitPoints.end(), SimpleBSONObjComparator::kInstance.makeLessThan());
 
-
+*/
 
 //	log() << "heejin__ found-front : " << splitPoints.front();
 //	log() << "heejin__ found-back : " << splitPoints.back();

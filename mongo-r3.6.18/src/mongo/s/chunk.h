@@ -96,10 +96,10 @@ public:
     void markAsJumbo();
 
 	//heejin added
-	void add_element(double double_key);
-	double get_split_sum(void);
+	void update_split_average(std::string string_key);
+	uint64_t get_split_average(void);
 	void add_cnt(void);
-	int get_cnt(void);
+	uint64_t get_cnt(void);
 private:
     const ChunkRange _range;
 
@@ -115,7 +115,7 @@ private:
     mutable uint64_t _dataWrittenBytes;
 
 	//heejin added
-	double split_sum;
+	uint64_t split_average;
 	int cnt;
 };
 
