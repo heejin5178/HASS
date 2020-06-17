@@ -260,6 +260,7 @@ void ClusterWriter::write(OperationContext* opCtx,
 		if(zero.toString() != "INVALID-MUTABLE-ELEMENT"){
 //			log() << "jin endpoints during shard response getObject(key): " << key.getValueDouble();
 			double_key = key.getValueDouble();
+			log() << "double key inserted: " << double_key;
 		}
 		else
 			log() << "jin endpoints INVALID" ;
@@ -398,8 +399,9 @@ void updateChunkWriteStatsAndSplitIfNeeded(OperationContext* opCtx,
             // between half the chunk size to full chunk size so there is no need to split yet
             chunk->clearBytesWritten();
             return;
-        }/*
+        }
 	else {
+		log() << "splitpoints.size() > 1 so split average insert start";
 		int target = split_average;
 		BSONObjBuilder current_key;
 		current_key.append("key", split_average);
@@ -431,7 +433,7 @@ void updateChunkWriteStatsAndSplitIfNeeded(OperationContext* opCtx,
 			log() << "after splitPoints[" << n <<"] : " << splitPoints[n];
 			//log() << "after splitPoints[" << n <<"] : " << current_key.obj().getOwned();
 		}
-	}*/
+	}
 
 //	log() << "heejin*** found-front : " << splitPoints.front();
 //	log() << "heejin*** found-back : " << splitPoints.back();
@@ -482,10 +484,10 @@ void updateChunkWriteStatsAndSplitIfNeeded(OperationContext* opCtx,
             }
         }
 	    // Make sure splitKeys is in ascending order
-/*	    std::sort(
+	    std::sort(
 		splitPoints.begin(), splitPoints.end(), SimpleBSONObjComparator::kInstance.makeLessThan());
 
-*/
+
 
 //	log() << "heejin__ found-front : " << splitPoints.front();
 //	log() << "heejin__ found-back : " << splitPoints.back();
