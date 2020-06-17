@@ -159,8 +159,7 @@ NOINLINE_DECL void invariantOKFailed(const char* expr,
              << file << ' ' << dec << line;
     breakpoint();
     severe() << "\n\n***aborting after invariant() failure\n\n" << endl;
-	//heejin _temporal 
-    //std::abort();
+    std::abort();
 }
 
 NOINLINE_DECL void fassertFailedWithLocation(int msgid, const char* file, unsigned line) noexcept {

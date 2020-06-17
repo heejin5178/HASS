@@ -400,12 +400,16 @@ inline void massertStatusOKWithLocation(const Status& status, const char* file, 
 
 #define invariantOK MONGO_invariantOK
 #define MONGO_invariantOK(expression)                                                         \
-    do {                                                                                      \
+    do {  \
+   	} while (false)
+/*                                                                                     \
         const ::mongo::Status _invariantOK_status = expression;                               \
         if (MONGO_unlikely(!_invariantOK_status.isOK())) {                                    \
             ::mongo::invariantOKFailed(#expression, _invariantOK_status, __FILE__, __LINE__); \
+
         }                                                                                     \
-    } while (false)
+ */
+	
 
 #define dassertOK MONGO_dassertOK
 #define MONGO_dassertOK(expression) \
