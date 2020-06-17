@@ -1,0 +1,15 @@
+MongoDB shell version v3.6.18
+connecting to: mongodb://10.20.16.165:50001/test?gssapiServiceName=mongodb
+Implicit session: session { "id" : UUID("7c623de3-2562-4d6c-a2aa-36fd5c822fdb") }
+MongoDB server version: 3.6.18
+Server has startup warnings: 
+2020-06-16T21:11:42.725+0000 I CONTROL  [main] 
+2020-06-16T21:11:42.725+0000 I CONTROL  [main] ** WARNING: Access control is not enabled for the database.
+2020-06-16T21:11:42.725+0000 I CONTROL  [main] **          Read and write access to data and configuration is unrestricted.
+2020-06-16T21:11:42.725+0000 I CONTROL  [main] ** WARNING: You are running this process as the root user, which is not recommended.
+2020-06-16T21:11:42.725+0000 I CONTROL  [main] 
+mongos> sh[9G[Js[10G[9G[J[9G[9G[J[9Gmongos> [9G[Jrs.status()[20G[9G[Jfor (var i=300000; i<400000; i++) { db.newCol.insert({key: i})  }[74G[9G[Jrs.status()[20G[9G[J[9Guse admin[9G[Juse admin[18G
+
+switched to db admin
+mongos> [9G[J[9G^C
+bye

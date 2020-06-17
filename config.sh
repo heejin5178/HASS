@@ -13,24 +13,24 @@ sudo ./mongod --shardsvr -f /home/heejin/config/mongodb_apple.conf &
 echo "apple shard on"
 sudo ./mongod --configsvr -f /home/heejin/config/mongodb_config.conf & 
 echo "config on"
-sudo ./mongos -f /home/heejin/config/mongos.conf --bind_ip 10.20.16.165 --port 50001;
+#sudo ./mongos -f /home/heejin/config/mongos.conf --bind_ip 10.20.16.165 --port 50001;
 echo "mongos on"
 elif [ $server == "4" ]
 then
 #mongod - apple,banana
 buildscripts/scons.py MONGO_VERSION=3.6.18 mongod
-sudo ./mongod  --shardsvr -f /home/heejin/config/mongodb_apple.conf & 
-sudo ./mongod  --shardsvr -f /home/heejin/config/mongodb_banana.conf &
+sudo ./mongod --shardsvr -f /home/heejin/config/mongodb_apple.conf & 
+sudo ./mongod --shardsvr -f /home/heejin/config/mongodb_banana.conf &
 sudo ./mongod --configsvr -f /home/heejin/config/mongodb_config.conf &
-echo "server 4 mongod on";
+echo "server 4 mongod on"
 exit 1
 elif [ $server == "5" ]
 then
 #mongod - apple,banana,mango
 buildscripts/scons.py MONGO_VERSION=3.6.18 mongod
-sudo ./mongod  --shardsvr -f /home/heejin/config/mongodb_apple.conf &
-sudo ./mongod  --shardsvr -f /home/heejin/config/mongodb_banana.conf &
-sudo ./mongod  --shardsvr -f /home/heejin/config/mongodb_mango.conf &
+sudo ./mongod --shardsvr -f /home/heejin/config/mongodb_apple.conf &
+sudo ./mongod --shardsvr -f /home/heejin/config/mongodb_banana.conf &
+sudo ./mongod --shardsvr -f /home/heejin/config/mongodb_mango.conf &
 sudo ./mongod --configsvr -f /home/heejin/config/mongodb_config.conf &
 echo "server 4 mongod on";
 exit 1

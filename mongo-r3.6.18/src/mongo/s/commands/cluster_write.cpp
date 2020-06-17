@@ -411,6 +411,8 @@ void updateChunkWriteStatsAndSplitIfNeeded(OperationContext* opCtx,
 			BSONElement e = it->getField("key");
 			//int k = e.getValue().numberInt();
 			int k = (int)e.Number();
+			log() << "k value : " << k;
+			log() << "e.value : " << e.value();
 			if(k < split_average) {
 				target = k;
 				n++;
@@ -420,9 +422,13 @@ void updateChunkWriteStatsAndSplitIfNeeded(OperationContext* opCtx,
 		}
 		if(target==split_average) { // every split point is bigger than split average
                     splitPoints.front() = current_key.obj().getOwned();
+			log() << "before splitPoints.front() : " << splitPoints.front();
+			//log() << "before splitPoints.front() : " << current_key.obj().getOwned();
 		}
 		else {
 			splitPoints[n] = current_key.obj().getOwned();
+			log() << "before splitPoints[" << n <<"] : " << splitPoints[n];
+			//log() << "after splitPoints[" << n <<"] : " << current_key.obj().getOwned();
 		}
 	}
 
