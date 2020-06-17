@@ -67,7 +67,7 @@ Chunk::Chunk(const ChunkType& from)
       _jumbo(from.getJumbo()),
       _dataWrittenBytes(mkDataWrittenBytes()),
 	split_sum(0),cnt(0) {
-    invariantOK(from.validate());
+//    invariantOK(from.validate());
 }
 
 bool Chunk::containsKey(const BSONObj& shardKey) const {
