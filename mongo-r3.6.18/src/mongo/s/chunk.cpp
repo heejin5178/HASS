@@ -66,7 +66,7 @@ Chunk::Chunk(const ChunkType& from)
       _lastmod(from.getVersion()),
       _jumbo(from.getJumbo()),
       _dataWrittenBytes(mkDataWrittenBytes()),
-	split_average(0),cnt(0) {
+	split_sum(0),split_average(0),cnt(0) {
     invariantOK(from.validate());
 }
 
@@ -107,26 +107,35 @@ std::string Chunk::toString() const {
 void Chunk::markAsJumbo() {
     _jumbo = true;
 }
-/*
-void Chunk::add_element(uint64_t double_key)
+
+void Chunk::add_split_sum(std::string string_key)
 {
-	split_sum += double_key;
+	int int_key;
+	std::string prefix_key = string_key.substr(0,10);
+        std::istringstream iss(prefix_key);
+       	iss >> int_key;	
+
+	split_sum += int_key;
 }
-*/
+
+int Chunk::get_split_sum(void)
+{
+	return split_sum;
+}
 
 void Chunk::update_split_average(std::string string_key)
 {
-	double double_key;
+	int double_key;
 	std::string prefix_key = string_key.substr(0,10);
         std::istringstream iss(prefix_key);
        	iss >> double_key;	
-	uint64_t prev_average = this->split_average;
+	int prev_average = this->split_average;
 	double old_weight = (this->cnt-1)/(double)(this->cnt);
 	double new_weight = 1/(double)(this->cnt);
 	this->split_average = (prev_average*old_weight)+(double_key*new_weight);
 }
 
-uint64_t Chunk::get_split_average(void)
+int Chunk::get_split_average(void)
 {
 	return this->split_average;
 }
@@ -135,7 +144,7 @@ void Chunk::add_cnt(void)
 {
 	this->cnt++;
 }
-uint64_t Chunk::get_cnt(void)
+int Chunk::get_cnt(void)
 {
 	return this->cnt;
 }

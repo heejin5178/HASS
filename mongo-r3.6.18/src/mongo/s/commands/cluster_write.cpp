@@ -194,7 +194,8 @@ void splitIfNeeded(OperationContext* opCtx,
     // heejin added)
     // sum of chunk element 
 	chunk.get()->add_cnt();
-   	chunk.get()->update_split_average(string_key); 
+   	chunk.get()->add_split_sum(string_key); 
+   	//chunk.get()->update_split_average(string_key); 
 	//log() << "heejjin update split average : " << chunk.get()->get_split_average() << " when cnt : " << chunk.get()->get_cnt();
         updateChunkWriteStatsAndSplitIfNeeded(
             opCtx, routingInfo.cm().get(), chunk.get(), it->second);
@@ -375,7 +376,8 @@ void updateChunkWriteStatsAndSplitIfNeeded(OperationContext* opCtx,
             }
         }();
 //heejin) splitpoints call selectChunkSplitPoints
-	uint64_t split_average = chunk->get_split_average();
+	//uint64_t split_average = chunk->get_split_average();
+	int split_average = chunk->get_split_sum()/chunk->get_cnt();
 	log() << "heejjin update split_average: " << split_average;
 	log() << "jin!! yamae global split " << global_split;
 	log() << "jin!! yanae key is " << global_update;
@@ -413,7 +415,7 @@ void updateChunkWriteStatsAndSplitIfNeeded(OperationContext* opCtx,
 	else {
 	
 		log() << "splitpoints.size() > 1 so split average insert start";
-		uint64_t target = split_average;
+		int target = split_average;
 		std::ostringstream o;
 		o << split_average;
 		std::string str;
@@ -425,7 +427,7 @@ void updateChunkWriteStatsAndSplitIfNeeded(OperationContext* opCtx,
 		int n=-1;
 		while(it != splitPoints.end()) {
 		//for(int i=0; i<splitPoints.size(); i++) { 
-			uint64_t k=0;
+			int k=0;
 			BSONElement e = it->getField("_id");
 			//int k = e.getValue().numberInt();
 			std::string string_key = e.String();
@@ -437,7 +439,7 @@ void updateChunkWriteStatsAndSplitIfNeeded(OperationContext* opCtx,
 			std::istringstream iss(prefix_key);
 			iss >> k; 
 			log() << "k value : " << k;
-			if(k < split_average) {
+			if(k <= split_average) {
 				target = k;
 				n++;
 			}
@@ -457,6 +459,7 @@ void updateChunkWriteStatsAndSplitIfNeeded(OperationContext* opCtx,
 			//log() << "after splitPoints[" << n <<"] : " << current_key.obj().getOwned();
 		}
 	}
+//chunk->getMin(), chunk->getMax()
 
 //	log() << "heejin*** found-front : " << splitPoints.front();
 //	log() << "heejin*** found-back : " << splitPoints.back();
