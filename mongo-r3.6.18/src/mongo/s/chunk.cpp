@@ -110,15 +110,18 @@ void Chunk::markAsJumbo() {
 
 void Chunk::add_split_sum(std::string string_key)
 {
-	int int_key;
+	uint64_t double_key;
 	std::string prefix_key = string_key.substr(0,10);
         std::istringstream iss(prefix_key);
-       	iss >> int_key;	
+       	iss >>double_key;
+	//std::stringstream ssInt(prefix_key);	
+	//ssInt >> double_key;
 
-	split_sum += int_key;
+	split_sum += double_key;
+	//log() << "string key : " << string_key << ", prefix_key : " << prefix_key <<", int key : " << double_key << ", split sum : " <<split_sum;
 }
 
-int Chunk::get_split_sum(void)
+uint64_t Chunk::get_split_sum(void)
 {
 	return split_sum;
 }
@@ -127,6 +130,7 @@ void Chunk::update_split_average(std::string string_key)
 {
 	int double_key;
 	std::string prefix_key = string_key.substr(0,10);
+	//log() << "string key : " << string_key <<", prefix key : " << prefix_key;
         std::istringstream iss(prefix_key);
        	iss >> double_key;	
 	int prev_average = this->split_average;

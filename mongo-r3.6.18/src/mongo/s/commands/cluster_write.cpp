@@ -209,7 +209,7 @@ void ClusterWriter::write(OperationContext* opCtx,
                           BatchWriteExecStats* stats,
                           BatchedCommandResponse* response) {
     const NamespaceString& nss = request.getNS();
-   // log() << "jinnnn ClusterWriter::write "  << nss;
+//    log() << "jinnnn ClusterWriter::write "  << nss;
 std::string string_key;
     LastError::Disabled disableLastError(&LastError::get(opCtx->getClient()));
 
@@ -266,7 +266,7 @@ std::string string_key;
 			//string_key = string_key.replaceAll("user","");
 			string_key.replace(string_key.find("_"), 10, "");
 			string_key.erase(string_key.end()-1);
-//			log() << "string key inserted: " << string_key;
+			//log() << "string key inserted: " << string_key;
 			//double_key =atoi(string_key.c_str());
 			//std::istringstream iss(string_key);
 			//iss >> double_key; 
@@ -350,7 +350,7 @@ void updateChunkWriteStatsAndSplitIfNeeded(OperationContext* opCtx,
     TicketHolderReleaser releaser(&(manager->_autoSplitThrottle._splitTickets));
 
     const ChunkRange chunkRange(chunk->getMin(), chunk->getMax());
-
+log() << "ChunkRange : " << chunkRange;
     try {
         // Ensure we have the most up-to-date balancer configuration
         uassertStatusOK(balancerConfig->refreshAndCheck(opCtx));
@@ -377,7 +377,7 @@ void updateChunkWriteStatsAndSplitIfNeeded(OperationContext* opCtx,
         }();
 //heejin) splitpoints call selectChunkSplitPoints
 	//uint64_t split_average = chunk->get_split_average();
-	int split_average = chunk->get_split_sum()/chunk->get_cnt();
+	uint64_t split_average = chunk->get_split_sum()/chunk->get_cnt();
 	log() << "heejjin update split_average: " << split_average;
 	log() << "jin!! yamae global split " << global_split;
 	log() << "jin!! yanae key is " << global_update;
@@ -405,7 +405,7 @@ void updateChunkWriteStatsAndSplitIfNeeded(OperationContext* opCtx,
 	//current_key.append("splitKeys", global_update+49800);
 	//splitPoints.push_back(current_key.obj());
         if (splitPoints.size() <= 1) {
-		log() << "splitpoints.size() <= 1 " << global_update;
+	//	log() << "splitpoints.size() <= 1 " << global_update;
             // No split points means there isn't enough data to split on; 1 split point means we
             // have
             // between half the chunk size to full chunk size so there is no need to split yet
@@ -414,8 +414,8 @@ void updateChunkWriteStatsAndSplitIfNeeded(OperationContext* opCtx,
         }
 	else {
 	
-		log() << "splitpoints.size() > 1 so split average insert start";
-		int target = split_average;
+	//	log() << "splitpoints.size() > 1 so split average insert start";
+		uint64_t target = split_average;
 		std::ostringstream o;
 		o << split_average;
 		std::string str;
@@ -425,17 +425,19 @@ void updateChunkWriteStatsAndSplitIfNeeded(OperationContext* opCtx,
 		//BSONObjIterator it(splitPoints);
 		std::vector<BSONObj>::iterator it = splitPoints.begin();
 		int n=-1;
+		std::string string_key;
+		std::string prefix_key ;
 		while(it != splitPoints.end()) {
 		//for(int i=0; i<splitPoints.size(); i++) { 
-			int k=0;
+			uint64_t k=0;
 			BSONElement e = it->getField("_id");
 			//int k = e.getValue().numberInt();
-			std::string string_key = e.String();
-			log() << "heejin debugging" << string_key;
-			string_key.replace(string_key.find("user"), 4, "");
+			string_key = e.String();
+			log() << "heejin debugging " << string_key;
+			string_key.replace(string_key.find("user"), 5, "");
 			string_key.erase(string_key.end()-1);
 			
-			std::string prefix_key = string_key.substr(0,10);
+			prefix_key = string_key.substr(0,10);
 			std::istringstream iss(prefix_key);
 			iss >> k; 
 			log() << "k value : " << k;
@@ -446,20 +448,102 @@ void updateChunkWriteStatsAndSplitIfNeeded(OperationContext* opCtx,
 			it++;
 
 		}
-		if(target==split_average) { // every split point is bigger than split average
-			log() << "before splitPoints.front() : " << splitPoints.front();
+		BSONObj key;
+		uint64_t int_chunk_max, int_chunk_min;
+		//calculate chunk range (prefix)
+		if(maxIsInf) {
+			log() << "maxIsInf int_chunk_max";
+			key = findExtremeKeyForShard(
+			    opCtx, nss, chunk->getShardId(), manager->getShardKeyPattern(), false);
+			std::string string_key = key.toString();
+			string_key.replace(string_key.find("{"), 12, "");
+			string_key.erase(string_key.end()-1);
+			std::string prefix_key = string_key.substr(0,10);
+			std::istringstream iss(prefix_key);
+			iss >> int_chunk_max;
+		}
+		else{
+			BSONObj max = chunk->getMax();	
+			std::string string_key = max.toString();
+			string_key.replace(string_key.find("{"), 12, "");
+			string_key.erase(string_key.end()-1);
+			std::string prefix_key = string_key.substr(0,10);
+			std::istringstream iss(prefix_key);
+			iss >> int_chunk_max;
+		}
+
+		if(minIsInf) {
+			//log() << "minIsInf int_chunk_min";
+			key = findExtremeKeyForShard(
+			    opCtx, nss, chunk->getShardId(), manager->getShardKeyPattern(), true);
+			string_key = key.toString();
+			//log() << "minIsInf chunk getmax " << string_key;
+			string_key.replace(string_key.find("{"), 12, "");
+			string_key.erase(string_key.end()-1);
+			prefix_key = string_key.substr(0,10);
+			std::istringstream isss(prefix_key);
+			isss >> int_chunk_min;
+
+		}
+		else{
+			BSONObj min = chunk->getMin();	
+			std::string string_key = min.toString();
+			//log() << "chunk getmin " << string_key;
+			string_key.replace(string_key.find("{"), 12, "");
+			string_key.erase(string_key.end()-1);
+			std::string prefix_key = string_key.substr(0,10);
+			std::istringstream isss(prefix_key);
+			isss >> int_chunk_min;
+			//log() << "chunk prefix intgetmin " << int_chunk_min;
+		}
+		log() << "heejin debugging)  max : " << int_chunk_max << " / min : " << int_chunk_min;
+		uint64_t chunk_range = (uint64_t)((double)int_chunk_max - (double)int_chunk_min);
+		double shift_params = 0.1;
+		//uint64_t shift = 100000000;
+		uint64_t shift = chunk_range * shift_params;
+		
+		log() << "chunk range : " << chunk_range <<", shift : " << shift << ", n : " << n;	
+	//	if(n==-1) { // every split point is bigger than split average
+			for(uint8_t i=0; i<splitPoints.size(); i++) {
+				uint64_t k=0;
+				std::string new_split_key = "user";
+				BSONElement e = splitPoints[i].getField("_id");	
+				std::string string_key = e.String();
+				string_key.replace(string_key.find("user"), 4, "");
+				string_key.erase(string_key.end()-1);
+				new_split_key += string_key;
+				std::string prefix_key = string_key.substr(0,10);
+				std::istringstream iss(prefix_key);
+				iss >> k;
+				if(n<i)
+					k -= shift;
+				else // n>=i, meaning splitPoints[i] is bigger than split_average
+					k += shift;
+				std::string k_string;
+				std::ostringstream o;
+				o << k;
+				k_string += o.str();
+
+				new_split_key.replace(new_split_key.begin()+4, new_split_key.begin()+15, k_string);
+				//new_split_key.replace(new_split_key.begin()+4, new_split_key.begin()+15, prefix_key.begin(), prefix_key.begin()+11);
+				BSONObjBuilder new_split_BSON;
+				new_split_BSON.append("_id", new_split_key);
+				//log() << "before splitPoints[i] : " << splitPoints[i];
+				splitPoints[i] = new_split_BSON.obj().getOwned();
+				//log() << "after splitPoints[i] : " << splitPoints[i];
+			}
+		/*	log() << "before splitPoints.front() : " << splitPoints.front();
                     splitPoints.front() = current_key.obj().getOwned();
 			log() << "after splitPoints.front() : " << splitPoints.front();
-			//log() << "before splitPoints.front() : " << current_key.obj().getOwned();
-		}
+		*/
+/*		}
 		else {
 			log() << "before splitPoints[" << n <<"] : " << splitPoints[n];
 			splitPoints[n] = current_key.obj().getOwned();
 			log() << "after splitPoints[" << n <<"] : " << splitPoints[n];
 			//log() << "after splitPoints[" << n <<"] : " << current_key.obj().getOwned();
-		}
+		}*/
 	}
-//chunk->getMin(), chunk->getMax()
 
 //	log() << "heejin*** found-front : " << splitPoints.front();
 //	log() << "heejin*** found-back : " << splitPoints.back();
@@ -474,8 +558,8 @@ void updateChunkWriteStatsAndSplitIfNeeded(OperationContext* opCtx,
 //	log() << "heejin* found-back : " << splitPoints.back();
         }
 
-	log() << "heejin_ found-front : " << splitPoints.front();
-	log() << "heejin_ found-back : " << splitPoints.back();
+	//log() << "heejin_ found-front : " << splitPoints.front();
+	//log() << "heejin_ found-back : " << splitPoints.back();
         // We assume that if the chunk being split is the first (or last) one on the collection,
         // this chunk is likely to see more insertions. Instead of splitting mid-chunk, we use the
         // very first (or last) key as a split point.
@@ -494,7 +578,7 @@ void updateChunkWriteStatsAndSplitIfNeeded(OperationContext* opCtx,
                 if (!key.isEmpty()) {
                     splitPoints.front() = key.getOwned();
 		//heejin debug
-		log() << "heejin) minIsInf" << splitPoints.front() ;
+		//log() << "heejin) minIsInf" << splitPoints.front() ;
                 }
             } else if (maxIsInf) {
                 BSONObj key = findExtremeKeyForShard(
@@ -505,7 +589,7 @@ void updateChunkWriteStatsAndSplitIfNeeded(OperationContext* opCtx,
 
                     splitPoints.back() = key.getOwned();
 		//heejin debug
-		log() << "heejin) maxIsInf" << splitPoints.back() ;
+		//log() << "heejin) maxIsInf" << splitPoints.back() ;
                 }
             }
         }

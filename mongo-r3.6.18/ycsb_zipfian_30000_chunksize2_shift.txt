@@ -1,0 +1,77 @@
+MongoDB shell version v3.6.18
+connecting to: mongodb://10.20.16.165:50001/test?gssapiServiceName=mongodb
+Implicit session: session { "id" : UUID("06654ef3-2341-4185-9be9-30912aab0fa6") }
+MongoDB server version: 3.6.18
+Server has startup warnings: 
+2020-06-18T00:09:17.661+0000 I CONTROL  [main] 
+2020-06-18T00:09:17.661+0000 I CONTROL  [main] ** WARNING: Access control is not enabled for the database.
+2020-06-18T00:09:17.661+0000 I CONTROL  [main] **          Read and write access to data and configuration is unrestricted.
+2020-06-18T00:09:17.661+0000 I CONTROL  [main] ** WARNING: You are running this process as the root user, which is not recommended.
+2020-06-18T00:09:17.661+0000 I CONTROL  [main] 
+mongos> sh.status()[9G[Jsh.status()[20G
+--- Sharding Status --- 
+  sharding version: {
+  	"_id" : 1,
+  	"minCompatibleVersion" : 5,
+  	"currentVersion" : 6,
+  	"clusterId" : ObjectId("5ee9d71ba3c26cb7eca74ea3")
+  }
+  shards:
+        {  "_id" : "apple",  "host" : "apple/10.20.16.110:30001,10.20.16.111:30001,10.20.16.165:30001",  "state" : 1 }
+        {  "_id" : "banana",  "host" : "banana/10.20.16.110:30002,10.20.16.111:30002,10.20.16.112:30002",  "state" : 1 }
+        {  "_id" : "mango",  "host" : "mango/10.20.16.111:30003,10.20.16.112:30003,10.20.16.115:30003",  "state" : 1 }
+  active mongoses:
+        "3.6.18" : 1
+  autosplit:
+        Currently enabled: yes
+  balancer:
+        Currently enabled:  yes
+        Currently running:  no
+        Failed balancer rounds in last 5 attempts:  0
+        Migration Results for the last 24 hours: 
+                219 : Success
+                57 : Failed with error 'aborted', from mango to banana
+                88 : Failed with error 'aborted', from mango to apple
+                1 : Failed with error 'aborted', from banana to mango
+                2 : Failed with error 'aborted', from apple to banana
+  databases:
+        {  "_id" : "config",  "primary" : "config",  "partitioned" : true }
+                config.system.sessions
+                        shard key: { "_id" : 1 }
+                        unique: false
+                        balancing: true
+                        chunks:
+                                apple	1
+                        { "_id" : { "$minKey" : 1 } } -->> { "_id" : { "$maxKey" : 1 } } on : apple Timestamp(1, 0) 
+        {  "_id" : "newDB",  "primary" : "apple",  "partitioned" : true }
+                newDB.newCol
+                        shard key: { "key" : 1 }
+                        unique: false
+                        balancing: true
+                        chunks:
+                                apple	3
+                                banana	3
+                                mango	3
+                        { "key" : { "$minKey" : 1 } } -->> { "key" : 1 } on : mango Timestamp(6, 1) 
+                        { "key" : 1 } -->> { "key" : 59919 } on : apple Timestamp(7, 1) 
+                        { "key" : 59919 } -->> { "key" : 89878 } on : banana Timestamp(5, 1) 
+                        { "key" : 89878 } -->> { "key" : 123930 } on : banana Timestamp(4, 3) 
+                        { "key" : 123930 } -->> { "key" : 168875 } on : mango Timestamp(5, 2) 
+                        { "key" : 168875 } -->> { "key" : 187751 } on : mango Timestamp(5, 3) 
+                        { "key" : 187751 } -->> { "key" : 220110 } on : apple Timestamp(6, 2) 
+                        { "key" : 220110 } -->> { "key" : 252468 } on : apple Timestamp(6, 3) 
+                        { "key" : 252468 } -->> { "key" : { "$maxKey" : 1 } } on : banana Timestamp(7, 0) 
+        {  "_id" : "test",  "primary" : "mango",  "partitioned" : false }
+        {  "_id" : "ycsb",  "primary" : "mango",  "partitioned" : true }
+                ycsb.usertable
+                        shard key: { "_id" : 1 }
+                        unique: false
+                        balancing: true
+                        chunks:
+                                apple	9
+                                banana	9
+                                mango	10
+                        too many chunks to print, use verbose if you want to force print
+
+mongos> [9G[J[9G^C
+bye

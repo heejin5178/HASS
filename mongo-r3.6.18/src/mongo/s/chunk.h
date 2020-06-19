@@ -97,7 +97,7 @@ public:
 
 	//heejin added
 	void add_split_sum(std::string string_key);
-	int get_split_sum(void);
+	uint64_t get_split_sum(void);
 	void update_split_average(std::string string_key);
 	int get_split_average(void);
 	void add_cnt(void);
@@ -117,7 +117,7 @@ private:
     mutable uint64_t _dataWrittenBytes;
 
 	//heejin added
-	int split_sum;
+	uint64_t split_sum;
 	int split_average;
 	int cnt;
 };
