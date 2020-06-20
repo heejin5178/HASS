@@ -5,11 +5,11 @@ server=$1
 PASSWD="heejin"
 OPT_CNT=100
 WORKLOAD="a"
-for record in 1 5 10;
+for record in 1 5;
 do
 RECORD_CNT=$(($record*100))
 #zipfian/uniform
-for PATTERN in zipfian uniform;
+for PATTERN in zipfian;
 do
 DSTAT_LOG="/home/heejin/dynamic_output/dstat_log_${RECORD_CNT}_${PATTERN}.txt"
 YCSB_LOG="/home/heejin/dynamic_output/ycsb_log_${RECORD_CNT}_${PATTERN}.txt"
@@ -17,7 +17,7 @@ touch ${YCSB_LOG}
 touch ${DSTAT_LOG}
 TEST="/home/heejin/mongodbShard/done.txt"
 
-cd mongo-r3.6.18
+cd /home/heejin/mongodbShard/mongo-r3.6.18
 if [ $server == "3" ] 
 then
 #mongos, mongod - apple
