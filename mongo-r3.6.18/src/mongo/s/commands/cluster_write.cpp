@@ -599,7 +599,8 @@ log() << "ChunkRange : " << chunkRange;
 				splitPoints[i] = new_split_BSON.obj().getOwned();
 				log() << "left for, after splitPoints[i] : " << splitPoints[i];
 			}
-	}
+		}
+
 
 
 //#elif ORIGINAL
