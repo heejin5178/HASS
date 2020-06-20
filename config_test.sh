@@ -113,10 +113,10 @@ do
 	fi
 done
 rm ${TEST}
-dstat -tcdm --output=${DSTAT_LOG}_4 &
 echo ${PASSWD} | sudo -S ./mongod --shardsvr -f /home/heejin/config/mongodb_apple.conf & 
 echo ${PASSWD} | sudo -S ./mongod --shardsvr -f /home/heejin/config/mongodb_banana.conf &
 echo ${PASSWd} | sudo -S ./mongod --configsvr -f /home/heejin/config/mongodb_config.conf &
+dstat -tcdm --output=${DSTAT_LOG}_4 &
 while :
 do
 	if [ -f ${TEST} ];
@@ -140,12 +140,12 @@ do
 	fi
 done
 rm ${TEST}
-dstat -tcdm --output=${DSTAT_LOG}_5 &
 echo ${PASSWD} | sudo -S ./mongod --shardsvr -f /home/heejin/config/mongodb_apple.conf &
 
 echo ${PASSWD} | sudo -S ./mongod --shardsvr -f /home/heejin/config/mongodb_banana.conf &
 echo ${PASSWD} | sudo -S ./mongod --shardsvr -f /home/heejin/config/mongodb_mango.conf &
 echo ${PASSWD} | sudo -S ./mongod --configsvr -f /home/heejin/config/mongodb_config.conf &
+dstat -tcdm --output=${DSTAT_LOG}_5 &
 while :
 do
 	if [ -f ${TEST} ];
@@ -169,9 +169,9 @@ do
 	fi
 done
 rm ${TEST}
-dstat -tcdm --output=${DSTAT_LOG}_6 &
 echo ${PASSWD} | sudo -S ./mongod  --shardsvr -f /home/heejin/config/mongodb_mango.conf & 
 echo ${PASSWD} | sudo -S ./mongod  --shardsvr -f /home/heejin/config/mongodb_banana.conf &
+dstat -tcdm --output=${DSTAT_LOG}_6 &
 while :
 do
 	if [ -f ${TEST} ];
@@ -194,9 +194,8 @@ do
 	fi
 done
 rm ${TEST}
-dstat -tcdm --output=${DSTAT_LOG}_8 &
 echo ${PASSWD} | sudo -S ./mongod  --shardsvr -f /home/heejin/config/mongodb_mango.conf & 
-
+dstat -tcdm --output=${DSTAT_LOG}_8 &
 while :
 do
 	if [ -f ${TEST} ];
