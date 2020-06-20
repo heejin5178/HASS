@@ -9,11 +9,11 @@ for record in 1 5;
 do
 RECORD_CNT=$(($record*100))
 #zipfian/uniform
-for PATTERN in zipfian;
+for PATTERN in zipfian uniform;
 do
-DSTAT_LOG="/home/heejin/dynamic_output/dstat_log_${RECORD_CNT}_${PATTERN}.txt"
+DSTAT_LOG="/home/heejin/dynamic_output/dstat_log_${RECORD_CNT}_${PATTERN}_${server}.txt"
 YCSB_LOG="/home/heejin/dynamic_output/ycsb_log_${RECORD_CNT}_${PATTERN}.txt"
-touch ${YCSB_LOG}
+
 touch ${DSTAT_LOG}
 TEST="/home/heejin/mongodbShard/done.txt"
 START="/home/heejin/mongodbShard/start.txt"
@@ -21,6 +21,7 @@ START="/home/heejin/mongodbShard/start.txt"
 cd /home/heejin/mongodbShard/mongo-r3.6.18
 if [ $server == "3" ] 
 then
+touch ${YCSB_LOG}
 #mongos, mongod - apple
 #buildscripts/scons.py MONGO_VERSION=3.6.18 mongo
 #buildscripts/scons.py MONGO_VERSION=3.6.18 mongos
@@ -119,7 +120,7 @@ rm ${START};
 echo ${PASSWD} | sudo -S ./mongod --shardsvr -f /home/heejin/config/mongodb_apple.conf & 
 echo ${PASSWD} | sudo -S ./mongod --shardsvr -f /home/heejin/config/mongodb_banana.conf &
 echo ${PASSWd} | sudo -S ./mongod --configsvr -f /home/heejin/config/mongodb_config.conf &
-dstat -tcdm --output=${DSTAT_LOG}_4 &
+dstat -tcdm --output=${DSTAT_LOG} &
 while :
 do
 	if [ -f ${TEST} ];
@@ -158,7 +159,7 @@ echo ${PASSWD} | sudo -S ./mongod --shardsvr -f /home/heejin/config/mongodb_appl
 echo ${PASSWD} | sudo -S ./mongod --shardsvr -f /home/heejin/config/mongodb_banana.conf &
 echo ${PASSWD} | sudo -S ./mongod --shardsvr -f /home/heejin/config/mongodb_mango.conf &
 echo ${PASSWD} | sudo -S ./mongod --configsvr -f /home/heejin/config/mongodb_config.conf &
-dstat -tcdm --output=${DSTAT_LOG}_5 &
+dstat -tcdm --output=${DSTAT_LOG} &
 while :
 do
 	if [ -f ${TEST} ];
@@ -193,7 +194,7 @@ kill -9 `ps -ef | grep 'dstat' | awk '{print $2}'`;
 rm ${START};
 echo ${PASSWD} | sudo -S ./mongod  --shardsvr -f /home/heejin/config/mongodb_mango.conf & 
 echo ${PASSWD} | sudo -S ./mongod  --shardsvr -f /home/heejin/config/mongodb_banana.conf &
-dstat -tcdm --output=${DSTAT_LOG}_6 &
+dstat -tcdm --output=${DSTAT_LOG} &
 while :
 do
 	if [ -f ${TEST} ];
@@ -226,7 +227,7 @@ done;
 kill -9 `ps -ef | grep 'dstat' | awk '{print $2}'`;
 rm ${START};
 echo ${PASSWD} | sudo -S ./mongod  --shardsvr -f /home/heejin/config/mongodb_mango.conf & 
-dstat -tcdm --output=${DSTAT_LOG}_8 &
+dstat -tcdm --output=${DSTAT_LOG} &
 while :
 do
 	if [ -f ${TEST} ];
