@@ -2,6 +2,7 @@
 
 server=$1
 sudo git pull origin master
+PASSWD="heejin"
 cd mongo-r3.6.18
 RECORD_CNT="100"
 OPT_CNT="100"
@@ -14,9 +15,9 @@ YCSB_LOG="/home/heejin/ycsb_log.txt_${RECORD_CNT}_${PATTERN}"
 if [ $server == "3" ] 
 then
 #mongos, mongod - apple
-buildscripts/scons.py MONGO_VERSION=3.6.18 mongo
-buildscripts/scons.py MONGO_VERSION=3.6.18 mongos
-buildscripts/scons.py MONGO_VERSION=3.6.18 mongod
+#buildscripts/scons.py MONGO_VERSION=3.6.18 mongo
+#buildscripts/scons.py MONGO_VERSION=3.6.18 mongos
+#buildscripts/scons.py MONGO_VERSION=3.6.18 mongod
 sudo ./mongod --shardsvr -f /home/heejin/config/mongodb_apple.conf & 
 echo "apple shard on"
 sudo ./mongod --configsvr -f /home/heejin/config/mongodb_config.conf & 
@@ -27,13 +28,39 @@ cd ../YCSB
 ./bin/ycsb load mongodb -s -P workloads/workload${WORKLOAD} -p mongodb.url="mongodb://10.20.16.165:50001" -p recordcount=${RECORD_CNT} -p operationcount=${OPT_CNT} -p requestdistribtuion=${PATTERN} >> ${YCSB_LOG}
 ./bin/ycsb run mongodb -s -P workloads/workload${WORKLOAD} -p mongodb.url="mongodb://10.20.16.165:50001" -p recordcount=${RECORD_CNT} -p operationcount=${OPT_CNT} -p requestdistribtuion=${PATTERN} >> ${YCSB_LOG}
 touch done.txt
-echo "heejin" | scp done.txt heejin@10.20.16.110:/home/heejin/mongodbShard
-echo "heejin" | scp done.txt heejin@10.20.16.111:/home/heejin/mongodbShard
-echo "heejin" | scp done.txt heejin@10.20.16.112:/home/heejin/mongodbShard
-echo "heejin" | scp done.txt heejin@10.20.16.115:/home/heejin/mongodbShard
-kill -9 `ps -ef | grep 'mongos' | awk '{print $2}'`
-kill -9 `ps -ef | grep 'dstat' | awk '{print $2}'`
+expect << EOF
+	set timeout 1
+	spawn scp -o StrictHostKeyChecking=no done.txt heejin@10.20.16.110:/home/heejin/mongodbShard
+	expect "password:"
+	send "$PASSWD\r"
+	expect eof
+EOF
 
+expect << EOF
+	set timeout 1
+	spawn scp -o StrictHostKeyChecking=no done.txt heejin@10.20.16.111:/home/heejin/mongodbShard
+	expect "password:"
+	send "$PASSWD\r"
+	expect eof
+EOF
+expect << EOF
+	set timeout 1
+	spawn scp -o StrictHostKeyChecking=no done.txt heejin@10.20.16.112:/home/heejin/mongodbShard
+	expect "password:"
+	send "$PASSWD\r"
+	expect eof
+EOF
+expect << EOF
+	set timeout 1
+	spawn scp -o StrictHostKeyChecking=no done.txt heejin@10.20.16.115:/home/heejin/mongodbShard
+	expect "password:"
+	send "$PASSWD\r"
+	expect eof
+EOF
+kill -9 `ps -ef | grep 'dstat' | awk '{print $2}'`
+kill -9 `ps -ef | grep 'mongos' | awk '{print $2}'`
+
+rm done.txt
 echo "mongos on"
 elif [ $server == "4" ]
 then
@@ -46,11 +73,13 @@ sudo ./mongod --configsvr -f /home/heejin/config/mongodb_config.conf &
 while :
 do
 	if [ -f /home/heejin/mongodbShard/done.txt ];
+	then
+		kill -9 `ps -ef | grep 'dstat' | awk '{print $2}'`
 		break;
 	fi
 done
-kill -9 `ps -ef | grep 'dstat' | awk '{print $2}'`
 echo "server 4 mongod on"
+rm done.txt
 exit 1
 elif [ $server == "5" ]
 then
@@ -64,11 +93,13 @@ sudo ./mongod --configsvr -f /home/heejin/config/mongodb_config.conf &
 while :
 do
 	if [ -f /home/heejin/mongodbShard/done.txt ];
+	then
+		kill -9 `ps -ef | grep 'dstat' | awk '{print $2}'`
 		break;
 	fi
 done
-kill -9 `ps -ef | grep 'dstat' | awk '{print $2}'`
 echo "server 5 mongod on";
+rm done.txt
 exit 1
 elif [ $server == "6" ]
 then
@@ -80,11 +111,13 @@ sudo ./mongod  --shardsvr -f /home/heejin/config/mongodb_banana.conf &
 while :
 do
 	if [ -f /home/heejin/mongodbShard/done.txt ];
+	then
+		kill -9 `ps -ef | grep 'dstat' | awk '{print $2}'`
 		break;
 	fi
 done
-kill -9 `ps -ef | grep 'dstat' | awk '{print $2}'`
 echo "server 6 mongod on";
+rm done.txt
 exit 1
 else
 mongod - mango
@@ -94,11 +127,13 @@ sudo ./mongod  --shardsvr -f /home/heejin/config/mongodb_mango.conf &
 while :
 do
 	if [ -f /home/heejin/mongodbShard/done.txt ];
+	then
+		kill -9 `ps -ef | grep 'dstat' | awk '{print $2}'`
 		break;
 	fi
 done
-kill -9 `ps -ef | grep 'dstat' | awk '{print $2}'`
 echo "server 8 mongod on";
+rm done.txt
 exit 1
 fi
 

@@ -1,0 +1,618 @@
+MongoDB shell version v3.6.18
+connecting to: mongodb://10.20.16.165:50001/test?gssapiServiceName=mongodb
+Implicit session: session { "id" : UUID("5a46ce7f-5483-4d9d-98fa-4362c2762f2f") }
+MongoDB server version: 3.6.18
+Server has startup warnings: 
+2020-06-20T09:15:08.202+0000 I CONTROL  [main] 
+2020-06-20T09:15:08.202+0000 I CONTROL  [main] ** WARNING: Access control is not enabled for the database.
+2020-06-20T09:15:08.202+0000 I CONTROL  [main] **          Read and write access to data and configuration is unrestricted.
+2020-06-20T09:15:08.202+0000 I CONTROL  [main] ** WARNING: You are running this process as the root user, which is not recommended.
+2020-06-20T09:15:08.202+0000 I CONTROL  [main] 
+mongos> [9G[JprintShardingSizes()[29G[9G[JprintShardingSizes()[29G
+2020-06-20T09:15:40.553+0000 I NETWORK  [thread1] Starting new replica set monitor for apple/10.20.16.110:30001,10.20.16.111:30001,10.20.16.165:30001
+2020-06-20T09:15:40.558+0000 I NETWORK  [thread1] Starting new replica set monitor for banana/10.20.16.110:30002,10.20.16.111:30002,10.20.16.112:30002
+2020-06-20T09:15:40.561+0000 I NETWORK  [thread1] Starting new replica set monitor for mango/10.20.16.111:30003,10.20.16.112:30003,10.20.16.115:30003
+--- Sharding Sizes --- 
+  sharding version: {
+  	"_id" : 1,
+  	"minCompatibleVersion" : 5,
+  	"currentVersion" : 6,
+  	"clusterId" : ObjectId("5ee9d71ba3c26cb7eca74ea3")
+  }
+  shards:
+        {
+        	"_id" : "apple",
+        	"host" : "apple/10.20.16.110:30001,10.20.16.111:30001,10.20.16.165:30001",
+        	"state" : 1
+        }
+        {
+        	"_id" : "banana",
+        	"host" : "banana/10.20.16.110:30002,10.20.16.111:30002,10.20.16.112:30002",
+        	"state" : 1
+        }
+        {
+        	"_id" : "mango",
+        	"host" : "mango/10.20.16.111:30003,10.20.16.112:30003,10.20.16.115:30003",
+        	"state" : 1
+        }
+  databases:
+        { "_id" : "newDB", "primary" : "apple", "partitioned" : true }
+                newDB.newCol chunks:
+                        { "key" : { "$minKey" : 1 } } -->> { "key" : 1 } on : mango {
+                        	"estimate" : false,
+                        	"size" : 35,
+                        	"numObjects" : 1,
+                        	"operationTime" : Timestamp(1592644540, 1),
+                        	"$gleStats" : {
+                        		"lastOpTime" : Timestamp(0, 0),
+                        		"electionId" : ObjectId("7fffffff000000000000001f")
+                        	},
+                        	"$configServerState" : {
+                        		"opTime" : {
+                        			"ts" : Timestamp(1592644540, 3),
+                        			"t" : NumberLong(14)
+                        		}
+                        	},
+                        	"$clusterTime" : {
+                        		"clusterTime" : Timestamp(1592644540, 3),
+                        		"signature" : {
+                        			"hash" : BinData(0,"AAAAAAAAAAAAAAAAAAAAAAAAAAA="),
+                        			"keyId" : NumberLong(0)
+                        		}
+                        	}
+                        }
+                        { "key" : 1 } -->> { "key" : 59919 } on : apple {
+                        	"estimate" : false,
+                        	"size" : 2097130,
+                        	"numObjects" : 59918,
+                        	"operationTime" : Timestamp(1592644535, 1),
+                        	"$gleStats" : {
+                        		"lastOpTime" : Timestamp(0, 0),
+                        		"electionId" : ObjectId("7fffffff000000000000000f")
+                        	},
+                        	"$configServerState" : {
+                        		"opTime" : {
+                        			"ts" : Timestamp(1592644540, 2),
+                        			"t" : NumberLong(14)
+                        		}
+                        	},
+                        	"$clusterTime" : {
+                        		"clusterTime" : Timestamp(1592644540, 5),
+                        		"signature" : {
+                        			"hash" : BinData(0,"AAAAAAAAAAAAAAAAAAAAAAAAAAA="),
+                        			"keyId" : NumberLong(0)
+                        		}
+                        	}
+                        }
+                        { "key" : 59919 } -->> { "key" : 89878 } on : banana {
+                        	"estimate" : false,
+                        	"size" : 1048565,
+                        	"numObjects" : 29959,
+                        	"operationTime" : Timestamp(1592644540, 2),
+                        	"$gleStats" : {
+                        		"lastOpTime" : Timestamp(0, 0),
+                        		"electionId" : ObjectId("7fffffff000000000000000a")
+                        	},
+                        	"$configServerState" : {
+                        		"opTime" : {
+                        			"ts" : Timestamp(1592644540, 2),
+                        			"t" : NumberLong(14)
+                        		}
+                        	},
+                        	"$clusterTime" : {
+                        		"clusterTime" : Timestamp(1592644540, 5),
+                        		"signature" : {
+                        			"hash" : BinData(0,"AAAAAAAAAAAAAAAAAAAAAAAAAAA="),
+                        			"keyId" : NumberLong(0)
+                        		}
+                        	}
+                        }
+                        { "key" : 89878 } -->> { "key" : 123930 } on : banana {
+                        	"estimate" : false,
+                        	"size" : 1191820,
+                        	"numObjects" : 34052,
+                        	"operationTime" : Timestamp(1592644540, 2),
+                        	"$gleStats" : {
+                        		"lastOpTime" : Timestamp(0, 0),
+                        		"electionId" : ObjectId("7fffffff000000000000000a")
+                        	},
+                        	"$configServerState" : {
+                        		"opTime" : {
+                        			"ts" : Timestamp(1592644540, 2),
+                        			"t" : NumberLong(14)
+                        		}
+                        	},
+                        	"$clusterTime" : {
+                        		"clusterTime" : Timestamp(1592644540, 5),
+                        		"signature" : {
+                        			"hash" : BinData(0,"AAAAAAAAAAAAAAAAAAAAAAAAAAA="),
+                        			"keyId" : NumberLong(0)
+                        		}
+                        	}
+                        }
+                        { "key" : 123930 } -->> { "key" : 168875 } on : mango {
+                        	"estimate" : false,
+                        	"size" : 1573075,
+                        	"numObjects" : 44945,
+                        	"operationTime" : Timestamp(1592644540, 1),
+                        	"$gleStats" : {
+                        		"lastOpTime" : Timestamp(0, 0),
+                        		"electionId" : ObjectId("7fffffff000000000000001f")
+                        	},
+                        	"$configServerState" : {
+                        		"opTime" : {
+                        			"ts" : Timestamp(1592644540, 6),
+                        			"t" : NumberLong(14)
+                        		}
+                        	},
+                        	"$clusterTime" : {
+                        		"clusterTime" : Timestamp(1592644540, 6),
+                        		"signature" : {
+                        			"hash" : BinData(0,"AAAAAAAAAAAAAAAAAAAAAAAAAAA="),
+                        			"keyId" : NumberLong(0)
+                        		}
+                        	}
+                        }
+                        { "key" : 168875 } -->> { "key" : 187751 } on : mango {
+                        	"estimate" : false,
+                        	"size" : 660660,
+                        	"numObjects" : 18876,
+                        	"operationTime" : Timestamp(1592644540, 1),
+                        	"$gleStats" : {
+                        		"lastOpTime" : Timestamp(0, 0),
+                        		"electionId" : ObjectId("7fffffff000000000000001f")
+                        	},
+                        	"$configServerState" : {
+                        		"opTime" : {
+                        			"ts" : Timestamp(1592644540, 6),
+                        			"t" : NumberLong(14)
+                        		}
+                        	},
+                        	"$clusterTime" : {
+                        		"clusterTime" : Timestamp(1592644540, 6),
+                        		"signature" : {
+                        			"hash" : BinData(0,"AAAAAAAAAAAAAAAAAAAAAAAAAAA="),
+                        			"keyId" : NumberLong(0)
+                        		}
+                        	}
+                        }
+                        { "key" : 187751 } -->> { "key" : 220110 } on : apple {
+                        	"estimate" : false,
+                        	"size" : 1132565,
+                        	"numObjects" : 32359,
+                        	"operationTime" : Timestamp(1592644540, 8),
+                        	"$gleStats" : {
+                        		"lastOpTime" : Timestamp(0, 0),
+                        		"electionId" : ObjectId("7fffffff000000000000000f")
+                        	},
+                        	"$configServerState" : {
+                        		"opTime" : {
+                        			"ts" : Timestamp(1592644540, 6),
+                        			"t" : NumberLong(14)
+                        		}
+                        	},
+                        	"$clusterTime" : {
+                        		"clusterTime" : Timestamp(1592644540, 9),
+                        		"signature" : {
+                        			"hash" : BinData(0,"AAAAAAAAAAAAAAAAAAAAAAAAAAA="),
+                        			"keyId" : NumberLong(0)
+                        		}
+                        	}
+                        }
+                        { "key" : 220110 } -->> { "key" : 252468 } on : apple {
+                        	"estimate" : false,
+                        	"size" : 1132530,
+                        	"numObjects" : 32358,
+                        	"operationTime" : Timestamp(1592644540, 8),
+                        	"$gleStats" : {
+                        		"lastOpTime" : Timestamp(0, 0),
+                        		"electionId" : ObjectId("7fffffff000000000000000f")
+                        	},
+                        	"$configServerState" : {
+                        		"opTime" : {
+                        			"ts" : Timestamp(1592644540, 6),
+                        			"t" : NumberLong(14)
+                        		}
+                        	},
+                        	"$clusterTime" : {
+                        		"clusterTime" : Timestamp(1592644540, 9),
+                        		"signature" : {
+                        			"hash" : BinData(0,"AAAAAAAAAAAAAAAAAAAAAAAAAAA="),
+                        			"keyId" : NumberLong(0)
+                        		}
+                        	}
+                        }
+                        { "key" : 252468 } -->> { "key" : { "$maxKey" : 1 } } on : banana {
+                        	"estimate" : false,
+                        	"size" : 1663620,
+                        	"numObjects" : 47532,
+                        	"operationTime" : Timestamp(1592644540, 2),
+                        	"$gleStats" : {
+                        		"lastOpTime" : Timestamp(0, 0),
+                        		"electionId" : ObjectId("7fffffff000000000000000a")
+                        	},
+                        	"$configServerState" : {
+                        		"opTime" : {
+                        			"ts" : Timestamp(1592644540, 6),
+                        			"t" : NumberLong(14)
+                        		}
+                        	},
+                        	"$clusterTime" : {
+                        		"clusterTime" : Timestamp(1592644540, 6),
+                        		"signature" : {
+                        			"hash" : BinData(0,"AAAAAAAAAAAAAAAAAAAAAAAAAAA="),
+                        			"keyId" : NumberLong(0)
+                        		}
+                        	}
+                        }
+        { "_id" : "test", "primary" : "mango", "partitioned" : false }
+        { "_id" : "ycsb", "primary" : "mango", "partitioned" : true }
+                ycsb.usertable chunks:
+                        { "_id" : { "$minKey" : 1 } } -->> { "_id" : { "$maxKey" : 1 } } on : mango {
+                        	"estimate" : false,
+                        	"size" : 3217502,
+                        	"numObjects" : 2755,
+                        	"operationTime" : Timestamp(1592644540, 1),
+                        	"$gleStats" : {
+                        		"lastOpTime" : Timestamp(0, 0),
+                        		"electionId" : ObjectId("7fffffff000000000000001f")
+                        	},
+                        	"$configServerState" : {
+                        		"opTime" : {
+                        			"ts" : Timestamp(1592644540, 6),
+                        			"t" : NumberLong(14)
+                        		}
+                        	},
+                        	"$clusterTime" : {
+                        		"clusterTime" : Timestamp(1592644540, 6),
+                        		"signature" : {
+                        			"hash" : BinData(0,"AAAAAAAAAAAAAAAAAAAAAAAAAAA="),
+                        			"keyId" : NumberLong(0)
+                        		}
+                        	}
+                        }
+
+mongos> [9G[JprintShardingSizes()[29G[9G[JprintShardingSizes()[29G[9G[Jsh.status()[20G[9G[Jsh.status()[20G[9G[Jsh.shardCollection("ycsb.usertable",{_id:1})[53G[9G[Jdb.usertable.drop()[28G[9G[Jdb.usertable.drop()[28G
+false
+mongos> [9G[Jdb.usertable.drop()[28G[9G[JprintShardingSizes()[29G[9G[Jdb.usertable.drop()[28G[9G[J[9Guse ycsv[9G[Juse ycs[16Gb[9G[Juse ycsb[17G
+switched to db ycsb
+mongos> [9G[Juse ycsb[17G[9G[Jdb.usertable.drop()[28G[9G[Jdb.usertable.drop()[28G
+true
+mongos> [9G[Jdb.usertable.drop()[28G[9G[Juse ycsb[17G[9G[Jdb.usertable.drop()[28G[9G[JprintShardingSizes()[29G[9G[JprintShardingSizes()[29G[9G[Jsh.status()[20G[9G[Jsh.status()[20G[9G[Jsh.shardCollection("ycsb.usertable",{_id:1})[53G[9G[Jdb.usertable.drop()[28G[9G[Juse ycsb[17G[9G[Jdb.usertable.drop()[28G[9G[Jsh.shardCollection("ycsb.usertable",{_id:1})[53G[9G[Jsh.shardCollection("ycsb.usertable",{_id:1})[53G
+{
+	"collectionsharded" : "ycsb.usertable",
+	"collectionUUID" : UUID("40594bbe-27bc-4b03-bc61-2e37695b93b0"),
+	"ok" : 1,
+	"operationTime" : Timestamp(1592644575, 5),
+	"$clusterTime" : {
+		"clusterTime" : Timestamp(1592644575, 5),
+		"signature" : {
+			"hash" : BinData(0,"AAAAAAAAAAAAAAAAAAAAAAAAAAA="),
+			"keyId" : NumberLong(0)
+		}
+	}
+}
+mongos> [9G[Jsh.shardCollection("ycsb.usertable",{_id:1})[53G[9G[Jdb.usertable.drop()[28G[9G[Juse ycsb[17G[9G[Jdb.usertable.drop()[28G[9G[JprintShardingSizes()[29G[9G[JprintShardingSizes()[29G[9G[Jsh.status()[20G[9G[Jsh.status()[20G
+--- Sharding Status --- 
+  sharding version: {
+  	"_id" : 1,
+  	"minCompatibleVersion" : 5,
+  	"currentVersion" : 6,
+  	"clusterId" : ObjectId("5ee9d71ba3c26cb7eca74ea3")
+  }
+  shards:
+        {  "_id" : "apple",  "host" : "apple/10.20.16.110:30001,10.20.16.111:30001,10.20.16.165:30001",  "state" : 1 }
+        {  "_id" : "banana",  "host" : "banana/10.20.16.110:30002,10.20.16.111:30002,10.20.16.112:30002",  "state" : 1 }
+        {  "_id" : "mango",  "host" : "mango/10.20.16.111:30003,10.20.16.112:30003,10.20.16.115:30003",  "state" : 1 }
+  active mongoses:
+        "3.6.18" : 1
+  autosplit:
+        Currently enabled: yes
+  balancer:
+        Currently enabled:  yes
+        Currently running:  no
+        Failed balancer rounds in last 5 attempts:  0
+        Migration Results for the last 24 hours: 
+                20 : Success
+                14 : Failed with error 'aborted', from mango to apple
+                8 : Failed with error 'aborted', from mango to banana
+  databases:
+        {  "_id" : "config",  "primary" : "config",  "partitioned" : true }
+                config.system.sessions
+                        shard key: { "_id" : 1 }
+                        unique: false
+                        balancing: true
+                        chunks:
+                                apple	1
+                        { "_id" : { "$minKey" : 1 } } -->> { "_id" : { "$maxKey" : 1 } } on : apple Timestamp(1, 0) 
+        {  "_id" : "newDB",  "primary" : "apple",  "partitioned" : true }
+                newDB.newCol
+                        shard key: { "key" : 1 }
+                        unique: false
+                        balancing: true
+                        chunks:
+                                apple	3
+                                banana	3
+                                mango	3
+                        { "key" : { "$minKey" : 1 } } -->> { "key" : 1 } on : mango Timestamp(6, 1) 
+                        { "key" : 1 } -->> { "key" : 59919 } on : apple Timestamp(7, 1) 
+                        { "key" : 59919 } -->> { "key" : 89878 } on : banana Timestamp(5, 1) 
+                        { "key" : 89878 } -->> { "key" : 123930 } on : banana Timestamp(4, 3) 
+                        { "key" : 123930 } -->> { "key" : 168875 } on : mango Timestamp(5, 2) 
+                        { "key" : 168875 } -->> { "key" : 187751 } on : mango Timestamp(5, 3) 
+                        { "key" : 187751 } -->> { "key" : 220110 } on : apple Timestamp(6, 2) 
+                        { "key" : 220110 } -->> { "key" : 252468 } on : apple Timestamp(6, 3) 
+                        { "key" : 252468 } -->> { "key" : { "$maxKey" : 1 } } on : banana Timestamp(7, 0) 
+        {  "_id" : "test",  "primary" : "mango",  "partitioned" : false }
+        {  "_id" : "ycsb",  "primary" : "mango",  "partitioned" : true }
+                ycsb.usertable
+                        shard key: { "_id" : 1 }
+                        unique: false
+                        balancing: true
+                        chunks:
+                                mango	1
+                        { "_id" : { "$minKey" : 1 } } -->> { "_id" : { "$maxKey" : 1 } } on : mango Timestamp(1, 0) 
+
+mongos> [9G[J[9G[1G[J(reverse-i-search)`': [23G[1G[J(reverse-i-search)`p': db.usertable.drop()[40G[1G[J(reverse-i-search)`pr': printShardingSizes()[25G[1G[J(reverse-i-search)`pri': printShardingSizes()[26G[1G[J(reverse-i-search)`prin': printShardingSizes()[27G[1G[J(reverse-i-search)`print': printShardingSizes()[28G[1G[Jmongos> printShardingSizes()[9G[9G[JprintShardingSizes()[29G
+--- Sharding Sizes --- 
+  sharding version: {
+  	"_id" : 1,
+  	"minCompatibleVersion" : 5,
+  	"currentVersion" : 6,
+  	"clusterId" : ObjectId("5ee9d71ba3c26cb7eca74ea3")
+  }
+  shards:
+        {
+        	"_id" : "apple",
+        	"host" : "apple/10.20.16.110:30001,10.20.16.111:30001,10.20.16.165:30001",
+        	"state" : 1
+        }
+        {
+        	"_id" : "banana",
+        	"host" : "banana/10.20.16.110:30002,10.20.16.111:30002,10.20.16.112:30002",
+        	"state" : 1
+        }
+        {
+        	"_id" : "mango",
+        	"host" : "mango/10.20.16.111:30003,10.20.16.112:30003,10.20.16.115:30003",
+        	"state" : 1
+        }
+  databases:
+        { "_id" : "newDB", "primary" : "apple", "partitioned" : true }
+                newDB.newCol chunks:
+                        { "key" : { "$minKey" : 1 } } -->> { "key" : 1 } on : mango {
+                        	"estimate" : false,
+                        	"size" : 35,
+                        	"numObjects" : 1,
+                        	"operationTime" : Timestamp(1592644575, 6),
+                        	"$gleStats" : {
+                        		"lastOpTime" : Timestamp(0, 0),
+                        		"electionId" : ObjectId("7fffffff000000000000001f")
+                        	},
+                        	"$configServerState" : {
+                        		"opTime" : {
+                        			"ts" : Timestamp(1592644575, 11),
+                        			"t" : NumberLong(14)
+                        		}
+                        	},
+                        	"$clusterTime" : {
+                        		"clusterTime" : Timestamp(1592644576, 1),
+                        		"signature" : {
+                        			"hash" : BinData(0,"AAAAAAAAAAAAAAAAAAAAAAAAAAA="),
+                        			"keyId" : NumberLong(0)
+                        		}
+                        	}
+                        }
+                        { "key" : 1 } -->> { "key" : 59919 } on : apple {
+                        	"estimate" : false,
+                        	"size" : 2097130,
+                        	"numObjects" : 59918,
+                        	"operationTime" : Timestamp(1592644575, 12),
+                        	"$gleStats" : {
+                        		"lastOpTime" : Timestamp(0, 0),
+                        		"electionId" : ObjectId("7fffffff000000000000000f")
+                        	},
+                        	"$configServerState" : {
+                        		"opTime" : {
+                        			"ts" : Timestamp(1592644575, 11),
+                        			"t" : NumberLong(14)
+                        		}
+                        	},
+                        	"$clusterTime" : {
+                        		"clusterTime" : Timestamp(1592644576, 1),
+                        		"signature" : {
+                        			"hash" : BinData(0,"AAAAAAAAAAAAAAAAAAAAAAAAAAA="),
+                        			"keyId" : NumberLong(0)
+                        		}
+                        	}
+                        }
+                        { "key" : 59919 } -->> { "key" : 89878 } on : banana {
+                        	"estimate" : false,
+                        	"size" : 1048565,
+                        	"numObjects" : 29959,
+                        	"operationTime" : Timestamp(1592644576, 1),
+                        	"$gleStats" : {
+                        		"lastOpTime" : Timestamp(0, 0),
+                        		"electionId" : ObjectId("7fffffff000000000000000a")
+                        	},
+                        	"$configServerState" : {
+                        		"opTime" : {
+                        			"ts" : Timestamp(1592644575, 11),
+                        			"t" : NumberLong(14)
+                        		}
+                        	},
+                        	"$clusterTime" : {
+                        		"clusterTime" : Timestamp(1592644576, 1),
+                        		"signature" : {
+                        			"hash" : BinData(0,"AAAAAAAAAAAAAAAAAAAAAAAAAAA="),
+                        			"keyId" : NumberLong(0)
+                        		}
+                        	}
+                        }
+                        { "key" : 89878 } -->> { "key" : 123930 } on : banana {
+                        	"estimate" : false,
+                        	"size" : 1191820,
+                        	"numObjects" : 34052,
+                        	"operationTime" : Timestamp(1592644576, 1),
+                        	"$gleStats" : {
+                        		"lastOpTime" : Timestamp(0, 0),
+                        		"electionId" : ObjectId("7fffffff000000000000000a")
+                        	},
+                        	"$configServerState" : {
+                        		"opTime" : {
+                        			"ts" : Timestamp(1592644575, 11),
+                        			"t" : NumberLong(14)
+                        		}
+                        	},
+                        	"$clusterTime" : {
+                        		"clusterTime" : Timestamp(1592644576, 1),
+                        		"signature" : {
+                        			"hash" : BinData(0,"AAAAAAAAAAAAAAAAAAAAAAAAAAA="),
+                        			"keyId" : NumberLong(0)
+                        		}
+                        	}
+                        }
+                        { "key" : 123930 } -->> { "key" : 168875 } on : mango {
+                        	"estimate" : false,
+                        	"size" : 1573075,
+                        	"numObjects" : 44945,
+                        	"operationTime" : Timestamp(1592644575, 6),
+                        	"$gleStats" : {
+                        		"lastOpTime" : Timestamp(0, 0),
+                        		"electionId" : ObjectId("7fffffff000000000000001f")
+                        	},
+                        	"$configServerState" : {
+                        		"opTime" : {
+                        			"ts" : Timestamp(1592644575, 11),
+                        			"t" : NumberLong(14)
+                        		}
+                        	},
+                        	"$clusterTime" : {
+                        		"clusterTime" : Timestamp(1592644576, 1),
+                        		"signature" : {
+                        			"hash" : BinData(0,"AAAAAAAAAAAAAAAAAAAAAAAAAAA="),
+                        			"keyId" : NumberLong(0)
+                        		}
+                        	}
+                        }
+                        { "key" : 168875 } -->> { "key" : 187751 } on : mango {
+                        	"estimate" : false,
+                        	"size" : 660660,
+                        	"numObjects" : 18876,
+                        	"operationTime" : Timestamp(1592644575, 6),
+                        	"$gleStats" : {
+                        		"lastOpTime" : Timestamp(0, 0),
+                        		"electionId" : ObjectId("7fffffff000000000000001f")
+                        	},
+                        	"$configServerState" : {
+                        		"opTime" : {
+                        			"ts" : Timestamp(1592644575, 11),
+                        			"t" : NumberLong(14)
+                        		}
+                        	},
+                        	"$clusterTime" : {
+                        		"clusterTime" : Timestamp(1592644576, 1),
+                        		"signature" : {
+                        			"hash" : BinData(0,"AAAAAAAAAAAAAAAAAAAAAAAAAAA="),
+                        			"keyId" : NumberLong(0)
+                        		}
+                        	}
+                        }
+                        { "key" : 187751 } -->> { "key" : 220110 } on : apple {
+                        	"estimate" : false,
+                        	"size" : 1132565,
+                        	"numObjects" : 32359,
+                        	"operationTime" : Timestamp(1592644575, 12),
+                        	"$gleStats" : {
+                        		"lastOpTime" : Timestamp(0, 0),
+                        		"electionId" : ObjectId("7fffffff000000000000000f")
+                        	},
+                        	"$configServerState" : {
+                        		"opTime" : {
+                        			"ts" : Timestamp(1592644575, 11),
+                        			"t" : NumberLong(14)
+                        		}
+                        	},
+                        	"$clusterTime" : {
+                        		"clusterTime" : Timestamp(1592644576, 1),
+                        		"signature" : {
+                        			"hash" : BinData(0,"AAAAAAAAAAAAAAAAAAAAAAAAAAA="),
+                        			"keyId" : NumberLong(0)
+                        		}
+                        	}
+                        }
+                        { "key" : 220110 } -->> { "key" : 252468 } on : apple {
+                        	"estimate" : false,
+                        	"size" : 1132530,
+                        	"numObjects" : 32358,
+                        	"operationTime" : Timestamp(1592644575, 12),
+                        	"$gleStats" : {
+                        		"lastOpTime" : Timestamp(0, 0),
+                        		"electionId" : ObjectId("7fffffff000000000000000f")
+                        	},
+                        	"$configServerState" : {
+                        		"opTime" : {
+                        			"ts" : Timestamp(1592644575, 11),
+                        			"t" : NumberLong(14)
+                        		}
+                        	},
+                        	"$clusterTime" : {
+                        		"clusterTime" : Timestamp(1592644576, 1),
+                        		"signature" : {
+                        			"hash" : BinData(0,"AAAAAAAAAAAAAAAAAAAAAAAAAAA="),
+                        			"keyId" : NumberLong(0)
+                        		}
+                        	}
+                        }
+                        { "key" : 252468 } -->> { "key" : { "$maxKey" : 1 } } on : banana {
+                        	"estimate" : false,
+                        	"size" : 1663620,
+                        	"numObjects" : 47532,
+                        	"operationTime" : Timestamp(1592644576, 1),
+                        	"$gleStats" : {
+                        		"lastOpTime" : Timestamp(0, 0),
+                        		"electionId" : ObjectId("7fffffff000000000000000a")
+                        	},
+                        	"$configServerState" : {
+                        		"opTime" : {
+                        			"ts" : Timestamp(1592644575, 11),
+                        			"t" : NumberLong(14)
+                        		}
+                        	},
+                        	"$clusterTime" : {
+                        		"clusterTime" : Timestamp(1592644576, 1),
+                        		"signature" : {
+                        			"hash" : BinData(0,"AAAAAAAAAAAAAAAAAAAAAAAAAAA="),
+                        			"keyId" : NumberLong(0)
+                        		}
+                        	}
+                        }
+        { "_id" : "test", "primary" : "mango", "partitioned" : false }
+        { "_id" : "ycsb", "primary" : "mango", "partitioned" : true }
+                ycsb.usertable chunks:
+                        { "_id" : { "$minKey" : 1 } } -->> { "_id" : { "$maxKey" : 1 } } on : mango {
+                        	"size" : 0,
+                        	"numObjects" : 0,
+                        	"operationTime" : Timestamp(1592644575, 6),
+                        	"$gleStats" : {
+                        		"lastOpTime" : Timestamp(0, 0),
+                        		"electionId" : ObjectId("7fffffff000000000000001f")
+                        	},
+                        	"$configServerState" : {
+                        		"opTime" : {
+                        			"ts" : Timestamp(1592644575, 11),
+                        			"t" : NumberLong(14)
+                        		}
+                        	},
+                        	"$clusterTime" : {
+                        		"clusterTime" : Timestamp(1592644576, 1),
+                        		"signature" : {
+                        			"hash" : BinData(0,"AAAAAAAAAAAAAAAAAAAAAAAAAAA="),
+                        			"keyId" : NumberLong(0)
+                        		}
+                        	}
+                        }
+
+mongos> [9G[J[9Gmongos> [9G[J[9G^C
+
+bye
