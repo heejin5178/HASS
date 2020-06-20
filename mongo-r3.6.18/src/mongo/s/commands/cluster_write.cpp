@@ -595,13 +595,13 @@ log() << "ChunkRange : " << chunkRange;
 			//log() << "after splitPoints[i] : " << splitPoints[i];
 		}
 
-	}
 
 #elif ORIGINAL
 
 #else
-	log() << "usage : "
+	log() << "usage : ";
 #endif
+	}
 
 //	log() << "heejin*** found-front : " << splitPoints.front();
 //	log() << "heejin*** found-back : " << splitPoints.back();
