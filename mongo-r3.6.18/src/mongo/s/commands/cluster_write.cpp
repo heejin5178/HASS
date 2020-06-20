@@ -74,7 +74,6 @@ namespace {
 
 const uint64_t kTooManySplitPoints = 4;
 int global_update=0;
-int global_split=0;
 
 void toBatchError(const Status& status, BatchedCommandResponse* response) {
     response->clear();

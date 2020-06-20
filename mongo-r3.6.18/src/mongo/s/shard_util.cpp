@@ -126,13 +126,13 @@ StatusWith<std::vector<BSONObj>> selectChunkSplitPoints(OperationContext* opCtx,
 
     //heejin debug
     std::vector<BSONObj> splitPoints;
-	log() << "heejin) response print: " << response;
+	//log() << "heejin) response print: " << response;
     BSONObjIterator it(response.getObjectField("splitKeys"));
 
         
 
     while (it.more()) {
-	log() << "heejin) split key added : " << it.next().Obj().getOwned() ;
+	//log() << "heejin) split key added : " << it.next().Obj().getOwned() ;
 //heejin) "2020-06-13T15:59:04.546+0000 I SHARDING [conn1] heejin : { key: 137329.0 }",
 
         splitPoints.push_back(it.next().Obj().getOwned());
@@ -191,7 +191,7 @@ StatusWith<std::vector<BSONObj>> selectChunkSplitPoints(OperationContext* opCtx,
 
     splitPoints.push_back(split_avg.obj());
 
-log() << "jin)) split key added : " << split_average;
+//log() << "jin)) split key added : " << split_average;
 /*
     while (it.more()) {
 	log() << "heejin) split key added : " << it.next().Obj().getOwned() ;
