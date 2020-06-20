@@ -21,9 +21,9 @@ cd mongo-r3.6.18
 if [ $server == "3" ] 
 then
 #mongos, mongod - apple
-buildscripts/scons.py MONGO_VERSION=3.6.18 mongo
-buildscripts/scons.py MONGO_VERSION=3.6.18 mongos
-buildscripts/scons.py MONGO_VERSION=3.6.18 mongod
+#buildscripts/scons.py MONGO_VERSION=3.6.18 mongo
+#buildscripts/scons.py MONGO_VERSION=3.6.18 mongos
+#buildscripts/scons.py MONGO_VERSION=3.6.18 mongod
 echo $PASSWD | sudo -S ./mongod --shardsvr -f /home/heejin/config/mongodb_apple.conf & 
 echo "apple shard on"
 echo ${PASSWD} | sudo -S ./mongod --configsvr -f /home/heejin/config/mongodb_config.conf & 
@@ -73,7 +73,7 @@ echo "mongos on"
 elif [ $server == "4" ]
 then
 #mongod - apple,banana
-buildscripts/scons.py MONGO_VERSION=3.6.18 mongod
+#buildscripts/scons.py MONGO_VERSION=3.6.18 mongod
 dstat -tcdm --output=${DSTAT_LOG}_4 &
 echo ${PASSWD} | sudo -S ./mongod --shardsvr -f /home/heejin/config/mongodb_apple.conf & 
 echo ${PASSWD} | sudo -S ./mongod --shardsvr -f /home/heejin/config/mongodb_banana.conf &
@@ -92,7 +92,7 @@ exit 1
 elif [ $server == "5" ]
 then
 #mongod - apple,banana,mango
-buildscripts/scons.py MONGO_VERSION=3.6.18 mongod
+#buildscripts/scons.py MONGO_VERSION=3.6.18 mongod
 dstat -tcdm --output=${DSTAT_LOG}_5 &
 echo ${PASSWD} | sudo -S ./mongod --shardsvr -f /home/heejin/config/mongodb_apple.conf &
 
@@ -113,7 +113,7 @@ exit 1
 elif [ $server == "6" ]
 then
 #mongod - banana,mango
-buildscripts/scons.py MONGO_VERSION=3.6.18 mongod
+#buildscripts/scons.py MONGO_VERSION=3.6.18 mongod
 dstat -tcdm --output=${DSTAT_LOG}_6 &
 echo ${PASSWD} | sudo -S ./mongod  --shardsvr -f /home/heejin/config/mongodb_mango.conf & 
 echo ${PASSWD} | sudo -S ./mongod  --shardsvr -f /home/heejin/config/mongodb_banana.conf &
@@ -130,7 +130,7 @@ rm ${TEST}
 exit 1
 else
 #mongod - mango
-buildscripts/scons.py MONGO_VERSION=3.6.18 mongod
+#buildscripts/scons.py MONGO_VERSION=3.6.18 mongod
 dstat -tcdm --output=${DSTAT_LOG}_8 &
 echo ${PASSWD} | sudo -S ./mongod  --shardsvr -f /home/heejin/config/mongodb_mango.conf & 
 while :
