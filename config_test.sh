@@ -111,8 +111,8 @@ do
 	then
 		break;
 	fi
-done
-rm ${TEST}
+done;
+rm ${TEST};
 echo ${PASSWD} | sudo -S ./mongod --shardsvr -f /home/heejin/config/mongodb_apple.conf & 
 echo ${PASSWD} | sudo -S ./mongod --shardsvr -f /home/heejin/config/mongodb_banana.conf &
 echo ${PASSWd} | sudo -S ./mongod --configsvr -f /home/heejin/config/mongodb_config.conf &
@@ -121,10 +121,10 @@ while :
 do
 	if [ -f ${TEST} ];
 	then
-		kill -9 `ps -ef | grep 'dstat' | awk '{print $2}'`
 		break;
 	fi
 done
+kill -9 `ps -ef | grep 'dstat' | awk '{print $2}'`;
 echo "server 4 mongod on"
 rm ${TEST};
 exit 1
@@ -138,8 +138,8 @@ do
 	then
 		break;
 	fi
-done
-rm ${TEST}
+done;
+rm ${TEST};
 echo ${PASSWD} | sudo -S ./mongod --shardsvr -f /home/heejin/config/mongodb_apple.conf &
 
 echo ${PASSWD} | sudo -S ./mongod --shardsvr -f /home/heejin/config/mongodb_banana.conf &
@@ -150,10 +150,10 @@ while :
 do
 	if [ -f ${TEST} ];
 	then
-		kill -9 `ps -ef | grep 'dstat' | awk '{print $2}'`
 		break;
 	fi
 done
+kill -9 `ps -ef | grep 'dstat' | awk '{print $2}'`;
 echo "server 5 mongod on";
 rm ${TEST};
 exit 1
@@ -167,8 +167,8 @@ do
 	then
 		break;
 	fi
-done
-rm ${TEST}
+done;
+rm ${TEST};
 echo ${PASSWD} | sudo -S ./mongod  --shardsvr -f /home/heejin/config/mongodb_mango.conf & 
 echo ${PASSWD} | sudo -S ./mongod  --shardsvr -f /home/heejin/config/mongodb_banana.conf &
 dstat -tcdm --output=${DSTAT_LOG}_6 &
@@ -176,10 +176,10 @@ while :
 do
 	if [ -f ${TEST} ];
 	then
-		kill -9 `ps -ef | grep 'dstat' | awk '{print $2}'`
 		break;
 	fi
 done
+kill -9 `ps -ef | grep 'dstat' | awk '{print $2}'`;
 echo "server 6 mongod on";
 rm ${TEST}
 exit 1
@@ -192,18 +192,18 @@ do
 	then
 		break;
 	fi
-done
-rm ${TEST}
+done;
+rm ${TEST};
 echo ${PASSWD} | sudo -S ./mongod  --shardsvr -f /home/heejin/config/mongodb_mango.conf & 
 dstat -tcdm --output=${DSTAT_LOG}_8 &
 while :
 do
 	if [ -f ${TEST} ];
 	then
-		kill -9 `ps -ef | grep 'dstat' | awk '{print $2}'`
 		break;
 	fi
 done
+kill -9 `ps -ef | grep 'dstat' | awk '{print $2}'`;
 echo "server 8 mongod on";
 rm ${TEST}
 exit 1
