@@ -32,6 +32,7 @@ echo "config on"
 #sudo ./mongo 10.20.16.165:50001 --eval "printjson(use ycsb)"
 #sudo ./mongos -f /home/heejin/config/mongos.conf --bind_ip 10.20.16.165 --port 50001 &
 touch ${TEST}
+touch ${START}
 expect << EOF
 	set timeout 1
 	spawn scp -o StrictHostKeyChecking=no ${START} heejin@10.20.16.110:/home/heejin/mongodbShard
@@ -113,6 +114,7 @@ do
 		break;
 	fi
 done;
+kill -9 `ps -ef | grep 'dstat' | awk '{print $2}'`;
 rm ${START};
 echo ${PASSWD} | sudo -S ./mongod --shardsvr -f /home/heejin/config/mongodb_apple.conf & 
 echo ${PASSWD} | sudo -S ./mongod --shardsvr -f /home/heejin/config/mongodb_banana.conf &
@@ -125,7 +127,16 @@ do
 		break;
 	fi
 done
-kill -9 `ps -ef | grep 'dstat' | awk '{print $2}'`;
+
+if [ ${RECORD_CNT} -eq 500 ];
+then
+
+kill -9 `ps -ef | grep 'dstat' | awk '{print $2}'`
+
+else
+continue;
+fi
+
 echo "server 4 mongod on"
 rm ${TEST};
 exit 1
@@ -140,6 +151,7 @@ do
 		break;
 	fi
 done;
+kill -9 `ps -ef | grep 'dstat' | awk '{print $2}'`;
 rm ${START};
 echo ${PASSWD} | sudo -S ./mongod --shardsvr -f /home/heejin/config/mongodb_apple.conf &
 
@@ -154,9 +166,17 @@ do
 		break;
 	fi
 done
-kill -9 `ps -ef | grep 'dstat' | awk '{print $2}'`;
 echo "server 5 mongod on";
 rm ${TEST};
+if [ ${RECORD_CNT} -eq 500 ];
+then
+
+kill -9 `ps -ef | grep 'dstat' | awk '{print $2}'`
+
+else
+continue;
+fi
+
 exit 1
 elif [ $server == "6" ]
 then
@@ -169,6 +189,7 @@ do
 		break;
 	fi
 done;
+kill -9 `ps -ef | grep 'dstat' | awk '{print $2}'`;
 rm ${START};
 echo ${PASSWD} | sudo -S ./mongod  --shardsvr -f /home/heejin/config/mongodb_mango.conf & 
 echo ${PASSWD} | sudo -S ./mongod  --shardsvr -f /home/heejin/config/mongodb_banana.conf &
@@ -180,9 +201,17 @@ do
 		break;
 	fi
 done
-kill -9 `ps -ef | grep 'dstat' | awk '{print $2}'`;
 echo "server 6 mongod on";
 rm ${TEST}
+if [ ${RECORD_CNT} -eq 500 ];
+then
+
+kill -9 `ps -ef | grep 'dstat' | awk '{print $2}'`
+
+else
+continue;
+fi
+
 exit 1
 else
 #mongod - mango
@@ -194,6 +223,7 @@ do
 		break;
 	fi
 done;
+kill -9 `ps -ef | grep 'dstat' | awk '{print $2}'`;
 rm ${START};
 echo ${PASSWD} | sudo -S ./mongod  --shardsvr -f /home/heejin/config/mongodb_mango.conf & 
 dstat -tcdm --output=${DSTAT_LOG}_8 &
@@ -204,9 +234,17 @@ do
 		break;
 	fi
 done
-kill -9 `ps -ef | grep 'dstat' | awk '{print $2}'`;
 echo "server 8 mongod on";
 rm ${TEST}
+if [ ${RECORD_CNT} -eq 500 ];
+then
+
+kill -9 `ps -ef | grep 'dstat' | awk '{print $2}'`
+
+else
+continue;
+fi
+
 exit 1
 fi
 done
