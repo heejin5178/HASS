@@ -66,9 +66,9 @@
 
 //heejin added
 #include <string>
-//#define DYNAMIC 1
-#define STATIC 1
-
+#define DYNAMIC 1
+//#define STATIC 1
+//#define ORIGINAL 1
 namespace mongo {
 namespace {
 
@@ -193,9 +193,11 @@ void splitIfNeeded(OperationContext* opCtx,
 
     //log() << "heejjin split IFNEED: " << double_key;
     // heejin added)
-    // sum of chunk element 
+    // sum of chunk element
+#ifndef ORIGINAL 
 	chunk.get()->add_cnt();
    	chunk.get()->add_split_sum(string_key); 
+#endif
    	//chunk.get()->update_split_average(string_key); 
 	//log() << "heejjin update split average : " << chunk.get()->get_split_average() << " when cnt : " << chunk.get()->get_cnt();
         updateChunkWriteStatsAndSplitIfNeeded(
@@ -351,7 +353,7 @@ void updateChunkWriteStatsAndSplitIfNeeded(OperationContext* opCtx,
     TicketHolderReleaser releaser(&(manager->_autoSplitThrottle._splitTickets));
 
     const ChunkRange chunkRange(chunk->getMin(), chunk->getMax());
-log() << "ChunkRange : " << chunkRange;
+//log() << "ChunkRange : " << chunkRange;
     try {
         // Ensure we have the most up-to-date balancer configuration
         uassertStatusOK(balancerConfig->refreshAndCheck(opCtx));
@@ -379,9 +381,9 @@ log() << "ChunkRange : " << chunkRange;
 //heejin) splitpoints call selectChunkSplitPoints
 	//uint64_t split_average = chunk->get_split_average();
 	uint64_t split_average = chunk->get_split_sum()/chunk->get_cnt();
-	log() << "heejjin update split_average: " << split_average;
-	log() << "jin!! yamae global split " << global_split;
-	log() << "jin!! yanae key is " << global_update;
+//	log() << "heejjin update split_average: " << split_average;
+//	log() << "jin!! yamae global split " << global_split;
+//	log() << "jin!! yanae key is " << global_update;
 
         auto splitPoints =
             uassertStatusOK(shardutil::selectChunkSplitPoints(opCtx,
@@ -413,6 +415,7 @@ log() << "ChunkRange : " << chunkRange;
             chunk->clearBytesWritten();
             return;
         }
+#ifndef ORIGINAL
 	else {
 	
 	//	log() << "splitpoints.size() > 1 so split average insert start";
@@ -434,14 +437,14 @@ log() << "ChunkRange : " << chunkRange;
 			BSONElement e = it->getField("_id");
 			//int k = e.getValue().numberInt();
 			string_key = e.String();
-			log() << "heejin debugging " << string_key;
-			string_key.replace(string_key.find("user"), 5, "");
+		//	log() << "heejin debugging " << string_key;
+			string_key.replace(string_key.find("user"), 4, "");
 			string_key.erase(string_key.end()-1);
 			
 			prefix_key = string_key.substr(0,10);
 			std::istringstream iss(prefix_key);
 			iss >> k; 
-			log() << "k value : " << k;
+		//	log() << "k value : " << k;
 			if(k <= split_average) {
 				target = k;
 				n++;
@@ -453,7 +456,7 @@ log() << "ChunkRange : " << chunkRange;
 		uint64_t int_chunk_max, int_chunk_min;
 		//calculate chunk range (prefix)
 		if(maxIsInf) {
-			log() << "maxIsInf int_chunk_max";
+			//log() << "maxIsInf int_chunk_max";
 			key = findExtremeKeyForShard(
 			    opCtx, nss, chunk->getShardId(), manager->getShardKeyPattern(), false);
 			std::string string_key = key.toString();
@@ -497,13 +500,15 @@ log() << "ChunkRange : " << chunkRange;
 			isss >> int_chunk_min;
 			//log() << "chunk prefix intgetmin " << int_chunk_min;
 		}
-		log() << "heejin debugging)  max : " << int_chunk_max << " / min : " << int_chunk_min;
+		//log() << "heejin debugging)  max : " << int_chunk_max << " / min : " << int_chunk_min;
 		uint64_t chunk_range = (uint64_t)((double)int_chunk_max - (double)int_chunk_min);
 		double shift_params = 0.1;
 		//uint64_t shift = 100000000;
 		uint64_t shift = chunk_range * shift_params;
 		
-		log() << "chunk range : " << chunk_range <<", shift : " << shift << ", n : " << n;	
+		//log() << "chunk range : " << chunk_range <<", shift : " << shift << "splitPoints size : " << splitPoints.size() <<", average : " << split_average <<", n : " << n;	
+#endif
+
 		
 #ifdef STATIC	
 		//static tuning
@@ -539,7 +544,7 @@ log() << "ChunkRange : " << chunkRange;
 		//dynamic tuning
 		int right=n;
 		uint64_t right_shift = shift;
-		log() << "dynamic tuning start";
+		//log() << "dynamic tuning start";
 		for(uint8_t i=right; i<splitPoints.size(); i++) {
 			uint64_t k=0;
 			std::string new_split_key = "user";
@@ -548,9 +553,9 @@ log() << "ChunkRange : " << chunkRange;
 			string_key.replace(string_key.find("user"), 4, "");
 			string_key.erase(string_key.end()-1);
 			new_split_key += string_key;
-			log() << "right new_split_key : " << new_split_key;
+		//	log() << "right new_split_key : " << new_split_key;
 			std::string prefix_key = string_key.substr(0,10);
-			log() << "right prefix_key after parsing : " << prefix_key;
+		//	log() << "right prefix_key after parsing : " << prefix_key;
 			std::istringstream iss(prefix_key);
 			iss >> k;
 			k -= right_shift;
@@ -560,21 +565,21 @@ log() << "ChunkRange : " << chunkRange;
 			o << k;
 			k_string += o.str();
 
-			log() << "right new_split_key before replace : " << new_split_key;
-			new_split_key.replace(new_split_key.begin()+4, new_split_key.begin()+15, k_string);
-			log() << "right new_split_key after replace : " << new_split_key;
+			//log() << "right new_split_key before replace : " << new_split_key;
+			new_split_key.replace(new_split_key.begin()+4, new_split_key.begin()+14, k_string);
+			//log() << "right new_split_key after replace : " << new_split_key;
 			//new_split_key.replace(new_split_key.begin()+4, new_split_key.begin()+15, prefix_key.begin(), prefix_key.begin()+11);
 			BSONObjBuilder new_split_BSON;
 			new_split_BSON.append("_id", new_split_key);
-			log() << "right shift : " << right_shift;
-			log() << "right for, before splitPoints[" << (int)i << "] : " << splitPoints[i];
+			//log() << "right shift : " << right_shift;
+			//log() << "right for, before splitPoints[" << (int)i << "] : " << splitPoints[i];
 			splitPoints[i] = new_split_BSON.obj().getOwned();
-			log() << "right for, after splitPoints[" << (int)i << "] : " << splitPoints[i];
+			//log() << "right for, after splitPoints[" << (int)i << "] : " << splitPoints[i];
 		}
 		int left=n-1;
 		uint64_t left_shift = shift;
 		if(left>=0) {
-			for(uint8_t i=left; i>=0; i--) {
+			for(int i=left; i>=0; i--) {
 				uint64_t k=0;
 				std::string new_split_key = "user";
 				BSONElement e = splitPoints[i].getField("_id");	
@@ -582,9 +587,9 @@ log() << "ChunkRange : " << chunkRange;
 				string_key.replace(string_key.find("user"), 4, "");
 				string_key.erase(string_key.end()-1);
 				new_split_key += string_key;
-				log() << "left new_split_key : " << new_split_key;
+			//	log() << "left new_split_key : " << new_split_key;
 				std::string prefix_key = string_key.substr(0,10);
-				log() << "left prefix_key after parsing : " << prefix_key;
+			//	log() << "left prefix_key after parsing : " << prefix_key;
 				std::istringstream iss(prefix_key);
 				iss >> k;
 				if(k!=split_average) {// if k == split_average, no need to shift
@@ -596,16 +601,16 @@ log() << "ChunkRange : " << chunkRange;
 				o << k;
 				k_string += o.str();
 
-				log() << "right new_split_key before replace : " << new_split_key;
-				new_split_key.replace(new_split_key.begin()+4, new_split_key.begin()+15, k_string);
-				log() << "right new_split_key after replace : " << new_split_key;
+				//log() << "right new_split_key before replace : " << new_split_key;
+				new_split_key.replace(new_split_key.begin()+4, new_split_key.begin()+14, k_string);
+				//log() << "right new_split_key after replace : " << new_split_key;
 				//new_split_key.replace(new_split_key.begin()+4, new_split_key.begin()+15, prefix_key.begin(), prefix_key.begin()+11);
 				BSONObjBuilder new_split_BSON;
 				new_split_BSON.append("_id", new_split_key);
-				log() << "left shift : " << left_shift;
-				log() << "left for, before splitPoints[" << (int)i << "] : " << splitPoints[i];
+			//	log() << "left shift : " << left_shift;
+				//log() << "left for, before splitPoints[" << (int)i << "] : " << splitPoints[i];
 				splitPoints[i] = new_split_BSON.obj().getOwned();
-				log() << "left for, after splitPoints[" << (int)i << "] : " << splitPoints[i];
+				//log() << "left for, after splitPoints[" << (int)i << "] : " << splitPoints[i];
 			}
 		}
 
@@ -614,7 +619,7 @@ log() << "ChunkRange : " << chunkRange;
 #elif ORIGINAL
 	
 #else
-	log() << "usage : ";
+	log() << "usage : #define DYNAMIC or #define STATIC or #define ORIGINAL";
 #endif
 	}
 
@@ -684,8 +689,8 @@ log() << "ChunkRange : " << chunkRange;
                                                                   chunkRange,
                                                                   splitPoints));
 
-	global_split++;
-	log() << "jin!! real global split " << global_split;
+	//global_split++;
+	//log() << "jin!! real global split " << global_split;
         // Balance the resulting chunks if the option is enabled and if the shard suggested a chunk
         // to balance
         const bool shouldBalance = [&]() {
