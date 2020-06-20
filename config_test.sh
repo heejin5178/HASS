@@ -3,11 +3,11 @@
 server=$1
 #sudo git pull origin master
 PASSWD="heejin"
-OPT_CNT=100
+OPT_CNT=1000000
 WORKLOAD="a"
 for record in 1 5;
 do
-RECORD_CNT=$(($record*100))
+RECORD_CNT=$(($record*1000000))
 #zipfian/uniform
 for PATTERN in zipfian uniform;
 do
