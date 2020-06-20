@@ -64,7 +64,7 @@ rm done.txt
 echo "mongos on"
 elif [ $server == "4" ]
 then
-mongod - apple,banana
+#mongod - apple,banana
 buildscripts/scons.py MONGO_VERSION=3.6.18 mongod
 dstat -tcdm --output=${DSTAT_LOG}_4 &
 sudo ./mongod --shardsvr -f /home/heejin/config/mongodb_apple.conf & 
@@ -83,7 +83,7 @@ rm done.txt
 exit 1
 elif [ $server == "5" ]
 then
-mongod - apple,banana,mango
+#mongod - apple,banana,mango
 buildscripts/scons.py MONGO_VERSION=3.6.18 mongod
 dstat -tcdm --output=${DSTAT_LOG}_5 &
 sudo ./mongod --shardsvr -f /home/heejin/config/mongodb_apple.conf &
@@ -103,7 +103,7 @@ rm done.txt
 exit 1
 elif [ $server == "6" ]
 then
-mongod - banana,mango
+#mongod - banana,mango
 buildscripts/scons.py MONGO_VERSION=3.6.18 mongod
 dstat -tcdm --output=${DSTAT_LOG}_6 &
 sudo ./mongod  --shardsvr -f /home/heejin/config/mongodb_mango.conf & 
@@ -120,7 +120,7 @@ echo "server 6 mongod on";
 rm done.txt
 exit 1
 else
-mongod - mango
+#mongod - mango
 buildscripts/scons.py MONGO_VERSION=3.6.18 mongod
 dstat -tcdm --output=${DSTAT_LOG}_8 &
 sudo ./mongod  --shardsvr -f /home/heejin/config/mongodb_mango.conf & 
