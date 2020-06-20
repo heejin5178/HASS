@@ -23,10 +23,10 @@ echo "apple shard on"
 sudo ./mongod --configsvr -f /home/heejin/config/mongodb_config.conf & 
 echo "config on"
 dstat -tcdm --output=${DSTAT_LOG}_3 &
-sudo ./mongos -f /home/heejin/config/mongos.conf --bind_ip 10.20.16.165 --port 50001&
+sudo ./mongos -f /home/heejin/config/mongos.conf --bind_ip 10.20.16.165 --port 50001 &
 cd ../YCSB
-./bin/ycsb load mongodb -s -P workloads/workload${WORKLOAD} -p mongodb.url="mongodb://10.20.16.165:50001" -p recordcount=${RECORD_CNT} -p operationcount=${OPT_CNT} -p requestdistribtuion=${PATTERN} >> ${YCSB_LOG}
-./bin/ycsb run mongodb -s -P workloads/workload${WORKLOAD} -p mongodb.url="mongodb://10.20.16.165:50001" -p recordcount=${RECORD_CNT} -p operationcount=${OPT_CNT} -p requestdistribtuion=${PATTERN} >> ${YCSB_LOG}
+./bin/ycsb load mongodb -s -P workloads/workload${WORKLOAD} -p mongodb.url="mongodb://10.20.16.165:50001" -p recordcount=${RECORD_CNT} -p operationcount=${OPT_CNT} -p requestdistribtuion=${PATTERN} >> ${YCSB_LOG} &&
+./bin/ycsb run mongodb -s -P workloads/workload${WORKLOAD} -p mongodb.url="mongodb://10.20.16.165:50001" -p recordcount=${RECORD_CNT} -p operationcount=${OPT_CNT} -p requestdistribtuion=${PATTERN} >> ${YCSB_LOG} &&
 touch done.txt
 expect << EOF
 	set timeout 1
@@ -58,7 +58,7 @@ expect << EOF
 	expect eof
 EOF
 kill -9 `ps -ef | grep 'dstat' | awk '{print $2}'`
-kill -9 `ps -ef | grep 'mongos' | awk '{print $2}'`
+#kill -9 `ps -ef | grep 'mongos' | awk '{print $2}'`
 
 rm done.txt
 echo "mongos on"
