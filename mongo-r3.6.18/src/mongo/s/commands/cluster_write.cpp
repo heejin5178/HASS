@@ -424,7 +424,7 @@ log() << "ChunkRange : " << chunkRange;
 		current_key.append("_id", str);
 		//BSONObjIterator it(splitPoints);
 		std::vector<BSONObj>::iterator it = splitPoints.begin();
-		int n=-1;
+		int n=0;
 		std::string string_key;
 		std::string prefix_key ;
 		while(it != splitPoints.end()) {
@@ -503,47 +503,105 @@ log() << "ChunkRange : " << chunkRange;
 		uint64_t shift = chunk_range * shift_params;
 		
 		log() << "chunk range : " << chunk_range <<", shift : " << shift << ", n : " << n;	
-	//	if(n==-1) { // every split point is bigger than split average
-			for(uint8_t i=0; i<splitPoints.size(); i++) {
-				uint64_t k=0;
-				std::string new_split_key = "user";
-				BSONElement e = splitPoints[i].getField("_id");	
-				std::string string_key = e.String();
-				string_key.replace(string_key.find("user"), 4, "");
-				string_key.erase(string_key.end()-1);
-				new_split_key += string_key;
-				std::string prefix_key = string_key.substr(0,10);
-				std::istringstream iss(prefix_key);
-				iss >> k;
-				if(n<i)
-					k -= shift;
-				else // n>=i, meaning splitPoints[i] is bigger than split_average
-					k += shift;
-				std::string k_string;
-				std::ostringstream o;
-				o << k;
-				k_string += o.str();
+		
+#ifdef STATIC	
+		//static tuning
+		for(uint8_t i=0; i<splitPoints.size(); i++) {
+			uint64_t k=0;
+			std::string new_split_key = "user";
+			BSONElement e = splitPoints[i].getField("_id");	
+			std::string string_key = e.String();
+			string_key.replace(string_key.find("user"), 4, "");
+			string_key.erase(string_key.end()-1);
+			new_split_key += string_key;
+			std::string prefix_key = string_key.substr(0,10);
+			std::istringstream iss(prefix_key);
+			iss >> k;
+			if(i>=n)
+				k -= shift;
+			else if((i<n)&(k!=split_average))// n>i, meaning splitPoints[i] is bigger than split_average
+				k += shift;
+			std::string k_string;
+			std::ostringstream o;
+			o << k;
+			k_string += o.str();
 
-				new_split_key.replace(new_split_key.begin()+4, new_split_key.begin()+15, k_string);
-				//new_split_key.replace(new_split_key.begin()+4, new_split_key.begin()+15, prefix_key.begin(), prefix_key.begin()+11);
-				BSONObjBuilder new_split_BSON;
-				new_split_BSON.append("_id", new_split_key);
-				//log() << "before splitPoints[i] : " << splitPoints[i];
-				splitPoints[i] = new_split_BSON.obj().getOwned();
-				//log() << "after splitPoints[i] : " << splitPoints[i];
+			new_split_key.replace(new_split_key.begin()+4, new_split_key.begin()+15, k_string);
+			//new_split_key.replace(new_split_key.begin()+4, new_split_key.begin()+15, prefix_key.begin(), prefix_key.begin()+11);
+			BSONObjBuilder new_split_BSON;
+			new_split_BSON.append("_id", new_split_key);
+			//log() << "before splitPoints[i] : " << splitPoints[i];
+			splitPoints[i] = new_split_BSON.obj().getOwned();
+			//log() << "after splitPoints[i] : " << splitPoints[i];
+		}
+#elif DYNAMIC	
+		//dynamic tuning
+		int right=n;
+		uint64_t right_shift = shift;
+		for(uint8_t i=right; i<splitPoints.size(); i++) {
+			uint64_t k=0;
+			std::string new_split_key = "user";
+			BSONElement e = splitPoints[i].getField("_id");	
+			std::string string_key = e.String();
+			string_key.replace(string_key.find("user"), 4, "");
+			string_key.erase(string_key.end()-1);
+			new_split_key += string_key;
+			std::string prefix_key = string_key.substr(0,10);
+			std::istringstream iss(prefix_key);
+			iss >> k;
+			k -= right_shift;
+			right_shift*=0.5;
+			std::string k_string;
+			std::ostringstream o;
+			o << k;
+			k_string += o.str();
+
+			new_split_key.replace(new_split_key.begin()+4, new_split_key.begin()+15, k_string);
+			//new_split_key.replace(new_split_key.begin()+4, new_split_key.begin()+15, prefix_key.begin(), prefix_key.begin()+11);
+			BSONObjBuilder new_split_BSON;
+			new_split_BSON.append("_id", new_split_key);
+			//log() << "before splitPoints[i] : " << splitPoints[i];
+			splitPoints[i] = new_split_BSON.obj().getOwned();
+			//log() << "after splitPoints[i] : " << splitPoints[i];
+		}
+		int left=n-1;
+		uint64_t left_shift = shift;
+		for(uint8_t i=left; i>=0; i++) {
+			uint64_t k=0;
+			std::string new_split_key = "user";
+			BSONElement e = splitPoints[i].getField("_id");	
+			std::string string_key = e.String();
+			string_key.replace(string_key.find("user"), 4, "");
+			string_key.erase(string_key.end()-1);
+			new_split_key += string_key;
+			std::string prefix_key = string_key.substr(0,10);
+			std::istringstream iss(prefix_key);
+			iss >> k;
+			if(k!=split_average) {// if k == split_average, no need to shift
+				k += left_shift;
+				left_shift*=0.5;
 			}
-		/*	log() << "before splitPoints.front() : " << splitPoints.front();
-                    splitPoints.front() = current_key.obj().getOwned();
-			log() << "after splitPoints.front() : " << splitPoints.front();
-		*/
-/*		}
-		else {
-			log() << "before splitPoints[" << n <<"] : " << splitPoints[n];
-			splitPoints[n] = current_key.obj().getOwned();
-			log() << "after splitPoints[" << n <<"] : " << splitPoints[n];
-			//log() << "after splitPoints[" << n <<"] : " << current_key.obj().getOwned();
-		}*/
+			std::string k_string;
+			std::ostringstream o;
+			o << k;
+			k_string += o.str();
+
+			new_split_key.replace(new_split_key.begin()+4, new_split_key.begin()+15, k_string);
+			//new_split_key.replace(new_split_key.begin()+4, new_split_key.begin()+15, prefix_key.begin(), prefix_key.begin()+11);
+			BSONObjBuilder new_split_BSON;
+			new_split_BSON.append("_id", new_split_key);
+			//log() << "before splitPoints[i] : " << splitPoints[i];
+			splitPoints[i] = new_split_BSON.obj().getOwned();
+			//log() << "after splitPoints[i] : " << splitPoints[i];
+		}
+
 	}
+
+#elif ORIGINAL
+
+#else
+	log() << "usage : "
+#endif
 
 //	log() << "heejin*** found-front : " << splitPoints.front();
 //	log() << "heejin*** found-back : " << splitPoints.back();
