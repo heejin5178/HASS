@@ -3,25 +3,27 @@
 server=$1
 #sudo git pull origin master
 PASSWD="heejin"
-cd mongo-r3.6.18
-RECORD_CNT=100
-OPT_CNT=100
-#a/b/c/d/e
+OPT_CNT=10000000
 WORKLOAD="a"
+for record in 1 5 10;
+do
+RECORD_CNT=$(($record*1000000))
 #zipfian/uniform
-PATTERN="zipfian"
-DSTAT_LOG="/home/heejin/dstat_log_${RECORD_CNT}_${PATTERN}.txt"
-YCSB_LOG="/home/heejin/ycsb_log_${RECORD_CNT}_${PATTERN}.txt"
+for PATTERN in zipfian uniform;
+do
+DSTAT_LOG="/home/heejin/dynamic_output/dstat_log_${RECORD_CNT}_${PATTERN}.txt"
+YCSB_LOG="/home/heejin/dynamic_output/ycsb_log_${RECORD_CNT}_${PATTERN}.txt"
 touch ${YCSB_LOG}
 touch ${DSTAT_LOG}
 TEST="/home/heejin/mongodbShard/done.txt"
 
+cd mongo-r3.6.18
 if [ $server == "3" ] 
 then
 #mongos, mongod - apple
-#buildscripts/scons.py MONGO_VERSION=3.6.18 mongo
-#buildscripts/scons.py MONGO_VERSION=3.6.18 mongos
-#buildscripts/scons.py MONGO_VERSION=3.6.18 mongod
+buildscripts/scons.py MONGO_VERSION=3.6.18 mongo
+buildscripts/scons.py MONGO_VERSION=3.6.18 mongos
+buildscripts/scons.py MONGO_VERSION=3.6.18 mongod
 echo $PASSWD | sudo -S ./mongod --shardsvr -f /home/heejin/config/mongodb_apple.conf & 
 echo "apple shard on"
 echo ${PASSWD} | sudo -S ./mongod --configsvr -f /home/heejin/config/mongodb_config.conf & 
@@ -143,4 +145,5 @@ echo "server 8 mongod on";
 rm ${TEST}
 exit 1
 fi
-
+done
+done
