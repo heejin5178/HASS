@@ -548,7 +548,9 @@ log() << "ChunkRange : " << chunkRange;
 			string_key.replace(string_key.find("user"), 4, "");
 			string_key.erase(string_key.end()-1);
 			new_split_key += string_key;
+			log() << "right new_split_key : " << new_split_key;
 			std::string prefix_key = string_key.substr(0,10);
+			log() << "right prefix_key after parsing : " << prefix_key;
 			std::istringstream iss(prefix_key);
 			iss >> k;
 			k -= right_shift;
@@ -558,14 +560,16 @@ log() << "ChunkRange : " << chunkRange;
 			o << k;
 			k_string += o.str();
 
+			log() << "right new_split_key before replace : " << new_split_key;
 			new_split_key.replace(new_split_key.begin()+4, new_split_key.begin()+15, k_string);
+			log() << "right new_split_key after replace : " << new_split_key;
 			//new_split_key.replace(new_split_key.begin()+4, new_split_key.begin()+15, prefix_key.begin(), prefix_key.begin()+11);
 			BSONObjBuilder new_split_BSON;
 			new_split_BSON.append("_id", new_split_key);
 			log() << "right shift : " << right_shift;
-			log() << "right for, before splitPoints[i] : " << splitPoints[i];
+			log() << "right for, before splitPoints[" << (int)i << "] : " << splitPoints[i];
 			splitPoints[i] = new_split_BSON.obj().getOwned();
-			log() << "right for, after splitPoints[i] : " << splitPoints[i];
+			log() << "right for, after splitPoints[" << (int)i << "] : " << splitPoints[i];
 		}
 		int left=n-1;
 		uint64_t left_shift = shift;
@@ -578,7 +582,9 @@ log() << "ChunkRange : " << chunkRange;
 				string_key.replace(string_key.find("user"), 4, "");
 				string_key.erase(string_key.end()-1);
 				new_split_key += string_key;
+				log() << "left new_split_key : " << new_split_key;
 				std::string prefix_key = string_key.substr(0,10);
+				log() << "left prefix_key after parsing : " << prefix_key;
 				std::istringstream iss(prefix_key);
 				iss >> k;
 				if(k!=split_average) {// if k == split_average, no need to shift
@@ -590,20 +596,22 @@ log() << "ChunkRange : " << chunkRange;
 				o << k;
 				k_string += o.str();
 
+				log() << "right new_split_key before replace : " << new_split_key;
 				new_split_key.replace(new_split_key.begin()+4, new_split_key.begin()+15, k_string);
+				log() << "right new_split_key after replace : " << new_split_key;
 				//new_split_key.replace(new_split_key.begin()+4, new_split_key.begin()+15, prefix_key.begin(), prefix_key.begin()+11);
 				BSONObjBuilder new_split_BSON;
 				new_split_BSON.append("_id", new_split_key);
 				log() << "left shift : " << left_shift;
-				log() << "left for, before splitPoints[i] : " << splitPoints[i];
+				log() << "left for, before splitPoints[" << (int)i << "] : " << splitPoints[i];
 				splitPoints[i] = new_split_BSON.obj().getOwned();
-				log() << "left for, after splitPoints[i] : " << splitPoints[i];
+				log() << "left for, after splitPoints[" << (int)i << "] : " << splitPoints[i];
 			}
 		}
 
 
 
-//#elif ORIGINAL
+#elif ORIGINAL
 	
 #else
 	log() << "usage : ";
