@@ -7,7 +7,7 @@ OPT_CNT=10000000
 WORKLOAD="a"
 for record in 1 5 10;
 do
-RECORD_CNT=$(($record*1000000))
+RECORD_CNT=$(($record*10000))
 #zipfian/uniform
 for PATTERN in zipfian uniform;
 do
@@ -30,6 +30,37 @@ echo ${PASSWD} | sudo -S ./mongod --configsvr -f /home/heejin/config/mongodb_con
 echo "config on"
 #sudo ./mongo 10.20.16.165:50001 --eval "printjson(use ycsb)"
 #sudo ./mongos -f /home/heejin/config/mongos.conf --bind_ip 10.20.16.165 --port 50001 &
+touch ${TEST}
+expect << EOF
+	set timeout 1
+	spawn scp -o StrictHostKeyChecking=no ${TEST} heejin@10.20.16.110:/home/heejin/mongodbShard
+	expect "password:"
+	send "$PASSWD\r"
+	expect eof
+EOF
+
+expect << EOF
+	set timeout 1
+	spawn scp -o StrictHostKeyChecking=no ${TEST} heejin@10.20.16.111:/home/heejin/mongodbShard
+	expect "password:"
+	send "$PASSWD\r"
+	expect eof
+EOF
+expect << EOF
+	set timeout 1
+	spawn scp -o StrictHostKeyChecking=no ${TEST} heejin@10.20.16.112:/home/heejin/mongodbShard
+	expect "password:"
+	send "$PASSWD\r"
+	expect eof
+EOF
+expect << EOF
+	set timeout 1
+	spawn scp -o StrictHostKeyChecking=no ${TEST} heejin@10.20.16.115:/home/heejin/mongodbShard
+	expect "password:"
+	send "$PASSWD\r"
+	expect eof
+EOF
+remove ${TEST}
 dstat -tcdm --output=${DSTAT_LOG} &
 echo ${PASSWD} | sudo -S ./mongo 10.20.16.165:50001 < /home/heejin/mongodbShard/mongo_drop.js ;
 cd /home/heejin/YCSB; 
@@ -73,7 +104,15 @@ echo "mongos on"
 elif [ $server == "4" ]
 then
 #mongod - apple,banana
-#buildscripts/scons.py MONGO_VERSION=3.6.18 mongod
+#buildscripts/scons.py MONGO_VERSION=3.6.18 mongodwhile :
+while :
+do
+	if [ -f ${TEST} ];
+	then
+		break;
+	fi
+done
+remove ${TEST}
 dstat -tcdm --output=${DSTAT_LOG}_4 &
 echo ${PASSWD} | sudo -S ./mongod --shardsvr -f /home/heejin/config/mongodb_apple.conf & 
 echo ${PASSWD} | sudo -S ./mongod --shardsvr -f /home/heejin/config/mongodb_banana.conf &
@@ -93,6 +132,14 @@ elif [ $server == "5" ]
 then
 #mongod - apple,banana,mango
 #buildscripts/scons.py MONGO_VERSION=3.6.18 mongod
+while :
+do
+	if [ -f ${TEST} ];
+	then
+		break;
+	fi
+done
+remove ${TEST}
 dstat -tcdm --output=${DSTAT_LOG}_5 &
 echo ${PASSWD} | sudo -S ./mongod --shardsvr -f /home/heejin/config/mongodb_apple.conf &
 
@@ -114,6 +161,14 @@ elif [ $server == "6" ]
 then
 #mongod - banana,mango
 #buildscripts/scons.py MONGO_VERSION=3.6.18 mongod
+while :
+do
+	if [ -f ${TEST} ];
+	then
+		break;
+	fi
+done
+remove ${TEST}
 dstat -tcdm --output=${DSTAT_LOG}_6 &
 echo ${PASSWD} | sudo -S ./mongod  --shardsvr -f /home/heejin/config/mongodb_mango.conf & 
 echo ${PASSWD} | sudo -S ./mongod  --shardsvr -f /home/heejin/config/mongodb_banana.conf &
@@ -131,8 +186,17 @@ exit 1
 else
 #mongod - mango
 #buildscripts/scons.py MONGO_VERSION=3.6.18 mongod
+while :
+do
+	if [ -f ${TEST} ];
+	then
+		break;
+	fi
+done
+remove ${TEST}
 dstat -tcdm --output=${DSTAT_LOG}_8 &
 echo ${PASSWD} | sudo -S ./mongod  --shardsvr -f /home/heejin/config/mongodb_mango.conf & 
+
 while :
 do
 	if [ -f ${TEST} ];
