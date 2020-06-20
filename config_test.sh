@@ -3,11 +3,11 @@
 server=$1
 #sudo git pull origin master
 PASSWD="heejin"
-OPT_CNT=10000000
+OPT_CNT=100
 WORKLOAD="a"
 for record in 1 5 10;
 do
-RECORD_CNT=$(($record*10000))
+RECORD_CNT=$(($record*100))
 #zipfian/uniform
 for PATTERN in zipfian uniform;
 do
@@ -60,7 +60,7 @@ expect << EOF
 	send "$PASSWD\r"
 	expect eof
 EOF
-remove ${TEST}
+rm ${TEST}
 dstat -tcdm --output=${DSTAT_LOG} &
 echo ${PASSWD} | sudo -S ./mongo 10.20.16.165:50001 < /home/heejin/mongodbShard/mongo_drop.js ;
 cd /home/heejin/YCSB; 
@@ -112,7 +112,7 @@ do
 		break;
 	fi
 done
-remove ${TEST}
+rm ${TEST}
 dstat -tcdm --output=${DSTAT_LOG}_4 &
 echo ${PASSWD} | sudo -S ./mongod --shardsvr -f /home/heejin/config/mongodb_apple.conf & 
 echo ${PASSWD} | sudo -S ./mongod --shardsvr -f /home/heejin/config/mongodb_banana.conf &
@@ -139,7 +139,7 @@ do
 		break;
 	fi
 done
-remove ${TEST}
+rm ${TEST}
 dstat -tcdm --output=${DSTAT_LOG}_5 &
 echo ${PASSWD} | sudo -S ./mongod --shardsvr -f /home/heejin/config/mongodb_apple.conf &
 
@@ -168,7 +168,7 @@ do
 		break;
 	fi
 done
-remove ${TEST}
+rm ${TEST}
 dstat -tcdm --output=${DSTAT_LOG}_6 &
 echo ${PASSWD} | sudo -S ./mongod  --shardsvr -f /home/heejin/config/mongodb_mango.conf & 
 echo ${PASSWD} | sudo -S ./mongod  --shardsvr -f /home/heejin/config/mongodb_banana.conf &
@@ -193,7 +193,7 @@ do
 		break;
 	fi
 done
-remove ${TEST}
+rm ${TEST}
 dstat -tcdm --output=${DSTAT_LOG}_8 &
 echo ${PASSWD} | sudo -S ./mongod  --shardsvr -f /home/heejin/config/mongodb_mango.conf & 
 
