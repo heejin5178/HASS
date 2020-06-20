@@ -16,6 +16,7 @@ YCSB_LOG="/home/heejin/dynamic_output/ycsb_log_${RECORD_CNT}_${PATTERN}.txt"
 touch ${YCSB_LOG}
 touch ${DSTAT_LOG}
 TEST="/home/heejin/mongodbShard/done.txt"
+START="/home/heejin/mongodbShard/start.txt"
 
 cd /home/heejin/mongodbShard/mongo-r3.6.18
 if [ $server == "3" ] 
@@ -33,7 +34,7 @@ echo "config on"
 touch ${TEST}
 expect << EOF
 	set timeout 1
-	spawn scp -o StrictHostKeyChecking=no ${TEST} heejin@10.20.16.110:/home/heejin/mongodbShard
+	spawn scp -o StrictHostKeyChecking=no ${START} heejin@10.20.16.110:/home/heejin/mongodbShard
 	expect "password:"
 	send "$PASSWD\r"
 	expect eof
@@ -41,21 +42,21 @@ EOF
 
 expect << EOF
 	set timeout 1
-	spawn scp -o StrictHostKeyChecking=no ${TEST} heejin@10.20.16.111:/home/heejin/mongodbShard
+	spawn scp -o StrictHostKeyChecking=no ${START} heejin@10.20.16.111:/home/heejin/mongodbShard
 	expect "password:"
 	send "$PASSWD\r"
 	expect eof
 EOF
 expect << EOF
 	set timeout 1
-	spawn scp -o StrictHostKeyChecking=no ${TEST} heejin@10.20.16.112:/home/heejin/mongodbShard
+	spawn scp -o StrictHostKeyChecking=no ${START} heejin@10.20.16.112:/home/heejin/mongodbShard
 	expect "password:"
 	send "$PASSWD\r"
 	expect eof
 EOF
 expect << EOF
 	set timeout 1
-	spawn scp -o StrictHostKeyChecking=no ${TEST} heejin@10.20.16.115:/home/heejin/mongodbShard
+	spawn scp -o StrictHostKeyChecking=no ${START} heejin@10.20.16.115:/home/heejin/mongodbShard
 	expect "password:"
 	send "$PASSWD\r"
 	expect eof
@@ -107,12 +108,12 @@ then
 #buildscripts/scons.py MONGO_VERSION=3.6.18 mongodwhile :
 while :
 do
-	if [ -f ${TEST} ];
+	if [ -f ${START} ];
 	then
 		break;
 	fi
 done;
-rm ${TEST};
+rm ${START};
 echo ${PASSWD} | sudo -S ./mongod --shardsvr -f /home/heejin/config/mongodb_apple.conf & 
 echo ${PASSWD} | sudo -S ./mongod --shardsvr -f /home/heejin/config/mongodb_banana.conf &
 echo ${PASSWd} | sudo -S ./mongod --configsvr -f /home/heejin/config/mongodb_config.conf &
@@ -134,12 +135,12 @@ then
 #buildscripts/scons.py MONGO_VERSION=3.6.18 mongod
 while :
 do
-	if [ -f ${TEST} ];
+	if [ -f ${START} ];
 	then
 		break;
 	fi
 done;
-rm ${TEST};
+rm ${START};
 echo ${PASSWD} | sudo -S ./mongod --shardsvr -f /home/heejin/config/mongodb_apple.conf &
 
 echo ${PASSWD} | sudo -S ./mongod --shardsvr -f /home/heejin/config/mongodb_banana.conf &
@@ -163,12 +164,12 @@ then
 #buildscripts/scons.py MONGO_VERSION=3.6.18 mongod
 while :
 do
-	if [ -f ${TEST} ];
+	if [ -f ${START} ];
 	then
 		break;
 	fi
 done;
-rm ${TEST};
+rm ${START};
 echo ${PASSWD} | sudo -S ./mongod  --shardsvr -f /home/heejin/config/mongodb_mango.conf & 
 echo ${PASSWD} | sudo -S ./mongod  --shardsvr -f /home/heejin/config/mongodb_banana.conf &
 dstat -tcdm --output=${DSTAT_LOG}_6 &
@@ -188,12 +189,12 @@ else
 #buildscripts/scons.py MONGO_VERSION=3.6.18 mongod
 while :
 do
-	if [ -f ${TEST} ];
+	if [ -f ${START} ];
 	then
 		break;
 	fi
 done;
-rm ${TEST};
+rm ${START};
 echo ${PASSWD} | sudo -S ./mongod  --shardsvr -f /home/heejin/config/mongodb_mango.conf & 
 dstat -tcdm --output=${DSTAT_LOG}_8 &
 while :
