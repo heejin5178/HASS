@@ -5,9 +5,9 @@ server=$1
 PASSWD="heejin"
 OPT_CNT=1000000
 WORKLOAD="a"
-for record in 5;
+for record in 4 8;
 do
-RECORD_CNT=$(($record*1000000))
+RECORD_CNT=$(($record*100000))
 #zipfian/uniform
 for PATTERN in zipfian uniform;
 do
@@ -129,7 +129,7 @@ do
 	fi
 done
 
-if [ ${record} -eq 10 ] && [ ${PATTERN} == uniform];
+if [ ${record} -eq 8 ] && [ ${PATTERN} == uniform];
 then
 
 kill -9 `ps -ef | grep 'dstat' | awk '{print $2}'`
@@ -169,7 +169,7 @@ do
 done
 echo "server 5 mongod on";
 rm ${TEST};
-if [ ${record} -eq 10 ] && [ ${PATTERN} == uniform];
+if [ ${record} -eq 8 ] && [ ${PATTERN} == uniform];
 then
 
 kill -9 `ps -ef | grep 'dstat' | awk '{print $2}'`
@@ -204,7 +204,7 @@ do
 done
 echo "server 6 mongod on";
 rm ${TEST}
-if [ ${record} -eq 10 ] && [ ${PATTERN} == uniform];
+if [ ${record} -eq 8 ] && [ ${PATTERN} == uniform];
 then
 
 kill -9 `ps -ef | grep 'dstat' | awk '{print $2}'`
@@ -237,7 +237,7 @@ do
 done
 echo "server 8 mongod on";
 rm ${TEST}
-if [ ${record} -eq 10 ] && [ ${PATTERN} == uniform];
+if [ ${record} -eq 8 ] && [ ${PATTERN} == uniform];
 then
 
 kill -9 `ps -ef | grep 'dstat' | awk '{print $2}'`
