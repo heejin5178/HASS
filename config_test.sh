@@ -129,7 +129,7 @@ do
 	fi
 done
 
-if [ ${RECORD_CNT} -eq 500 ];
+if [ ${record} -eq 10 ] && [ ${PATTERN} == uniform];
 then
 
 kill -9 `ps -ef | grep 'dstat' | awk '{print $2}'`
@@ -169,7 +169,7 @@ do
 done
 echo "server 5 mongod on";
 rm ${TEST};
-if [ ${RECORD_CNT} -eq 500 ];
+if [ ${record} -eq 10 ] && [ ${PATTERN} == uniform];
 then
 
 kill -9 `ps -ef | grep 'dstat' | awk '{print $2}'`
@@ -204,7 +204,7 @@ do
 done
 echo "server 6 mongod on";
 rm ${TEST}
-if [ ${RECORD_CNT} -eq 500 ];
+if [ ${record} -eq 10 ] && [ ${PATTERN} == uniform];
 then
 
 kill -9 `ps -ef | grep 'dstat' | awk '{print $2}'`
@@ -237,7 +237,7 @@ do
 done
 echo "server 8 mongod on";
 rm ${TEST}
-if [ ${RECORD_CNT} -eq 500 ];
+if [ ${record} -eq 10 ] && [ ${PATTERN} == uniform];
 then
 
 kill -9 `ps -ef | grep 'dstat' | awk '{print $2}'`
