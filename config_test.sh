@@ -5,7 +5,7 @@ server=$1
 PASSWD="heejin"
 OPT_CNT=1000000
 WORKLOAD="a"
-for record in 1 5 10;
+for record in 5;
 do
 RECORD_CNT=$(($record*1000000))
 #zipfian/uniform
